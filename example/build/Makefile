@@ -315,6 +315,33 @@ home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.s
 .PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.s
 
+home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.o: home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.o
+
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.o
+
+# target to build an object file
+home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.o
+
+home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.i: home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.i
+
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.i
+
+# target to preprocess a source file
+home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.i
+
+home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.s: home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.s
+
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.s
+
+# target to generate assembly for a file
+home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.s
+
 home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.o: home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.o
 
 .PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.o
@@ -426,6 +453,9 @@ help:
 	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.o"
 	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.i"
 	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.s"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.o"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.i"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.s"
 	@echo "... home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.o"
 	@echo "... home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.i"
 	@echo "... home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.s"

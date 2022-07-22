@@ -1,187 +1,181 @@
-#include "tcpConnection.h"
+#include "../tcpConnection.h"
 
-tcpConnection::tcpConnection(int connected_fd, std::shared_ptr<eventLoop> eventloop)
+namespace cppServer
 {
-
-    this->eventloop = eventloop;
-    this->input_buffer = buffer_new();
-    this->output_buffer = buffer_new();
-    this->name = "connection-" + std::to_string(connected_fd);
-
-    // add event read for the new connection
-    this->chan = std::make_shared<channel>(connected_fd, EVENT_READ, handle_read, handle_write, this);
-
-    // connectionCompletedCallBack callback
-    this->onConnectionCompleted();
-
-    this->eventloop->add_channel_event(connected_fd, this->chan);
-}
-
-// callback for connection complete
-int tcpConnection::onConnectionCompleted()
-{
-    INFO("connection completed", "");
-    return 0;
-}
-// callback for processing recv_data
-int tcpConnection::onMessage(struct buffer *input)
-{
-    INFO("get message from tcp connection, ", this->name);
-    // TODO:针对char*数据进行数据处理，完成对应的操作，再将对应数据发还给客户端
-#if 1
-    std::string recv_data;
-    buffer_read_all(input, recv_data);
-    INFO("recv_data: ", recv_data);
-
-    std::string response = "you are sucessful\n";
-
-    // processContext(recv_data, response, tcpConnection->channel->fd);
-    //  std::cout << "response:" << response << ", len:" << response.length() << std::endl;
-
-    struct buffer *output = buffer_new();
-    int size = response.length();
-
-    char *send_msg = new char[size];
-    strcpy(send_msg, response.c_str());
-    buffer_append_string(output, send_msg);
-
-    delete[] send_msg;
-    send_msg = nullptr;
-#endif
-    // Send the reply message back to the client
-    this->send_buffer(output);
-    return 0;
-}
-
-// callback for Write complete
-int tcpConnection::onWriteCompleted()
-{
-    INFO("write completed", "");
-    return 0;
-}
-
-// callback for closed connection
-int tcpConnection::onConnectionClosed()
-{
-    INFO("connection closed", "");
-    delete this; // Pay attention to releasing resources when the connection is closed
-    return 0;
-}
-
-int tcpConnection::send_buffer(struct buffer *buffer)
-{
-    int size = buffer_readable_size(buffer);
-    int result = this->send_data(buffer->data + buffer->readIndex, size);
-    buffer->readIndex += size;
-    return result;
-}
-
-int tcpConnection::send_data(char *data, int size)
-{
-    size_t nwrited = 0;
-    size_t nleft = size;
-    int fault = 0;
-
-    // Try to send data to the socket first
-    if (!this->chan->channel_write_event_is_enabled(this->chan) && buffer_readable_size(this->output_buffer) == 0)
+    tcpConnection::tcpConnection(int connected_fd, std::shared_ptr<eventLoop> eventloop)
     {
-        nwrited = write(chan->fd, data, size);
-        if (nwrited >= 0)
+
+        this->eventloop = eventloop;
+        // TODO:可以提供给外面，叫外面给大小
+        int size = 1024;
+        m_write_buffer = std::make_shared<tcpBuffer>(size);
+        m_read_buffer = std::make_shared<tcpBuffer>(size);
+
+        this->name = "connection-" + std::to_string(connected_fd);
+
+        // add event read for the new connection
+        this->chan = std::make_shared<channel>(connected_fd, EVENT_READ, handle_read, handle_write, this);
+
+        // connectionCompletedCallBack callback
+        this->onConnectionCompleted();
+
+        this->eventloop->add_channel_event(connected_fd, this->chan);
+    }
+
+    // callback for connection complete
+    int tcpConnection::onConnectionCompleted()
+    {
+        INFO("connection completed", "");
+        return 0;
+    }
+    // callback for processing recv_data
+    int tcpConnection::onMessage()
+    {
+        INFO("get message from tcp connection, ", this->name);
+        // TODO:针对char*数据进行数据处理，完成对应的操作，再将对应数据发还给客户端
+#if 1
+        std::vector<char> recv_data;
+        m_read_buffer->readFromBuffer(recv_data, m_read_buffer->readAble());
+        std::string recv_str;
+        recv_str.insert(recv_str.begin(), recv_data.begin(), recv_data.end());
+        std::cout << recv_str << ", size = " << recv_str.size() << std::endl;
+
+        std::string response = "you are sucessful\n";
+
+        // processContext(recv_data, response, tcpConnection->channel->fd);
+        std::cout << "response:" << response << ", len:" << response.length() << std::endl;
+
+        int size = response.length();
+        m_write_buffer->writeToBuffer(response.c_str(), size);
+#endif
+        // Send the reply message back to the client
+        this->output_buffer();
+        return 0;
+    }
+
+    // callback for Write complete
+    int tcpConnection::onWriteCompleted()
+    {
+        INFO("write completed", "");
+        return 0;
+    }
+
+    // callback for closed connection
+    int tcpConnection::onConnectionClosed()
+    {
+        INFO("connection closed", "");
+        delete this; // Pay attention to releasing resources when the connection is closed
+        return 0;
+    }
+
+    // return the num of char had writen
+    int tcpConnection::output_buffer()
+    {
+        int total_size = m_write_buffer->readAble();
+        int read_index = m_write_buffer->readIndex();
+
+        size_t nwrited = 0;
+        size_t nleft = total_size;
+        int fault = 0;
+        // Try to send data to the socket first
+        if (!this->chan->channel_write_event_is_enabled(this->chan))
         {
-            nleft = nleft - nwrited;
-        }
-        else
-        {
-            nwrited = 0;
-            if (errno != EWOULDBLOCK)
+            INFO("Try to send data to the socket first", "");
+            nwrited = write(chan->fd, &(m_write_buffer->m_buffer[read_index]), total_size);
+            if (nwrited >= 0)
             {
-                if (errno == EPIPE || errno == ECONNRESET)
+                nleft = nleft - nwrited;
+            }
+            else
+            {
+                ERROR("output_buffer failed");
+                nwrited = 0;
+                if (errno != EWOULDBLOCK)
                 {
-                    fault = 1;
+                    if (errno == EPIPE || errno == ECONNRESET)
+                    {
+                        fault = 1;
+                    }
                 }
             }
         }
-    }
-    // If there is any remaining data not sent, add a write event
-    if (!fault && nleft > 0)
-    {
-        // Copy to the buffer, and the buffer data is taken over by the framework
-        buffer_append(this->output_buffer, data + nwrited, nleft);
-        if (!this->chan->channel_write_event_is_enabled(this->chan))
+        m_write_buffer->recycleRead(nwrited);
+        // If there is any remaining data not sent, add a write event
+        if (!fault && nleft > 0)
         {
-            this->chan->channel_write_event_enable(this->chan);
+            INFO("add a write event", "");
+            if (!this->chan->channel_write_event_is_enabled(this->chan))
+            {
+                this->chan->channel_write_event_enable(this->chan);
+            }
         }
+        return nwrited;
     }
 
-    return nwrited;
-}
-
-int tcpConnection::handle_connection_closed(tcpConnection *tcp_connection)
-{
-    auto eventloop = tcp_connection->eventloop;
-    auto chan = tcp_connection->chan;
-
-    eventloop->remove_channel_event(chan->fd, chan);
-    tcp_connection->onConnectionClosed();
-    return 0;
-}
-
-int tcpConnection::handle_read(void *data)
-{
-    tcpConnection *tcp_connection = (tcpConnection *)data;
-    struct buffer *input_buffer = tcp_connection->input_buffer;
-    auto chan = tcp_connection->chan;
-
-    if (buffer_socket_read(input_buffer, chan->fd) > 0)
+    int tcpConnection::handle_connection_closed(tcpConnection *tcp_connection)
     {
+        auto eventloop = tcp_connection->eventloop;
+        auto chan = tcp_connection->chan;
+
+        eventloop->remove_channel_event(chan->fd, chan);
+        tcp_connection->onConnectionClosed();
+        return 0;
+    }
+
+    int tcpConnection::handle_read(void *data)
+    {
+        tcpConnection *tcp_connection = (tcpConnection *)data;
+
         // reads the data in the buffer, and you can process data in this callback function.
-        tcp_connection->onMessage(input_buffer);
-    }
-    else
-    {
-        INFO("buffer_socket_read <= 0", "");
-        handle_connection_closed(tcp_connection);
-    }
-    return 0;
-}
-
-// Write out the data in the sending buffer
-int tcpConnection::handle_write(void *data)
-{
-    tcpConnection *tcp_connection = (tcpConnection *)data;
-    auto eventloop = tcp_connection->eventloop;
-    // assertInSameThread(eventLoop);
-    if (eventloop->owner_thread_id != pthread_self())
-    {
-        exit(-1);
-    }
-
-    struct buffer *output_buffer = tcp_connection->output_buffer;
-    auto chan = tcp_connection->chan;
-
-    ssize_t nwrited = write(chan->fd, output_buffer->data + output_buffer->readIndex,
-                            buffer_readable_size(output_buffer));
-    if (nwrited > 0)
-    {
-        // nwrited bytes had read
-        output_buffer->readIndex += nwrited;
-
-        // If the data is completely sent out, there is no need to continue
-        if (buffer_readable_size(output_buffer) == 0)
+        int rt = tcp_connection->m_read_buffer->readFromSocket(tcp_connection->chan->fd);
+        if (rt > 0)
         {
-            chan->channel_write_event_disable(chan);
+            tcp_connection->onMessage();
+        }
+        else
+        {
+            INFO("buffer_socket_read <= 0", "");
+            handle_connection_closed(tcp_connection);
         }
 
-        // Call callback function
-        tcp_connection->onWriteCompleted();
+        return 0;
     }
-    return 0;
-}
 
-void tcpConnection::tcp_connection_shutdown()
-{
-    if (shutdown(this->chan->fd, SHUT_WR) < 0)
+    // Write out the data in the sending buffer
+    int tcpConnection::handle_write(void *data)
     {
-        INFO("tcp_connection_shutdown failed, socket == ", this->chan->fd);
+        tcpConnection *tcp_connection = (tcpConnection *)data;
+        auto eventloop = tcp_connection->eventloop;
+        // assertInSameThread(eventLoop);
+        if (eventloop->owner_thread_id != pthread_self())
+        {
+            exit(-1);
+        }
+        auto chan = tcp_connection->chan;
+
+        ssize_t nwrited = tcp_connection->output_buffer();
+        if (nwrited > 0)
+        {
+            // nwrited bytes had read
+            tcp_connection->m_write_buffer->recycleWrite(nwrited);
+
+            // If the data is completely sent out, there is no need to continue
+            if (tcp_connection->m_write_buffer->readAble() == 0)
+            {
+                chan->channel_write_event_disable(chan);
+            }
+
+            // Call callback function
+            tcp_connection->onWriteCompleted();
+        }
+        return 0;
+    }
+
+    void tcpConnection::tcp_connection_shutdown()
+    {
+        if (shutdown(this->chan->fd, SHUT_WR) < 0)
+        {
+            INFO("tcp_connection_shutdown failed, socket == ", this->chan->fd);
+        }
     }
 }

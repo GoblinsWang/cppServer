@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/wzm/project/network/cppServer'
+make: Leaving directory '/home/wzm/project/network/cppServer'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+

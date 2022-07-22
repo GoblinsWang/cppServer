@@ -1,16 +1,17 @@
-#ifndef network_acceptor_h
-#define network_acceptor_h
+#ifndef net_tcp_acceptor_h
+#define net_tcp_acceptor_h
 
 #include "common.h"
-
-class acceptor
+namespace cppServer
 {
-public:
-    int listen_port;
-    int listen_fd;
+    class acceptor
+    {
+    public:
+        int listen_port;
+        int listen_fd;
 
-public:
-    acceptor(int port);
-};
-
+    public:
+        acceptor(int port);
+    };
+}
 #endif
