@@ -20,18 +20,19 @@ tcpConnection::tcpConnection(int connected_fd, std::shared_ptr<eventLoop> eventl
 // callback for connection complete
 int tcpConnection::onConnectionCompleted()
 {
-    std::cout << "[debug] connection completed" << std::endl;
+    INFO("connection completed", "");
     return 0;
 }
 // callback for processing recv_data
 int tcpConnection::onMessage(struct buffer *input)
 {
-    std::cout << "[debug] get message from tcp connection " << this->name << std::endl;
+    INFO("get message from tcp connection, ", this->name);
     // TODO:针对char*数据进行数据处理，完成对应的操作，再将对应数据发还给客户端
 #if 1
     std::string recv_data;
-    int _ = buffer_read_all(input, recv_data);
-    std::cout << "[debug] recv_data: " << recv_data << std::endl;
+    buffer_read_all(input, recv_data);
+    INFO("recv_data: ", recv_data);
+
     std::string response = "you are sucessful\n";
 
     // processContext(recv_data, response, tcpConnection->channel->fd);
@@ -55,14 +56,14 @@ int tcpConnection::onMessage(struct buffer *input)
 // callback for Write complete
 int tcpConnection::onWriteCompleted()
 {
-    std::cout << "[debug] write completed" << std::endl;
+    INFO("write completed", "");
     return 0;
 }
 
 // callback for closed connection
 int tcpConnection::onConnectionClosed()
 {
-    std::cout << "[debug] connection closed" << std::endl;
+    INFO("connection closed", "");
     delete this; // Pay attention to releasing resources when the connection is closed
     return 0;
 }
@@ -75,7 +76,7 @@ int tcpConnection::send_buffer(struct buffer *buffer)
     return result;
 }
 
-int tcpConnection::send_data(void *data, int size)
+int tcpConnection::send_data(char *data, int size)
 {
     size_t nwrited = 0;
     size_t nleft = size;
@@ -131,8 +132,6 @@ int tcpConnection::handle_read(void *data)
     struct buffer *input_buffer = tcp_connection->input_buffer;
     auto chan = tcp_connection->chan;
 
-    std::cout << "[debug] handle read for fd = " << chan->fd << std::endl;
-    std::cout << "[debug] connection name: " << tcp_connection->name << std::endl;
     if (buffer_socket_read(input_buffer, chan->fd) > 0)
     {
         // reads the data in the buffer, and you can process data in this callback function.
@@ -140,7 +139,7 @@ int tcpConnection::handle_read(void *data)
     }
     else
     {
-        std::cout << "[debug] buffer_socket_read <= 0" << std::endl;
+        INFO("buffer_socket_read <= 0", "");
         handle_connection_closed(tcp_connection);
     }
     return 0;
@@ -154,7 +153,6 @@ int tcpConnection::handle_write(void *data)
     // assertInSameThread(eventLoop);
     if (eventloop->owner_thread_id != pthread_self())
     {
-        std::cout << "[error] not in the same thread" << std::endl;
         exit(-1);
     }
 
@@ -184,6 +182,6 @@ void tcpConnection::tcp_connection_shutdown()
 {
     if (shutdown(this->chan->fd, SHUT_WR) < 0)
     {
-        std::cout << "tcp_connection_shutdown failed, socket == " << this->chan->fd << std::endl;
+        INFO("tcp_connection_shutdown failed, socket == ", this->chan->fd);
     }
 }

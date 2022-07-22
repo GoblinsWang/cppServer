@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     auto listener = std::make_shared<acceptor>(12345);
 
     // initialize tcp_server, and set the num of threads in thread pool to handle connected fd.
-    auto tcp_server = std::make_shared<tcpServer>(event_loop, listener, 0);
+    auto tcp_server = std::make_shared<tcpServer>(event_loop, listener, 4);
 
     // start thread pool and let eventloops run
     tcp_server->start();

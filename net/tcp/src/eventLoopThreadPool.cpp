@@ -12,19 +12,18 @@ eventLoopThreadPool::eventLoopThreadPool(std::shared_ptr<eventLoop> mainloop, in
 void eventLoopThreadPool::thread_pool_start()
 {
     assert(!this->started);
-    // assertInSameThread
+
     if (this->mainloop->owner_thread_id != pthread_self())
     {
-        std::cout << "[debug] not in the same thread" << std::endl;
         exit(-1);
     }
+
     // set to start thread pool
     this->started = 1;
 
-    //设置为0，为单线程，直接返回
+    // single thread
     if (this->thread_number <= 0)
     {
-        std::cout << "[debug] it's a single thread reactor" << std::endl;
         return;
     }
 
@@ -43,14 +42,13 @@ eventLoopThreadPool::thread_pool_get_loop()
     // assertInSameThread
     if (this->mainloop->owner_thread_id != pthread_self())
     {
-        std::cout << "[debug] not in the same thread" << std::endl;
         exit(-1);
     }
 
-    //优先选择当前主线程
+    // Choose the current main thread first
     std::shared_ptr<eventLoop> selected = this->mainloop;
 
-    //从线程池中按照顺序挑选出一个线程
+    // Select a thread from the thread pool in order
     if (this->thread_number > 0)
     {
         selected = this->eventloopthreads[this->position]->eventloop;

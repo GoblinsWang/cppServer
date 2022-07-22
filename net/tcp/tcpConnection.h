@@ -31,7 +31,7 @@ public:
     // 发送缓冲区数据
     int send_buffer(struct buffer *buffer);
     // 发送数据
-    int send_data(void *data, int size);
+    int send_data(char *data, int size);
     // channel的读回调函数
     static int handle_read(void *data);
     // channel的写回调函数

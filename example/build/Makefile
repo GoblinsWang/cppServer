@@ -126,248 +126,248 @@ tcp_server/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/build
 .PHONY : tcp_server/fast
 
-home/wzm/project/network/cppServer/src/acceptor.o: home/wzm/project/network/cppServer/src/acceptor.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/acceptor.o: home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.o
 
-.PHONY : home/wzm/project/network/cppServer/src/acceptor.o
-
-# target to build an object file
-home/wzm/project/network/cppServer/src/acceptor.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/acceptor.cpp.o
-.PHONY : home/wzm/project/network/cppServer/src/acceptor.cpp.o
-
-home/wzm/project/network/cppServer/src/acceptor.i: home/wzm/project/network/cppServer/src/acceptor.cpp.i
-
-.PHONY : home/wzm/project/network/cppServer/src/acceptor.i
-
-# target to preprocess a source file
-home/wzm/project/network/cppServer/src/acceptor.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/acceptor.cpp.i
-.PHONY : home/wzm/project/network/cppServer/src/acceptor.cpp.i
-
-home/wzm/project/network/cppServer/src/acceptor.s: home/wzm/project/network/cppServer/src/acceptor.cpp.s
-
-.PHONY : home/wzm/project/network/cppServer/src/acceptor.s
-
-# target to generate assembly for a file
-home/wzm/project/network/cppServer/src/acceptor.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/acceptor.cpp.s
-.PHONY : home/wzm/project/network/cppServer/src/acceptor.cpp.s
-
-home/wzm/project/network/cppServer/src/buffer.o: home/wzm/project/network/cppServer/src/buffer.cpp.o
-
-.PHONY : home/wzm/project/network/cppServer/src/buffer.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/acceptor.o
 
 # target to build an object file
-home/wzm/project/network/cppServer/src/buffer.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/buffer.cpp.o
-.PHONY : home/wzm/project/network/cppServer/src/buffer.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.o
 
-home/wzm/project/network/cppServer/src/buffer.i: home/wzm/project/network/cppServer/src/buffer.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/acceptor.i: home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.i
 
-.PHONY : home/wzm/project/network/cppServer/src/buffer.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/acceptor.i
 
 # target to preprocess a source file
-home/wzm/project/network/cppServer/src/buffer.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/buffer.cpp.i
-.PHONY : home/wzm/project/network/cppServer/src/buffer.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.i
 
-home/wzm/project/network/cppServer/src/buffer.s: home/wzm/project/network/cppServer/src/buffer.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/acceptor.s: home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.s
 
-.PHONY : home/wzm/project/network/cppServer/src/buffer.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/acceptor.s
 
 # target to generate assembly for a file
-home/wzm/project/network/cppServer/src/buffer.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/buffer.cpp.s
-.PHONY : home/wzm/project/network/cppServer/src/buffer.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.s
 
-home/wzm/project/network/cppServer/src/channel.o: home/wzm/project/network/cppServer/src/channel.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/buffer.o: home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o
 
-.PHONY : home/wzm/project/network/cppServer/src/channel.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/buffer.o
 
 # target to build an object file
-home/wzm/project/network/cppServer/src/channel.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/channel.cpp.o
-.PHONY : home/wzm/project/network/cppServer/src/channel.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o
 
-home/wzm/project/network/cppServer/src/channel.i: home/wzm/project/network/cppServer/src/channel.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/buffer.i: home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.i
 
-.PHONY : home/wzm/project/network/cppServer/src/channel.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/buffer.i
 
 # target to preprocess a source file
-home/wzm/project/network/cppServer/src/channel.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/channel.cpp.i
-.PHONY : home/wzm/project/network/cppServer/src/channel.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.i
 
-home/wzm/project/network/cppServer/src/channel.s: home/wzm/project/network/cppServer/src/channel.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/buffer.s: home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.s
 
-.PHONY : home/wzm/project/network/cppServer/src/channel.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/buffer.s
 
 # target to generate assembly for a file
-home/wzm/project/network/cppServer/src/channel.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/channel.cpp.s
-.PHONY : home/wzm/project/network/cppServer/src/channel.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.s
 
-home/wzm/project/network/cppServer/src/eventDispatcher.o: home/wzm/project/network/cppServer/src/eventDispatcher.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/channel.o: home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.o
 
-.PHONY : home/wzm/project/network/cppServer/src/eventDispatcher.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/channel.o
 
 # target to build an object file
-home/wzm/project/network/cppServer/src/eventDispatcher.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/eventDispatcher.cpp.o
-.PHONY : home/wzm/project/network/cppServer/src/eventDispatcher.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.o
 
-home/wzm/project/network/cppServer/src/eventDispatcher.i: home/wzm/project/network/cppServer/src/eventDispatcher.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/channel.i: home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.i
 
-.PHONY : home/wzm/project/network/cppServer/src/eventDispatcher.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/channel.i
 
 # target to preprocess a source file
-home/wzm/project/network/cppServer/src/eventDispatcher.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/eventDispatcher.cpp.i
-.PHONY : home/wzm/project/network/cppServer/src/eventDispatcher.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.i
 
-home/wzm/project/network/cppServer/src/eventDispatcher.s: home/wzm/project/network/cppServer/src/eventDispatcher.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/channel.s: home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.s
 
-.PHONY : home/wzm/project/network/cppServer/src/eventDispatcher.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/channel.s
 
 # target to generate assembly for a file
-home/wzm/project/network/cppServer/src/eventDispatcher.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/eventDispatcher.cpp.s
-.PHONY : home/wzm/project/network/cppServer/src/eventDispatcher.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.s
 
-home/wzm/project/network/cppServer/src/eventLoop.o: home/wzm/project/network/cppServer/src/eventLoop.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.o: home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.o
 
-.PHONY : home/wzm/project/network/cppServer/src/eventLoop.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.o
 
 # target to build an object file
-home/wzm/project/network/cppServer/src/eventLoop.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/eventLoop.cpp.o
-.PHONY : home/wzm/project/network/cppServer/src/eventLoop.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.o
 
-home/wzm/project/network/cppServer/src/eventLoop.i: home/wzm/project/network/cppServer/src/eventLoop.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.i: home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.i
 
-.PHONY : home/wzm/project/network/cppServer/src/eventLoop.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.i
 
 # target to preprocess a source file
-home/wzm/project/network/cppServer/src/eventLoop.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/eventLoop.cpp.i
-.PHONY : home/wzm/project/network/cppServer/src/eventLoop.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.i
 
-home/wzm/project/network/cppServer/src/eventLoop.s: home/wzm/project/network/cppServer/src/eventLoop.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.s: home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.s
 
-.PHONY : home/wzm/project/network/cppServer/src/eventLoop.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.s
 
 # target to generate assembly for a file
-home/wzm/project/network/cppServer/src/eventLoop.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/eventLoop.cpp.s
-.PHONY : home/wzm/project/network/cppServer/src/eventLoop.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.s
 
-home/wzm/project/network/cppServer/src/eventLoopThread.o: home/wzm/project/network/cppServer/src/eventLoopThread.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/eventLoop.o: home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.o
 
-.PHONY : home/wzm/project/network/cppServer/src/eventLoopThread.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoop.o
 
 # target to build an object file
-home/wzm/project/network/cppServer/src/eventLoopThread.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/eventLoopThread.cpp.o
-.PHONY : home/wzm/project/network/cppServer/src/eventLoopThread.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.o
 
-home/wzm/project/network/cppServer/src/eventLoopThread.i: home/wzm/project/network/cppServer/src/eventLoopThread.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/eventLoop.i: home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.i
 
-.PHONY : home/wzm/project/network/cppServer/src/eventLoopThread.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoop.i
 
 # target to preprocess a source file
-home/wzm/project/network/cppServer/src/eventLoopThread.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/eventLoopThread.cpp.i
-.PHONY : home/wzm/project/network/cppServer/src/eventLoopThread.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.i
 
-home/wzm/project/network/cppServer/src/eventLoopThread.s: home/wzm/project/network/cppServer/src/eventLoopThread.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/eventLoop.s: home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.s
 
-.PHONY : home/wzm/project/network/cppServer/src/eventLoopThread.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoop.s
 
 # target to generate assembly for a file
-home/wzm/project/network/cppServer/src/eventLoopThread.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/eventLoopThread.cpp.s
-.PHONY : home/wzm/project/network/cppServer/src/eventLoopThread.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.s
 
-home/wzm/project/network/cppServer/src/eventLoopThreadPool.o: home/wzm/project/network/cppServer/src/eventLoopThreadPool.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.o: home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.o
 
-.PHONY : home/wzm/project/network/cppServer/src/eventLoopThreadPool.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.o
 
 # target to build an object file
-home/wzm/project/network/cppServer/src/eventLoopThreadPool.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/eventLoopThreadPool.cpp.o
-.PHONY : home/wzm/project/network/cppServer/src/eventLoopThreadPool.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.o
 
-home/wzm/project/network/cppServer/src/eventLoopThreadPool.i: home/wzm/project/network/cppServer/src/eventLoopThreadPool.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.i: home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.i
 
-.PHONY : home/wzm/project/network/cppServer/src/eventLoopThreadPool.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.i
 
 # target to preprocess a source file
-home/wzm/project/network/cppServer/src/eventLoopThreadPool.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/eventLoopThreadPool.cpp.i
-.PHONY : home/wzm/project/network/cppServer/src/eventLoopThreadPool.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.i
 
-home/wzm/project/network/cppServer/src/eventLoopThreadPool.s: home/wzm/project/network/cppServer/src/eventLoopThreadPool.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.s: home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.s
 
-.PHONY : home/wzm/project/network/cppServer/src/eventLoopThreadPool.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.s
 
 # target to generate assembly for a file
-home/wzm/project/network/cppServer/src/eventLoopThreadPool.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/eventLoopThreadPool.cpp.s
-.PHONY : home/wzm/project/network/cppServer/src/eventLoopThreadPool.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.s
 
-home/wzm/project/network/cppServer/src/tcpConnection.o: home/wzm/project/network/cppServer/src/tcpConnection.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.o: home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.o
 
-.PHONY : home/wzm/project/network/cppServer/src/tcpConnection.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.o
 
 # target to build an object file
-home/wzm/project/network/cppServer/src/tcpConnection.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/tcpConnection.cpp.o
-.PHONY : home/wzm/project/network/cppServer/src/tcpConnection.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.o
 
-home/wzm/project/network/cppServer/src/tcpConnection.i: home/wzm/project/network/cppServer/src/tcpConnection.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.i: home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.i
 
-.PHONY : home/wzm/project/network/cppServer/src/tcpConnection.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.i
 
 # target to preprocess a source file
-home/wzm/project/network/cppServer/src/tcpConnection.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/tcpConnection.cpp.i
-.PHONY : home/wzm/project/network/cppServer/src/tcpConnection.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.i
 
-home/wzm/project/network/cppServer/src/tcpConnection.s: home/wzm/project/network/cppServer/src/tcpConnection.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.s: home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.s
 
-.PHONY : home/wzm/project/network/cppServer/src/tcpConnection.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.s
 
 # target to generate assembly for a file
-home/wzm/project/network/cppServer/src/tcpConnection.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/tcpConnection.cpp.s
-.PHONY : home/wzm/project/network/cppServer/src/tcpConnection.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.s
 
-home/wzm/project/network/cppServer/src/tcpServer.o: home/wzm/project/network/cppServer/src/tcpServer.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.o: home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.o
 
-.PHONY : home/wzm/project/network/cppServer/src/tcpServer.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.o
 
 # target to build an object file
-home/wzm/project/network/cppServer/src/tcpServer.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/tcpServer.cpp.o
-.PHONY : home/wzm/project/network/cppServer/src/tcpServer.cpp.o
+home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.o
 
-home/wzm/project/network/cppServer/src/tcpServer.i: home/wzm/project/network/cppServer/src/tcpServer.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.i: home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.i
 
-.PHONY : home/wzm/project/network/cppServer/src/tcpServer.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.i
 
 # target to preprocess a source file
-home/wzm/project/network/cppServer/src/tcpServer.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/tcpServer.cpp.i
-.PHONY : home/wzm/project/network/cppServer/src/tcpServer.cpp.i
+home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.i
 
-home/wzm/project/network/cppServer/src/tcpServer.s: home/wzm/project/network/cppServer/src/tcpServer.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.s: home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.s
 
-.PHONY : home/wzm/project/network/cppServer/src/tcpServer.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.s
 
 # target to generate assembly for a file
-home/wzm/project/network/cppServer/src/tcpServer.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/src/tcpServer.cpp.s
-.PHONY : home/wzm/project/network/cppServer/src/tcpServer.cpp.s
+home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.s
+
+home/wzm/project/network/cppServer/net/tcp/src/tcpServer.o: home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.o
+
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpServer.o
+
+# target to build an object file
+home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.o
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.o
+
+home/wzm/project/network/cppServer/net/tcp/src/tcpServer.i: home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.i
+
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpServer.i
+
+# target to preprocess a source file
+home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.i
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.i
+
+home/wzm/project/network/cppServer/net/tcp/src/tcpServer.s: home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.s
+
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpServer.s
+
+# target to generate assembly for a file
+home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.s
+.PHONY : home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.s
 
 tcp_server.o: tcp_server.cpp.o
 
@@ -405,33 +405,33 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... tcp_server"
 	@echo "... edit_cache"
-	@echo "... home/wzm/project/network/cppServer/src/acceptor.o"
-	@echo "... home/wzm/project/network/cppServer/src/acceptor.i"
-	@echo "... home/wzm/project/network/cppServer/src/acceptor.s"
-	@echo "... home/wzm/project/network/cppServer/src/buffer.o"
-	@echo "... home/wzm/project/network/cppServer/src/buffer.i"
-	@echo "... home/wzm/project/network/cppServer/src/buffer.s"
-	@echo "... home/wzm/project/network/cppServer/src/channel.o"
-	@echo "... home/wzm/project/network/cppServer/src/channel.i"
-	@echo "... home/wzm/project/network/cppServer/src/channel.s"
-	@echo "... home/wzm/project/network/cppServer/src/eventDispatcher.o"
-	@echo "... home/wzm/project/network/cppServer/src/eventDispatcher.i"
-	@echo "... home/wzm/project/network/cppServer/src/eventDispatcher.s"
-	@echo "... home/wzm/project/network/cppServer/src/eventLoop.o"
-	@echo "... home/wzm/project/network/cppServer/src/eventLoop.i"
-	@echo "... home/wzm/project/network/cppServer/src/eventLoop.s"
-	@echo "... home/wzm/project/network/cppServer/src/eventLoopThread.o"
-	@echo "... home/wzm/project/network/cppServer/src/eventLoopThread.i"
-	@echo "... home/wzm/project/network/cppServer/src/eventLoopThread.s"
-	@echo "... home/wzm/project/network/cppServer/src/eventLoopThreadPool.o"
-	@echo "... home/wzm/project/network/cppServer/src/eventLoopThreadPool.i"
-	@echo "... home/wzm/project/network/cppServer/src/eventLoopThreadPool.s"
-	@echo "... home/wzm/project/network/cppServer/src/tcpConnection.o"
-	@echo "... home/wzm/project/network/cppServer/src/tcpConnection.i"
-	@echo "... home/wzm/project/network/cppServer/src/tcpConnection.s"
-	@echo "... home/wzm/project/network/cppServer/src/tcpServer.o"
-	@echo "... home/wzm/project/network/cppServer/src/tcpServer.i"
-	@echo "... home/wzm/project/network/cppServer/src/tcpServer.s"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/acceptor.o"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/acceptor.i"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/acceptor.s"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/buffer.o"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/buffer.i"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/buffer.s"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/channel.o"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/channel.i"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/channel.s"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.o"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.i"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.s"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventLoop.o"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventLoop.i"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventLoop.s"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.o"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.i"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.s"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.o"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.i"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.s"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.o"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.i"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.s"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/tcpServer.o"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/tcpServer.i"
+	@echo "... home/wzm/project/network/cppServer/net/tcp/src/tcpServer.s"
 	@echo "... tcp_server.o"
 	@echo "... tcp_server.i"
 	@echo "... tcp_server.s"

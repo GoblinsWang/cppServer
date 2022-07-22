@@ -23,7 +23,7 @@ int tcpServer::handle_connection_established(void *data)
     //设为非阻塞套接字描述符
     fcntl(connected_fd, F_SETFL, O_NONBLOCK);
 
-    std::cout << "[debug] new connection established, socket == " << connected_fd << std::endl;
+    INFO("new connection established, socket == ", connected_fd);
 
     // choose event loop from thread pool
     auto event_loop = tcp_server->threadPool->thread_pool_get_loop();
@@ -41,10 +41,10 @@ int tcpServer::handle_connection_established(void *data)
 
 void tcpServer::start()
 {
-    //开启多个线程
+    // start thread pool
     this->threadPool->thread_pool_start();
 
-    // acceptor主线程， 同时把tcpServer作为参数传给channel对象
+    // set listener to main thread
     auto chan = std::make_shared<channel>(this->listener->listen_fd, EVENT_READ, handle_connection_established, nullptr, this);
 
     this->event_loop->add_channel_event(chan->fd, chan);

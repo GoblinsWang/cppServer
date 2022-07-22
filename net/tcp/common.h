@@ -24,4 +24,13 @@
 #include <memory>
 #include <map>
 #include <functional>
+
+#define ERROR(str) std::cout << "[error]" << str << std::endl
+
+#ifdef DEBUG
+#define INFO(str, x) std::cout << "[debug]" << str << x << std::endl
+#else
+#define INFO(str, x)
+#endif
+
 #endif

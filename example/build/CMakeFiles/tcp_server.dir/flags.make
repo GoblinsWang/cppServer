@@ -6,5 +6,5 @@ CXX_FLAGS =  -Wall -std=c++11 -g
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/wzm/project/network/cppServer/example/../include 
+CXX_INCLUDES = -I/home/wzm/project/network/cppServer/example/../net/tcp/include 
 

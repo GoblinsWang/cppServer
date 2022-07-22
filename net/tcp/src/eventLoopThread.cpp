@@ -25,7 +25,8 @@ std::shared_ptr<eventLoop> eventLoopThread::
         assert(pthread_cond_wait(&this->cond, &this->mutex) == 0);
     }
     assert(pthread_mutex_unlock(&this->mutex) == 0);
-    std::cout << "event loop thread started, " << this->thread_name << std::endl;
+
+    INFO("event loop thread started, ", this->thread_name);
     return this->eventloop;
 }
 
@@ -34,14 +35,14 @@ void *eventLoopThread::event_loop_thread_run(void *arg)
     auto eventloopthread = (eventLoopThread *)arg;
     pthread_mutex_lock(&eventloopthread->mutex);
 
-    // 初始化化event loop，之后通知主线程
+    // Initialize the event loop
     eventloopthread->eventloop = std::make_shared<eventLoop>(eventloopthread->thread_name);
-    std::cout << "event loop thread init and signal, " << eventloopthread->thread_name << std::endl;
+    INFO("event loop thread init and signal, ", eventloopthread->thread_name);
+    // notify the main thread
     pthread_cond_signal(&eventloopthread->cond);
-
     pthread_mutex_unlock(&eventloopthread->mutex);
 
-    //子线程event loop run
+    // start this eventloop
     eventloopthread->eventloop->run();
     return nullptr;
 }

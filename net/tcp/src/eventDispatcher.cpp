@@ -5,7 +5,6 @@
 eventDispatcher::eventDispatcher(eventLoop *eventloop)
 {
     this->thread_name = eventloop->thread_name;
-    std::cout << this->thread_name << std::endl;
 
     this->epoll_dispatcher_data = std::make_shared<epollDispatcherData>();
     // 构建epoll的监听红黑树
@@ -35,7 +34,8 @@ int eventDispatcher::epoll_update(std::shared_ptr<channel> chan)
 int eventDispatcher::epoll_dispatch(eventLoop *eventloop, struct timeval *timeval)
 {
     int n = epoll_wait(epoll_dispatcher_data->efd, epoll_dispatcher_data->events, 128, -1);
-    std::cout << "[debug] epoll_wait wakeup, " << this->thread_name << std::endl;
+    INFO("epoll_wait wakeup, ", this->thread_name);
+
     for (auto i = 0; i < n; i++)
     {
         int fd = epoll_dispatcher_data->events[i].data.fd;
@@ -48,13 +48,13 @@ int eventDispatcher::epoll_dispatch(eventLoop *eventloop, struct timeval *timeva
 
         if (epoll_dispatcher_data->events[i].events & EPOLLIN)
         {
-            std::cout << "[debug] read message from fd== " << fd << ", " << this->thread_name << std::endl;
+            INFO("read message from fd == ", this->thread_name);
             eventloop->channel_event_activate(fd, EVENT_READ);
         }
 
         if (epoll_dispatcher_data->events[i].events & EPOLLOUT)
         {
-            std::cout << "[debug] write message to fd== " << fd << ", " << this->thread_name << std::endl;
+            INFO("write message to fd == ", this->thread_name);
             eventloop->channel_event_activate(fd, EVENT_WRITE);
         }
     }
@@ -83,7 +83,7 @@ int eventDispatcher::handle_epoll_event(std::shared_ptr<channel> chan, int type)
         {
             perror("[error] epoll_ctl add  fd failed");
         }
-        std::cout << "[debug] epoll_ctl add sucess " << std::endl;
+        INFO("epoll_ctl add sucess", "");
     }
     else if (type == 2)
     {
@@ -91,7 +91,7 @@ int eventDispatcher::handle_epoll_event(std::shared_ptr<channel> chan, int type)
         {
             perror("[error] epoll_ctl delete fd failed");
         }
-        std::cout << "[debug] epoll_ctl delete sucess " << std::endl;
+        INFO("epoll_ctl delete sucess", "");
     }
     else if (type == 3)
     {
@@ -99,11 +99,11 @@ int eventDispatcher::handle_epoll_event(std::shared_ptr<channel> chan, int type)
         {
             perror("[error] epoll_ctl modify fd failed");
         }
-        std::cout << "[debug] epoll_ctl mod sucess " << std::endl;
+        INFO("epoll_ctl mod sucess", "");
     }
     else
     {
-        std::cout << "[error] error type!" << std::endl;
+        ERROR("error type!");
         return -1;
     }
     return 0;
