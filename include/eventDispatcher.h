@@ -18,27 +18,25 @@ class eventLoop;
 class eventDispatcher
 {
 public:
-    // 暂时支持epoll
-    std::string name = "epoll";
-    // dispatcher 所在的线程名称
-    std::string thread_name;
-    // 存储epollDispatcher相关的数据
-    std::shared_ptr<epollDispatcherData> epoll_dispatcher_data;
+    std::string name = "epoll"; // Epoll is temporarily supported
+
+    std::string thread_name; // Name of the thread where the dispatcher is located
+
+    std::shared_ptr<epollDispatcherData> epoll_dispatcher_data; // Store epolldispatcher related data
 
 public:
-    // 初始化epollDispatcherData
     eventDispatcher(eventLoop *eventloop);
 
-    int epoll_add(std::shared_ptr<channel> chan);
+    int epoll_add(std::shared_ptr<channel> chan); // Add event into epoll
 
-    int epoll_del(std::shared_ptr<channel> chan);
+    int epoll_del(std::shared_ptr<channel> chan); // delete event in epoll
 
-    int epoll_update(std::shared_ptr<channel> chan);
+    int epoll_update(std::shared_ptr<channel> chan); // update event into epoll
 
-    int epoll_dispatch(eventLoop *eventloop, struct timeval *timeval);
+    int epoll_dispatch(eventLoop *eventloop, struct timeval *timeval); // Event distribution
 
 private:
-    int handle_epoll_event(std::shared_ptr<channel> chan, int type);
+    int handle_epoll_event(std::shared_ptr<channel> chan, int type); // handle different events of dispatcher
 };
 
 #endif

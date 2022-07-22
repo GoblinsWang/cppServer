@@ -7,23 +7,20 @@ class eventLoopThread;
 class eventLoopThreadPool
 {
 public:
-    //创建thread_pool的主线程
     std::shared_ptr<eventLoop> mainloop;
-    //是否已经启动
-    int started = 0;
-    //线程数目
-    int thread_number;
-    //数组指针，指向创建的event_loop_thread数组
-    std::vector<std::shared_ptr<eventLoopThread>> eventloopthreads;
 
-    //表示在数组里的位置，用来决定选择哪个event_loop_thread服务
-    int position = 0;
+    int started = 0; // 0:no, 1:yes
+
+    int thread_number;
+
+    std::vector<std::shared_ptr<eventLoopThread>> eventloopthreads; // vector for storing threads
+
+    int position = 0; // Represents the position in vector, which is used to decide which event to choose_ loop_ Thread service
 
 public:
-    //初始化函数
     eventLoopThreadPool(std::shared_ptr<eventLoop> mainloop, int threadNumber);
-    //一定是main thread发起
-    void thread_pool_start();
+
+    void thread_pool_start(); // start threadpool, it must be launched by main thread
 
     std::shared_ptr<eventLoop> thread_pool_get_loop();
 };

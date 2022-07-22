@@ -15,11 +15,12 @@ public:
     std::shared_ptr<eventLoopThreadPool> threadPool;
     void *data; // for callback use: http_server
 public:
-    //初始化
     tcpServer(std::shared_ptr<eventLoop> event_loop, std::shared_ptr<acceptor> listener, int threadNum);
-    // 处理新连接的函数
+
+    // handle new connection
     static int handle_connection_established(void *data);
-    // 开启监听
+
+    // start this tcp_server
     void start();
 };
 

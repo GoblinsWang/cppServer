@@ -7,7 +7,7 @@ class channel;
 class channelElement
 {
 public:
-    int type; // 1:add, 2: del
+    int type; // 1:add, 2: del, 3:update
     std::shared_ptr<channel> chan;
 
 public:
@@ -17,13 +17,14 @@ class eventDispatcher;
 class eventLoop
 {
 public:
-    int quit;
+    int quit; // Marks the exit of the event cycle
+
     std::shared_ptr<eventDispatcher> dispatcher;
 
     std::map<int, std::shared_ptr<channel>> channlMap;
 
-    //挂起队列
-    int is_handle_pending;
+    int is_handle_pending; // Identifies whether the pending queue is being processed
+
     std::queue<std::shared_ptr<channelElement>> pending_queue;
 
     pthread_t owner_thread_id;
@@ -33,16 +34,15 @@ public:
     std::string thread_name;
 
 public:
-    // eventLoop的初始化
-    eventLoop(std::string thread_name);
-    // 进入循环执行的状态
-    int run();
-    // 处理挂起队列的channel
-    int handle_pending_channel();
-    // 用于唤醒从线程
-    void wakeup();
+    eventLoop(std::string thread_name); // Initialize the loop by thread name
 
-    static int handleWakeup(void *data);
+    int run(); // enter the event loop
+
+    int handle_pending_channel(); // handle channelElement in pending_queue
+
+    void wakeup(); // Used to wake up the slave thread
+
+    static int handleWakeup(void *data); // handle the Wakeup event
 
     void channel_buffer_nolock(int fd, std::shared_ptr<channel> chan, int type);
 
@@ -59,8 +59,8 @@ public:
     int handle_pending_remove(int fd, std::shared_ptr<channel> chan);
 
     int handle_pending_update(int fd, std::shared_ptr<channel> chan);
-    // 激活channel对应的事件
-    int channel_event_activate(int fd, int revents);
+
+    int channel_event_activate(int fd, int revents); // Activate the event corresponding to the channel
 };
 
 #endif

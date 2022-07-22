@@ -15,7 +15,7 @@ eventLoop::eventLoop(std::string thread_name)
     this->owner_thread_id = pthread_self();
     this->is_handle_pending = 0;
 
-    // 为从线程创建一对全双工套接字，每个套接字可读可写
+    // Create a pair of full duplex sockets for the slave thread, and each socket is readable and writable
     if (this->thread_name != "main thread")
     {
         if (socketpair(AF_UNIX, SOCK_STREAM, 0, this->socketPair) < 0)
@@ -31,14 +31,15 @@ eventLoop::eventLoop(std::string thread_name)
 
 int eventLoop::run()
 {
-    // 判断是否在自己线程里面
+    // Determine whether it is in your own thread
     if (this->owner_thread_id != pthread_self())
     {
         exit(1);
     }
 
     std::cout << "[debug] event loop run, " << this->thread_name << std::endl;
-    //超时时间设置
+
+    // Timeout setting
     struct timeval timeval;
     timeval.tv_sec = 1;
 
@@ -87,9 +88,9 @@ int eventLoop::handle_pending_channel()
 
     while (pending_queue.size() > 0)
     {
-        // 获取队列最前面的
+        // Get the top chanElment of the queue
         auto chanElement = pending_queue.front();
-        // save into eventMap
+
         auto chan = chanElement->chan;
         int fd = chan->fd;
         if (chanElement->type == 1)
@@ -127,13 +128,16 @@ int eventLoop::do_channel_event(int fd, std::shared_ptr<channel> chan, int type)
     pthread_mutex_lock(&this->mutex);
     assert(this->is_handle_pending == 0);
 
+    // add channel event in pending_queue
     this->channel_buffer_nolock(fd, chan, type);
+
     // release the lock
     pthread_mutex_unlock(&this->mutex);
 
     if (this->owner_thread_id != pthread_self())
     {
-        this->wakeup(); //通过写唤醒对应的从线程
+        // Wake up the corresponding slave thread by writing
+        this->wakeup();
     }
     else
     {
@@ -163,7 +167,7 @@ int eventLoop::handle_pending_add(int fd, std::shared_ptr<channel> chan)
     if (fd < 0)
         return 0;
 
-    // 判断是不是第一次创建
+    // Judge whether it is the first time to create
     auto pos = this->channlMap.find(fd);
     if (pos == this->channlMap.end())
     {

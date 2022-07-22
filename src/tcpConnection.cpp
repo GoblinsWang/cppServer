@@ -17,13 +17,13 @@ tcpConnection::tcpConnection(int connected_fd, std::shared_ptr<eventLoop> eventl
     this->eventloop->add_channel_event(connected_fd, this->chan);
 }
 
-// 连接建立之后的callback
+// callback for connection complete
 int tcpConnection::onConnectionCompleted()
 {
     std::cout << "[debug] connection completed" << std::endl;
     return 0;
 }
-// 数据读到buffer之后的callback
+// callback for processing recv_data
 int tcpConnection::onMessage(struct buffer *input)
 {
     std::cout << "[debug] get message from tcp connection " << this->name << std::endl;
@@ -47,20 +47,23 @@ int tcpConnection::onMessage(struct buffer *input)
     delete[] send_msg;
     send_msg = nullptr;
 #endif
-    //将回复消息发还给客户端
+    // Send the reply message back to the client
     this->send_buffer(output);
     return 0;
 }
-//数据通过buffer写完之后的callback
+
+// callback for Write complete
 int tcpConnection::onWriteCompleted()
 {
     std::cout << "[debug] write completed" << std::endl;
     return 0;
 }
-// 连接关闭之后的callback
+
+// callback for closed connection
 int tcpConnection::onConnectionClosed()
 {
     std::cout << "[debug] connection closed" << std::endl;
+    delete this; // Pay attention to releasing resources when the connection is closed
     return 0;
 }
 
@@ -78,7 +81,7 @@ int tcpConnection::send_data(void *data, int size)
     size_t nleft = size;
     int fault = 0;
 
-    // 先往套接字尝试发送数据
+    // Try to send data to the socket first
     if (!this->chan->channel_write_event_is_enabled(this->chan) && buffer_readable_size(this->output_buffer) == 0)
     {
         nwrited = write(chan->fd, data, size);
@@ -98,9 +101,10 @@ int tcpConnection::send_data(void *data, int size)
             }
         }
     }
+    // If there is any remaining data not sent, add a write event
     if (!fault && nleft > 0)
     {
-        //拷贝到Buffer中，Buffer的数据由框架接管
+        // Copy to the buffer, and the buffer data is taken over by the framework
         buffer_append(this->output_buffer, data + nwrited, nleft);
         if (!this->chan->channel_write_event_is_enabled(this->chan))
         {
@@ -131,7 +135,7 @@ int tcpConnection::handle_read(void *data)
     std::cout << "[debug] connection name: " << tcp_connection->name << std::endl;
     if (buffer_socket_read(input_buffer, chan->fd) > 0)
     {
-        //应用程序真正读取buffer里的数据
+        // reads the data in the buffer, and you can process data in this callback function.
         tcp_connection->onMessage(input_buffer);
     }
     else
@@ -142,8 +146,7 @@ int tcpConnection::handle_read(void *data)
     return 0;
 }
 
-/** 发送缓冲区开往外写
-    把channel对应的output_buffer不断往外发送 */
+// Write out the data in the sending buffer
 int tcpConnection::handle_write(void *data)
 {
     tcpConnection *tcp_connection = (tcpConnection *)data;
@@ -162,20 +165,17 @@ int tcpConnection::handle_write(void *data)
                             buffer_readable_size(output_buffer));
     if (nwrited > 0)
     {
-        // 已读nwrited字节
+        // nwrited bytes had read
         output_buffer->readIndex += nwrited;
-        // 如果数据完全发送出去，就不需要继续
+
+        // If the data is completely sent out, there is no need to continue
         if (buffer_readable_size(output_buffer) == 0)
         {
             chan->channel_write_event_disable(chan);
         }
 
-        //回调writeCompletedCallBack
+        // Call callback function
         tcp_connection->onWriteCompleted();
-    }
-    else
-    {
-        std::cout << "handle_write for tcp connection, " << tcp_connection->name << std::endl;
     }
     return 0;
 }

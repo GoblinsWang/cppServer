@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../../include/acceptor.h
-common.h
-../../include/common.h
-
 ../../include/buffer.h
 common.h
 ../../include/common.h
@@ -68,10 +64,6 @@ functional
 common.h
 ../../include/common.h
 
-../../include/eventLoopThreadPool.h
-common.h
-../../include/common.h
-
 ../../include/tcpConnection.h
 eventLoop.h
 ../../include/eventLoop.h
@@ -80,19 +72,7 @@ channel.h
 buffer.h
 ../../include/buffer.h
 
-../../include/tcpServer.h
-common.h
-../../include/common.h
-eventLoop.h
-../../include/eventLoop.h
-eventLoopThreadPool.h
-../../include/eventLoopThreadPool.h
-acceptor.h
-../../include/acceptor.h
-
-/home/wzm/project/network/cppServer/src/tcpServer.cpp
-tcpServer.h
-/home/wzm/project/network/cppServer/src/tcpServer.h
+/home/wzm/project/network/cppServer/src/tcpConnection.cpp
 tcpConnection.h
 /home/wzm/project/network/cppServer/src/tcpConnection.h
 

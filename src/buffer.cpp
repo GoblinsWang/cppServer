@@ -42,7 +42,7 @@ void make_room(struct buffer *buffer, int size)
     {
         return;
     }
-    //如果front_spare和writeable的大小加起来可以容纳数据，则把可读数据往前面拷贝
+    // If the combined size of front_spare and writeable can accommodate the data, the readable data is copied to the front
     if (buffer_front_spare_size(buffer) + buffer_writeable_size(buffer) >= size)
     {
         int readable = buffer_readable_size(buffer);
@@ -56,7 +56,7 @@ void make_room(struct buffer *buffer, int size)
     }
     else
     {
-        //扩大缓冲区
+        // Expand buffer
         void *tmp = realloc(buffer->data, buffer->total_size + size);
         if (tmp == NULL)
         {
@@ -72,7 +72,7 @@ int buffer_append(struct buffer *buffer, void *data, int size)
     if (data != NULL)
     {
         make_room(buffer, size);
-        //拷贝数据到可写空间中
+        // Copy data to writable space
         memcpy(buffer->data + buffer->writeIndex, data, size);
         buffer->writeIndex += size;
     }
@@ -82,7 +82,7 @@ int buffer_append(struct buffer *buffer, void *data, int size)
 int buffer_append_char(struct buffer *buffer, char data)
 {
     make_room(buffer, 1);
-    //拷贝数据到可写空间中
+    // Copy data to writable space
     buffer->data[buffer->writeIndex++] = data;
     return 0;
 }
@@ -107,7 +107,7 @@ int buffer_socket_read(struct buffer *buffer, int fd)
     vec[1].iov_base = additional_buffer;
     vec[1].iov_len = sizeof(additional_buffer);
 
-    // TODO:这里的vec可能不够，我觉得，如果消息很大的话，需要改善
+    // TODO:The VEC here may not be enough. I think if the news is big, it needs to be improved
     int result = readv(fd, vec, 2);
     if (result < 0)
     {
@@ -122,7 +122,6 @@ int buffer_socket_read(struct buffer *buffer, int fd)
         buffer->writeIndex = buffer->total_size;
         buffer_append(buffer, additional_buffer, result - max_writable);
     }
-    // std::cout << "buffer read nums: " << result << std::endl;
     return result;
 }
 
