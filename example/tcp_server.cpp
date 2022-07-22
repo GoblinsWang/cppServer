@@ -6,19 +6,20 @@
 int main(int argc, char **argv)
 {
     std::cout << "This is a TCP-server Test!" << std::endl;
-    //  主线程 event_loop
+
+    // initialize event_loop for main thread
     auto event_loop = std::make_shared<eventLoop>("");
 
-    //初始化 acceptor, 需要端口号
+    // initialize listenner with port
     auto listener = std::make_shared<acceptor>(12345);
 
-    //初始化 tcp_server, 可以指定线程数目，这里线程是4，说明是一个acceptor线程，4个I/O线程
-    // tcp_server自己带一个event_loop
-    auto tcp_server = std::make_shared<tcpServer>(event_loop, listener, 4);
+    // initialize tcp_server, and set the num of threads in thread pool to handle connected fd.
+    auto tcp_server = std::make_shared<tcpServer>(event_loop, listener, 0);
 
+    // start thread pool and let eventloops run
     tcp_server->start();
 
-    // main thread for acceptor
+    // run event_loop for main thread
     event_loop->run();
 
     return 0;

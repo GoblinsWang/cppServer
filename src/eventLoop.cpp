@@ -20,7 +20,7 @@ eventLoop::eventLoop(std::string thread_name)
     {
         if (socketpair(AF_UNIX, SOCK_STREAM, 0, this->socketPair) < 0)
         {
-            perror("socketpair set failed");
+            perror("[error] socketpair set failed");
         }
 
         auto chan = std::make_shared<channel>(this->socketPair[1], EVENT_READ, handleWakeup, nullptr, this);
@@ -37,7 +37,7 @@ int eventLoop::run()
         exit(1);
     }
 
-    std::cout << "event loop run, " << this->thread_name << std::endl;
+    std::cout << "[debug] event loop run, " << this->thread_name << std::endl;
     //超时时间设置
     struct timeval timeval;
     timeval.tv_sec = 1;
@@ -51,7 +51,7 @@ int eventLoop::run()
         this->handle_pending_channel();
     }
 
-    std::cout << "event loop end, " << this->thread_name << std::endl;
+    std::cout << "[debug] event loop end, " << this->thread_name << std::endl;
 
     return 0;
 }
@@ -63,9 +63,9 @@ int eventLoop::handleWakeup(void *data)
     ssize_t n = read(event_loop->socketPair[1], &one, sizeof one);
     if (n != sizeof one)
     {
-        std::cout << "handleWakeup  failed" << std::endl;
+        std::cout << "[srror] handleWakeup  failed" << std::endl;
     }
-    std::cout << "wakeup, " << event_loop->thread_name << std::endl;
+    std::cout << "[debug] wakeup, " << event_loop->thread_name << std::endl;
     return 0;
 }
 
@@ -75,7 +75,7 @@ void eventLoop::wakeup()
     ssize_t n = write(this->socketPair[0], &one, sizeof one);
     if (n != sizeof(one))
     {
-        std::cout << "wakeup event loop thread failed" << std::endl;
+        std::cout << "[error] wakeup event loop thread failed" << std::endl;
     }
 }
 
@@ -106,7 +106,6 @@ int eventLoop::handle_pending_channel()
         }
         pending_queue.pop();
     }
-    // std::cout << " pending_list is empty" << std::endl;
     this->is_handle_pending = 0;
     // release the lock
     pthread_mutex_unlock(&this->mutex);
@@ -119,7 +118,6 @@ void eventLoop::channel_buffer_nolock(int fd, std::shared_ptr<channel> chan, int
     // add channel into the pending list
     auto chanElement = std::make_shared<channelElement>(type, chan);
 
-    // std::cout << "add channel into the pending list" << std::endl;
     this->pending_queue.push(chanElement);
 }
 
@@ -160,7 +158,7 @@ int eventLoop::update_channel_event(int fd, std::shared_ptr<channel> chan)
 
 int eventLoop::handle_pending_add(int fd, std::shared_ptr<channel> chan)
 {
-    std::cout << "add channel fd == " << fd << ", " << this->thread_name << std::endl;
+    std::cout << "[debug] add channel fd == " << fd << ", " << this->thread_name << std::endl;
 
     if (fd < 0)
         return 0;
@@ -180,14 +178,17 @@ int eventLoop::handle_pending_add(int fd, std::shared_ptr<channel> chan)
 int eventLoop::handle_pending_remove(int fd, std::shared_ptr<channel> chan)
 {
     assert(fd == chan->fd);
-    std::cout << "remove channel fd == " << fd << ", " << this->thread_name << std::endl;
+    std::cout << "[debug] remove channel fd == " << fd << ", " << this->thread_name << std::endl;
 
     if (fd < 0)
         return 0;
 
     auto pos = this->channlMap.find(fd);
     if (pos == this->channlMap.end())
+    {
+        std::cout << "[error] fd not in channelMap" << std::endl;
         return (-1);
+    }
 
     auto chan2 = pos->second;
 
@@ -195,6 +196,7 @@ int eventLoop::handle_pending_remove(int fd, std::shared_ptr<channel> chan)
     int retval = 0;
     if (this->dispatcher->epoll_del(chan2) == -1)
     {
+        std::cout << "[error] epoll_del failed" << std::endl;
         retval = -1;
     }
     else
@@ -207,7 +209,7 @@ int eventLoop::handle_pending_remove(int fd, std::shared_ptr<channel> chan)
 
 int eventLoop::handle_pending_update(int fd, std::shared_ptr<channel> chan)
 {
-    std::cout << "update channel fd == " << fd << ", " << this->thread_name << std::endl;
+    std::cout << "[debug] update channel fd == " << fd << ", " << this->thread_name << std::endl;
 
     if (fd < 0)
         return 0;
@@ -222,25 +224,27 @@ int eventLoop::handle_pending_update(int fd, std::shared_ptr<channel> chan)
 
 int eventLoop::channel_event_activate(int fd, int revents)
 {
-    std::cout << "activate channel fd == " << fd << ", revents= " << revents << ", " << this->thread_name << std::endl;
-
-    if (fd < 0)
-        return 0;
+    std::cout << "[debug] activate channel fd == " << fd << ", revents= " << revents << ", " << this->thread_name << std::endl;
 
     auto pos = this->channlMap.find(fd);
     if (pos == this->channlMap.end())
+    {
+        std::cout << "[error] fd not in channlMap" << std::endl;
         return (-1);
+    }
 
     auto chan = pos->second;
     assert(fd == chan->fd);
 
     if (revents & (EVENT_READ))
     {
+        std::cout << "[debug] revents is EVENT_READ" << std::endl;
         if (chan->eventReadCallback)
             chan->eventReadCallback(chan->data);
     }
     if (revents & (EVENT_WRITE))
     {
+        std::cout << "[debug] revents is EVENT_WRITE" << std::endl;
         if (chan->eventWriteCallback)
             chan->eventWriteCallback(chan->data);
     }

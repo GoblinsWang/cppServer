@@ -35,7 +35,7 @@ int eventDispatcher::epoll_update(std::shared_ptr<channel> chan)
 int eventDispatcher::epoll_dispatch(eventLoop *eventloop, struct timeval *timeval)
 {
     int n = epoll_wait(epoll_dispatcher_data->efd, epoll_dispatcher_data->events, 128, -1);
-    std::cout << "epoll_wait wakeup, " << this->thread_name << std::endl;
+    std::cout << "[debug] epoll_wait wakeup, " << this->thread_name << std::endl;
     for (auto i = 0; i < n; i++)
     {
         int fd = epoll_dispatcher_data->events[i].data.fd;
@@ -48,13 +48,13 @@ int eventDispatcher::epoll_dispatch(eventLoop *eventloop, struct timeval *timeva
 
         if (epoll_dispatcher_data->events[i].events & EPOLLIN)
         {
-            std::cout << "read message from fd== " << fd << ", " << this->thread_name << std::endl;
+            std::cout << "[debug] read message from fd== " << fd << ", " << this->thread_name << std::endl;
             eventloop->channel_event_activate(fd, EVENT_READ);
         }
 
         if (epoll_dispatcher_data->events[i].events & EPOLLOUT)
         {
-            std::cout << "write message to fd== " << fd << ", " << this->thread_name << std::endl;
+            std::cout << "[debug] write message to fd== " << fd << ", " << this->thread_name << std::endl;
             eventloop->channel_event_activate(fd, EVENT_WRITE);
         }
     }
@@ -81,26 +81,29 @@ int eventDispatcher::handle_epoll_event(std::shared_ptr<channel> chan, int type)
     {
         if (epoll_ctl(this->epoll_dispatcher_data->efd, EPOLL_CTL_ADD, fd, &event) == -1)
         {
-            perror("epoll_ctl add  fd failed");
+            perror("[error] epoll_ctl add  fd failed");
         }
+        std::cout << "[debug] epoll_ctl add sucess " << std::endl;
     }
     else if (type == 2)
     {
         if (epoll_ctl(epoll_dispatcher_data->efd, EPOLL_CTL_DEL, fd, &event) == -1)
         {
-            perror("epoll_ctl delete fd failed");
+            perror("[error] epoll_ctl delete fd failed");
         }
+        std::cout << "[debug] epoll_ctl delete sucess " << std::endl;
     }
     else if (type == 3)
     {
         if (epoll_ctl(epoll_dispatcher_data->efd, EPOLL_CTL_MOD, fd, &event) == -1)
         {
-            perror("epoll_ctl modify fd failed");
+            perror("[error] epoll_ctl modify fd failed");
         }
+        std::cout << "[debug] epoll_ctl mod sucess " << std::endl;
     }
     else
     {
-        std::cout << "error type!" << std::endl;
+        std::cout << "[error] error type!" << std::endl;
         return -1;
     }
     return 0;

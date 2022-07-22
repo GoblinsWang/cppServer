@@ -15,15 +15,16 @@ void eventLoopThreadPool::thread_pool_start()
     // assertInSameThread
     if (this->mainloop->owner_thread_id != pthread_self())
     {
-        std::cout << "not in the same thread" << std::endl;
+        std::cout << "[debug] not in the same thread" << std::endl;
         exit(-1);
     }
-    // 开启线程池
+    // set to start thread pool
     this->started = 1;
 
     //设置为0，为单线程，直接返回
     if (this->thread_number <= 0)
     {
+        std::cout << "[debug] it's a single thread reactor" << std::endl;
         return;
     }
 
@@ -42,7 +43,7 @@ eventLoopThreadPool::thread_pool_get_loop()
     // assertInSameThread
     if (this->mainloop->owner_thread_id != pthread_self())
     {
-        std::cout << "not in the same thread" << std::endl;
+        std::cout << "[debug] not in the same thread" << std::endl;
         exit(-1);
     }
 

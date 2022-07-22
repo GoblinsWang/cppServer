@@ -20,18 +20,18 @@ tcpConnection::tcpConnection(int connected_fd, std::shared_ptr<eventLoop> eventl
 // 连接建立之后的callback
 int tcpConnection::onConnectionCompleted()
 {
-    std::cout << "connection completed" << std::endl;
+    std::cout << "[debug] connection completed" << std::endl;
     return 0;
 }
 // 数据读到buffer之后的callback
 int tcpConnection::onMessage(struct buffer *input)
 {
-    std::cout << "get message from tcp connection " << this->name << std::endl;
+    std::cout << "[debug] get message from tcp connection " << this->name << std::endl;
     // TODO:针对char*数据进行数据处理，完成对应的操作，再将对应数据发还给客户端
 #if 1
     std::string recv_data;
     int _ = buffer_read_all(input, recv_data);
-    std::cout << "recv_data: " << recv_data << std::endl;
+    std::cout << "[debug] recv_data: " << recv_data << std::endl;
     std::string response = "you are sucessful\n";
 
     // processContext(recv_data, response, tcpConnection->channel->fd);
@@ -54,13 +54,13 @@ int tcpConnection::onMessage(struct buffer *input)
 //数据通过buffer写完之后的callback
 int tcpConnection::onWriteCompleted()
 {
-    std::cout << "write completed" << std::endl;
+    std::cout << "[debug] write completed" << std::endl;
     return 0;
 }
 // 连接关闭之后的callback
 int tcpConnection::onConnectionClosed()
 {
-    std::cout << "connection closed" << std::endl;
+    std::cout << "[debug] connection closed" << std::endl;
     return 0;
 }
 
@@ -101,7 +101,7 @@ int tcpConnection::send_data(void *data, int size)
     if (!fault && nleft > 0)
     {
         //拷贝到Buffer中，Buffer的数据由框架接管
-        buffer_append(output_buffer, data + nwrited, nleft);
+        buffer_append(this->output_buffer, data + nwrited, nleft);
         if (!this->chan->channel_write_event_is_enabled(this->chan))
         {
             this->chan->channel_write_event_enable(this->chan);
@@ -127,6 +127,8 @@ int tcpConnection::handle_read(void *data)
     struct buffer *input_buffer = tcp_connection->input_buffer;
     auto chan = tcp_connection->chan;
 
+    std::cout << "[debug] handle read for fd = " << chan->fd << std::endl;
+    std::cout << "[debug] connection name: " << tcp_connection->name << std::endl;
     if (buffer_socket_read(input_buffer, chan->fd) > 0)
     {
         //应用程序真正读取buffer里的数据
@@ -134,6 +136,7 @@ int tcpConnection::handle_read(void *data)
     }
     else
     {
+        std::cout << "[debug] buffer_socket_read <= 0" << std::endl;
         handle_connection_closed(tcp_connection);
     }
     return 0;
@@ -148,7 +151,7 @@ int tcpConnection::handle_write(void *data)
     // assertInSameThread(eventLoop);
     if (eventloop->owner_thread_id != pthread_self())
     {
-        std::cout << "not in the same thread" << std::endl;
+        std::cout << "[error] not in the same thread" << std::endl;
         exit(-1);
     }
 

@@ -18,7 +18,6 @@ public:
     struct http_request *request; // for callback use
     void *response;               // for callback use
 public:
-    tcpConnection(){};
     tcpConnection(int connected_fd, std::shared_ptr<eventLoop> eventloop);
     // 连接建立之后的callback
     int onConnectionCompleted();

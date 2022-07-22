@@ -23,13 +23,13 @@ int tcpServer::handle_connection_established(void *data)
     //设为非阻塞套接字描述符
     fcntl(connected_fd, F_SETFL, O_NONBLOCK);
 
-    std::cout << "new connection established, socket == " << connected_fd << std::endl;
+    std::cout << "[debug] new connection established, socket == " << connected_fd << std::endl;
 
     // choose event loop from thread pool
     auto event_loop = tcp_server->threadPool->thread_pool_get_loop();
 
     // create a new tcp connection
-    auto tcp_connection = std::make_shared<tcpConnection>(connected_fd, event_loop);
+    tcpConnection *tcp_connection = new tcpConnection(connected_fd, event_loop);
 
     // for callback use
     if (tcp_server->data != NULL)

@@ -1,5 +1,5 @@
-#ifndef network_common_hpp
-#define network_common_hpp
+#ifndef network_common_h
+#define network_common_h
 
 #include <stdio.h>
 #include <stdlib.h>

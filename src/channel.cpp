@@ -25,6 +25,5 @@ int channel::channel_write_event_disable(std::shared_ptr<channel> chan)
     auto tcp_connection = (tcpConnection *)chan->data;
     chan->events = chan->events | ~EVENT_WRITE;
     tcp_connection->eventloop->update_channel_event(chan->fd, chan);
-    tcp_connection->eventloop->update_channel_event(chan->fd, chan);
     return 0;
 }
