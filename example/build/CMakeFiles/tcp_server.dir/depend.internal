@@ -5,13 +5,10 @@ CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/accepto
  /home/wzm/project/network/cppServer/net/tcp/acceptor.h
  /home/wzm/project/network/cppServer/net/tcp/common.h
  /home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp
-CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o
- /home/wzm/project/network/cppServer/net/tcp/buffer.h
- /home/wzm/project/network/cppServer/net/tcp/common.h
- /home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.o
  /home/wzm/project/network/cppServer/net/tcp/channel.h
  /home/wzm/project/network/cppServer/net/tcp/common.h
+ /home/wzm/project/network/cppServer/net/tcp/eventDispatcher.h
  /home/wzm/project/network/cppServer/net/tcp/eventLoop.h
  /home/wzm/project/network/cppServer/net/tcp/src/channel.cpp
  /home/wzm/project/network/cppServer/net/tcp/tcpBuffer.h
@@ -29,12 +26,16 @@ CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLo
  /home/wzm/project/network/cppServer/net/tcp/eventLoop.h
  /home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.o
+ /home/wzm/project/network/cppServer/net/tcp/channel.h
  /home/wzm/project/network/cppServer/net/tcp/common.h
+ /home/wzm/project/network/cppServer/net/tcp/eventDispatcher.h
  /home/wzm/project/network/cppServer/net/tcp/eventLoop.h
  /home/wzm/project/network/cppServer/net/tcp/eventLoopThread.h
  /home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.o
+ /home/wzm/project/network/cppServer/net/tcp/channel.h
  /home/wzm/project/network/cppServer/net/tcp/common.h
+ /home/wzm/project/network/cppServer/net/tcp/eventDispatcher.h
  /home/wzm/project/network/cppServer/net/tcp/eventLoop.h
  /home/wzm/project/network/cppServer/net/tcp/eventLoopThread.h
  /home/wzm/project/network/cppServer/net/tcp/eventLoopThreadPool.h
@@ -46,6 +47,7 @@ CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpBuff
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.o
  /home/wzm/project/network/cppServer/net/tcp/channel.h
  /home/wzm/project/network/cppServer/net/tcp/common.h
+ /home/wzm/project/network/cppServer/net/tcp/eventDispatcher.h
  /home/wzm/project/network/cppServer/net/tcp/eventLoop.h
  /home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp
  /home/wzm/project/network/cppServer/net/tcp/tcpBuffer.h
@@ -54,7 +56,9 @@ CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpServ
  /home/wzm/project/network/cppServer/net/tcp/acceptor.h
  /home/wzm/project/network/cppServer/net/tcp/channel.h
  /home/wzm/project/network/cppServer/net/tcp/common.h
+ /home/wzm/project/network/cppServer/net/tcp/eventDispatcher.h
  /home/wzm/project/network/cppServer/net/tcp/eventLoop.h
+ /home/wzm/project/network/cppServer/net/tcp/eventLoopThread.h
  /home/wzm/project/network/cppServer/net/tcp/eventLoopThreadPool.h
  /home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp
  /home/wzm/project/network/cppServer/net/tcp/tcpBuffer.h
@@ -62,8 +66,11 @@ CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpServ
  /home/wzm/project/network/cppServer/net/tcp/tcpServer.h
 CMakeFiles/tcp_server.dir/tcp_server.cpp.o
  ../../net/tcp/acceptor.h
+ ../../net/tcp/channel.h
  ../../net/tcp/common.h
+ ../../net/tcp/eventDispatcher.h
  ../../net/tcp/eventLoop.h
+ ../../net/tcp/eventLoopThread.h
  ../../net/tcp/eventLoopThreadPool.h
  ../../net/tcp/tcpServer.h
  /home/wzm/project/network/cppServer/example/tcp_server.cpp

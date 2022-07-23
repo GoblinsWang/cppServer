@@ -10,19 +10,7 @@ namespace cppServer
     class tcpConnection
     {
     public:
-        std::shared_ptr<eventLoop> eventloop;
-        std::shared_ptr<channel> chan;
-        std::string name;
-        // struct buffer *input_buffer;  //接受缓冲区
-        // struct buffer *output_buffer; //发送缓冲区
-        tcpBuffer::ptr m_read_buffer;
-        tcpBuffer::ptr m_write_buffer;
-
-        void *data;                   // for callback use: http_server
-        struct http_request *request; // for callback use
-        void *response;               // for callback use
-    public:
-        tcpConnection(int connected_fd, std::shared_ptr<eventLoop> eventloop);
+        tcpConnection(int connected_fd, eventLoop::ptr eventloop);
         // 连接建立之后的callback
         int onConnectionCompleted();
         // 数据读到buffer之后的callback
@@ -43,6 +31,18 @@ namespace cppServer
         static int handle_connection_closed(tcpConnection *tcp_connection);
 
         void tcp_connection_shutdown();
+
+    public:
+        eventLoop::ptr eventloop;
+        channel::ptr chan;
+        std::string name;
+        // buffer for read and write
+        tcpBuffer::ptr m_read_buffer;
+        tcpBuffer::ptr m_write_buffer;
+
+        void *data;                   // for callback use: http_server
+        struct http_request *request; // for callback use
+        void *response;               // for callback use
     };
 }
 #endif

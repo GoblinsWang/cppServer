@@ -24,20 +24,22 @@ namespace cppServer
     class channel
     {
     public:
+        using ptr = std::shared_ptr<channel>;
+        // 构造函数
+        channel(int fd, int events, event_read_callback eventReadCallback, event_write_callback eventWriteCallback, void *data);
+        // 判断是否可写
+        static int channel_write_event_is_enabled(ptr chan);
+        // 使可写
+        static int channel_write_event_enable(ptr chan);
+        // 使不可写
+        static int channel_write_event_disable(ptr chan);
+
+    public:
         int fd;
         int events; // the type of event
         event_read_callback eventReadCallback;
         event_write_callback eventWriteCallback;
         void *data; // callback data, 可能是event_loop，也可能是tcp_server或者tcp_connection
-    public:
-        // 构造函数
-        channel(int fd, int events, event_read_callback eventReadCallback, event_write_callback eventWriteCallback, void *data);
-        // 判断是否可写
-        static int channel_write_event_is_enabled(std::shared_ptr<channel> chan);
-        // 使可写
-        static int channel_write_event_enable(std::shared_ptr<channel> chan);
-        // 使不可写
-        static int channel_write_event_disable(std::shared_ptr<channel> chan);
     };
 }
 #endif

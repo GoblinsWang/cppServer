@@ -1,4 +1,3 @@
-#include "../eventLoop.h"
 #include "../eventLoopThread.h"
 
 namespace cppServer
@@ -15,7 +14,7 @@ namespace cppServer
         this->thread_name = "Thread-" + std::to_string(num);
     }
 
-    std::shared_ptr<eventLoop> eventLoopThread::
+    void eventLoopThread::
         thread_start()
     {
         pthread_create(&this->thread_tid, NULL, &event_loop_thread_run, this);
@@ -29,7 +28,6 @@ namespace cppServer
         assert(pthread_mutex_unlock(&this->mutex) == 0);
 
         INFO("event loop thread started, ", this->thread_name);
-        return this->eventloop;
     }
 
     void *eventLoopThread::event_loop_thread_run(void *arg)

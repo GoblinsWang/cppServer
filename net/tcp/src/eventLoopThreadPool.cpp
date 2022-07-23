@@ -1,10 +1,8 @@
 #include "../eventLoopThreadPool.h"
-#include "../eventLoop.h"
-#include "../eventLoopThread.h"
 
 namespace cppServer
 {
-    eventLoopThreadPool::eventLoopThreadPool(std::shared_ptr<eventLoop> mainloop, int threadNumber)
+    eventLoopThreadPool::eventLoopThreadPool(eventLoop::ptr mainloop, int threadNumber)
     {
         this->mainloop = mainloop;
 
@@ -37,7 +35,7 @@ namespace cppServer
         }
     }
 
-    std::shared_ptr<eventLoop>
+    eventLoop::ptr
     eventLoopThreadPool::thread_pool_get_loop()
     {
         assert(this->started);
@@ -48,7 +46,7 @@ namespace cppServer
         }
 
         // Choose the current main thread first
-        std::shared_ptr<eventLoop> selected = this->mainloop;
+        eventLoop::ptr selected = this->mainloop;
 
         // Select a thread from the thread pool in order
         if (this->thread_number > 0)

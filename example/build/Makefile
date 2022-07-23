@@ -153,33 +153,6 @@ home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.s
 .PHONY : home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.s
 
-home/wzm/project/network/cppServer/net/tcp/src/buffer.o: home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o
-
-.PHONY : home/wzm/project/network/cppServer/net/tcp/src/buffer.o
-
-# target to build an object file
-home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o
-.PHONY : home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o
-
-home/wzm/project/network/cppServer/net/tcp/src/buffer.i: home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.i
-
-.PHONY : home/wzm/project/network/cppServer/net/tcp/src/buffer.i
-
-# target to preprocess a source file
-home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.i
-.PHONY : home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.i
-
-home/wzm/project/network/cppServer/net/tcp/src/buffer.s: home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.s
-
-.PHONY : home/wzm/project/network/cppServer/net/tcp/src/buffer.s
-
-# target to generate assembly for a file
-home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tcp_server.dir/build.make CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.s
-.PHONY : home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.s
-
 home/wzm/project/network/cppServer/net/tcp/src/channel.o: home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.o
 
 .PHONY : home/wzm/project/network/cppServer/net/tcp/src/channel.o
@@ -435,9 +408,6 @@ help:
 	@echo "... home/wzm/project/network/cppServer/net/tcp/src/acceptor.o"
 	@echo "... home/wzm/project/network/cppServer/net/tcp/src/acceptor.i"
 	@echo "... home/wzm/project/network/cppServer/net/tcp/src/acceptor.s"
-	@echo "... home/wzm/project/network/cppServer/net/tcp/src/buffer.o"
-	@echo "... home/wzm/project/network/cppServer/net/tcp/src/buffer.i"
-	@echo "... home/wzm/project/network/cppServer/net/tcp/src/buffer.s"
 	@echo "... home/wzm/project/network/cppServer/net/tcp/src/channel.o"
 	@echo "... home/wzm/project/network/cppServer/net/tcp/src/channel.i"
 	@echo "... home/wzm/project/network/cppServer/net/tcp/src/channel.s"

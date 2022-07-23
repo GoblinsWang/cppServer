@@ -7,11 +7,13 @@ namespace cppServer
     class acceptor
     {
     public:
-        int listen_port;
-        int listen_fd;
+        using ptr = std::shared_ptr<acceptor>;
+
+        acceptor(int port);
 
     public:
-        acceptor(int port);
+        int listen_port;
+        int listen_fd;
     };
 }
 #endif

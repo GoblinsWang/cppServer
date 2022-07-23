@@ -3,7 +3,7 @@
 
 namespace cppServer
 {
-    tcpServer::tcpServer(std::shared_ptr<eventLoop> event_loop, std::shared_ptr<acceptor> listener, int threadNum)
+    tcpServer::tcpServer(eventLoop::ptr event_loop, acceptor::ptr listener, int threadNum)
     {
         this->event_loop = event_loop;
         this->listener = listener;

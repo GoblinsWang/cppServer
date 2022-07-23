@@ -1,6 +1,4 @@
 #include "../eventLoop.h"
-#include "../channel.h"
-#include "../eventDispatcher.h"
 
 namespace cppServer
 {
@@ -115,7 +113,7 @@ namespace cppServer
         return 0;
     }
 
-    void eventLoop::channel_buffer_nolock(int fd, std::shared_ptr<channel> chan, int type)
+    void eventLoop::channel_buffer_nolock(int fd, channel::ptr chan, int type)
     {
         // add channel into the pending list
         auto chanElement = std::make_shared<channelElement>(type, chan);
@@ -123,7 +121,7 @@ namespace cppServer
         this->pending_queue.push(chanElement);
     }
 
-    int eventLoop::do_channel_event(int fd, std::shared_ptr<channel> chan, int type)
+    int eventLoop::do_channel_event(int fd, channel::ptr chan, int type)
     {
         // get the lock
         pthread_mutex_lock(&this->mutex);
@@ -146,22 +144,22 @@ namespace cppServer
         }
         return 0;
     }
-    int eventLoop::add_channel_event(int fd, std::shared_ptr<channel> chan)
+    int eventLoop::add_channel_event(int fd, channel::ptr chan)
     {
         return this->do_channel_event(fd, chan, 1);
     }
 
-    int eventLoop::remove_channel_event(int fd, std::shared_ptr<channel> chan)
+    int eventLoop::remove_channel_event(int fd, channel::ptr chan)
     {
         return this->do_channel_event(fd, chan, 2);
     }
 
-    int eventLoop::update_channel_event(int fd, std::shared_ptr<channel> chan)
+    int eventLoop::update_channel_event(int fd, channel::ptr chan)
     {
         return this->do_channel_event(fd, chan, 3);
     }
 
-    int eventLoop::handle_pending_add(int fd, std::shared_ptr<channel> chan)
+    int eventLoop::handle_pending_add(int fd, channel::ptr chan)
     {
         INFO("add channel fd == ", fd);
 
@@ -180,7 +178,7 @@ namespace cppServer
         return 0;
     }
 
-    int eventLoop::handle_pending_remove(int fd, std::shared_ptr<channel> chan)
+    int eventLoop::handle_pending_remove(int fd, channel::ptr chan)
     {
         assert(fd == chan->fd);
         INFO("remove channel fd == ", fd);
@@ -198,21 +196,17 @@ namespace cppServer
         auto chan2 = pos->second;
 
         // update dispatcher(multi-thread)here
-        int retval = 0;
         if (this->dispatcher->epoll_del(chan2) == -1)
         {
             ERROR("epoll_del failed");
-            retval = -1;
+            return -1;
         }
-        else
-        {
-            retval = 1;
-        }
+
         this->channlMap.erase(pos);
-        return retval;
+        return 1;
     }
 
-    int eventLoop::handle_pending_update(int fd, std::shared_ptr<channel> chan)
+    int eventLoop::handle_pending_update(int fd, channel::ptr chan)
     {
         INFO("update channel fd ==", fd);
 
@@ -225,6 +219,7 @@ namespace cppServer
 
         // update channel
         this->dispatcher->epoll_update(chan);
+        return 1;
     }
 
     int eventLoop::channel_event_activate(int fd, int revents)

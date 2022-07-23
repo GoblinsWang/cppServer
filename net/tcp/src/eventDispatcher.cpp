@@ -1,6 +1,5 @@
 #include "../eventDispatcher.h"
 #include "../eventLoop.h"
-#include "../channel.h"
 
 namespace cppServer
 {
@@ -10,8 +9,8 @@ namespace cppServer
         this->thread_name = eventloop->thread_name;
 
         this->epoll_dispatcher_data = std::make_shared<epollDispatcherData>();
+
         // 构建epoll的监听红黑树
-        // std::cout << "构建epoll的监听红黑树" << std::endl;
         epoll_dispatcher_data->efd = epoll_create(1);
         if (epoll_dispatcher_data->efd == -1)
         {
@@ -19,17 +18,17 @@ namespace cppServer
         }
     }
 
-    int eventDispatcher::epoll_add(std::shared_ptr<channel> chan)
+    int eventDispatcher::epoll_add(channel::ptr chan)
     {
         return this->handle_epoll_event(chan, 1);
     }
 
-    int eventDispatcher::epoll_del(std::shared_ptr<channel> chan)
+    int eventDispatcher::epoll_del(channel::ptr chan)
     {
         return this->handle_epoll_event(chan, 2);
     }
 
-    int eventDispatcher::epoll_update(std::shared_ptr<channel> chan)
+    int eventDispatcher::epoll_update(channel::ptr chan)
     {
         return this->handle_epoll_event(chan, 3);
     }
@@ -64,7 +63,7 @@ namespace cppServer
         return 0;
     }
 
-    int eventDispatcher::handle_epoll_event(std::shared_ptr<channel> chan, int type)
+    int eventDispatcher::handle_epoll_event(channel::ptr chan, int type)
     {
         int fd = chan->fd;
         int events = 0;

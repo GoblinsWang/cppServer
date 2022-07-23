@@ -86,22 +86,9 @@ CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/accepto
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp -o CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.s
 
-CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o: CMakeFiles/tcp_server.dir/flags.make
-CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o: /home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o -c /home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp
-
-CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp > CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.i
-
-CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp -o CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.s
-
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.o: CMakeFiles/tcp_server.dir/flags.make
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.o: /home/wzm/project/network/cppServer/net/tcp/src/channel.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.o -c /home/wzm/project/network/cppServer/net/tcp/src/channel.cpp
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.i: cmake_force
@@ -114,7 +101,7 @@ CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/channel
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.o: CMakeFiles/tcp_server.dir/flags.make
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.o: /home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.o -c /home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.i: cmake_force
@@ -127,7 +114,7 @@ CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventDi
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.o: CMakeFiles/tcp_server.dir/flags.make
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.o: /home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.o -c /home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.i: cmake_force
@@ -140,7 +127,7 @@ CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLo
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.o: CMakeFiles/tcp_server.dir/flags.make
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.o: /home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.o -c /home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThread.cpp.i: cmake_force
@@ -153,7 +140,7 @@ CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLo
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.o: CMakeFiles/tcp_server.dir/flags.make
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.o: /home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.o -c /home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoopThreadPool.cpp.i: cmake_force
@@ -166,7 +153,7 @@ CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLo
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.o: CMakeFiles/tcp_server.dir/flags.make
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.o: /home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.o -c /home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpBuffer.cpp.i: cmake_force
@@ -179,7 +166,7 @@ CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpBuff
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.o: CMakeFiles/tcp_server.dir/flags.make
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.o: /home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.o -c /home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpConnection.cpp.i: cmake_force
@@ -192,7 +179,7 @@ CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpConn
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.o: CMakeFiles/tcp_server.dir/flags.make
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.o: /home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.o -c /home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp
 
 CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.i: cmake_force
@@ -207,7 +194,6 @@ CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpServ
 tcp_server_OBJECTS = \
 "CMakeFiles/tcp_server.dir/tcp_server.cpp.o" \
 "CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.o" \
-"CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o" \
 "CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.o" \
 "CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.o" \
 "CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.o" \
@@ -222,7 +208,6 @@ tcp_server_EXTERNAL_OBJECTS =
 
 tcp_server: CMakeFiles/tcp_server.dir/tcp_server.cpp.o
 tcp_server: CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.o
-tcp_server: CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o
 tcp_server: CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.o
 tcp_server: CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.o
 tcp_server: CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.o
@@ -233,7 +218,7 @@ tcp_server: CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp
 tcp_server: CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/tcpServer.cpp.o
 tcp_server: CMakeFiles/tcp_server.dir/build.make
 tcp_server: CMakeFiles/tcp_server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable tcp_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/wzm/project/network/cppServer/example/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable tcp_server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/tcp_server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

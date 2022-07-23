@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/acceptor.cpp.o"
-  "CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/buffer.cpp.o"
   "CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/channel.cpp.o"
   "CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventDispatcher.cpp.o"
   "CMakeFiles/tcp_server.dir/home/wzm/project/network/cppServer/net/tcp/src/eventLoop.cpp.o"

@@ -2,7 +2,7 @@
 
 namespace cppServer
 {
-    tcpConnection::tcpConnection(int connected_fd, std::shared_ptr<eventLoop> eventloop)
+    tcpConnection::tcpConnection(int connected_fd, eventLoop::ptr eventloop)
     {
 
         this->eventloop = eventloop;
