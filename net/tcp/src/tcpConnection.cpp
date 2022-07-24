@@ -43,7 +43,7 @@ namespace cppServer
         std::string response = "you are sucessful\n";
 
         // processContext(recv_data, response, tcpConnection->channel->fd);
-        LogDebug("response:" << response << ", len:" << response.length());
+        LogDebug("response:" << response);
 
         int size = response.length();
         m_write_buffer->writeToBuffer(response.c_str(), size);
