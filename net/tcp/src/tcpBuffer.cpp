@@ -88,7 +88,7 @@ namespace cppServer
     {
         if (readAble() == 0)
         {
-            INFO("read buffer empty!", "");
+            LogTrace("read buffer empty!");
             return;
         }
         int read_size = readAble() > size ? size : readAble();
@@ -136,7 +136,7 @@ namespace cppServer
         int j = m_read_index + index;
         if (j > (int)m_buffer.size())
         {
-            ERROR("recycleRead error");
+            LogError("recycleRead error");
             return;
         }
         m_read_index = j;
@@ -148,7 +148,7 @@ namespace cppServer
         int j = m_write_index + index;
         if (j > (int)m_buffer.size())
         {
-            ERROR("recycleWrite error");
+            LogError("recycleWrite error");
             return;
         }
         m_write_index = j;

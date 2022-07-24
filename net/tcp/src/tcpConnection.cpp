@@ -25,25 +25,25 @@ namespace cppServer
     // callback for connection complete
     int tcpConnection::onConnectionCompleted()
     {
-        INFO("connection completed", "");
+        LogTrace("connection completed");
         return 0;
     }
     // callback for processing recv_data
     int tcpConnection::onMessage()
     {
-        INFO("get message from tcp connection, ", this->name);
+        LogTrace("get message from tcp connection, " << this->name);
         // TODO:针对char*数据进行数据处理，完成对应的操作，再将对应数据发还给客户端
 #if 1
         std::vector<char> recv_data;
         m_read_buffer->readFromBuffer(recv_data, m_read_buffer->readAble());
         std::string recv_str;
         recv_str.insert(recv_str.begin(), recv_data.begin(), recv_data.end());
-        std::cout << recv_str << ", size = " << recv_str.size() << std::endl;
+        LogDebug(KV(recv_str));
 
         std::string response = "you are sucessful\n";
 
         // processContext(recv_data, response, tcpConnection->channel->fd);
-        std::cout << "response:" << response << ", len:" << response.length() << std::endl;
+        LogDebug("response:" << response << ", len:" << response.length());
 
         int size = response.length();
         m_write_buffer->writeToBuffer(response.c_str(), size);
@@ -56,14 +56,14 @@ namespace cppServer
     // callback for Write complete
     int tcpConnection::onWriteCompleted()
     {
-        INFO("write completed", "");
+        LogTrace("write completed");
         return 0;
     }
 
     // callback for closed connection
     int tcpConnection::onConnectionClosed()
     {
-        INFO("connection closed", "");
+        LogTrace("connection closed");
         delete this; // Pay attention to releasing resources when the connection is closed
         return 0;
     }
@@ -80,7 +80,6 @@ namespace cppServer
         // Try to send data to the socket first
         if (!this->chan->channel_write_event_is_enabled(this->chan))
         {
-            INFO("Try to send data to the socket first", "");
             nwrited = write(chan->fd, &(m_write_buffer->m_buffer[read_index]), total_size);
             if (nwrited >= 0)
             {
@@ -88,7 +87,7 @@ namespace cppServer
             }
             else
             {
-                ERROR("output_buffer failed");
+                LogError("output_buffer failed");
                 nwrited = 0;
                 if (errno != EWOULDBLOCK)
                 {
@@ -103,7 +102,7 @@ namespace cppServer
         // If there is any remaining data not sent, add a write event
         if (!fault && nleft > 0)
         {
-            INFO("add a write event", "");
+            LogTrace("add a write event");
             if (!this->chan->channel_write_event_is_enabled(this->chan))
             {
                 this->chan->channel_write_event_enable(this->chan);
@@ -134,7 +133,7 @@ namespace cppServer
         }
         else
         {
-            INFO("buffer_socket_read <= 0", "");
+            LogTrace("buffer_socket_read <= 0");
             handle_connection_closed(tcp_connection);
         }
 
@@ -175,7 +174,7 @@ namespace cppServer
     {
         if (shutdown(this->chan->fd, SHUT_WR) < 0)
         {
-            INFO("tcp_connection_shutdown failed, socket == ", this->chan->fd);
+            LogTrace("tcp_connection_shutdown failed, socket == " << this->chan->fd);
         }
     }
 }

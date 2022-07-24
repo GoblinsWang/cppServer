@@ -36,7 +36,7 @@ namespace cppServer
     int eventDispatcher::epoll_dispatch(eventLoop *eventloop, struct timeval *timeval)
     {
         int n = epoll_wait(epoll_dispatcher_data->efd, epoll_dispatcher_data->events, 128, -1);
-        INFO("epoll_wait wakeup, ", this->thread_name);
+        LogTrace("epoll_wait wakeup, " << this->thread_name);
 
         for (auto i = 0; i < n; i++)
         {
@@ -50,13 +50,14 @@ namespace cppServer
 
             if (epoll_dispatcher_data->events[i].events & EPOLLIN)
             {
-                INFO("read message from fd == ", this->thread_name);
+                LogTrace("read message from fd == " << this->thread_name);
                 eventloop->channel_event_activate(fd, EVENT_READ);
             }
 
             if (epoll_dispatcher_data->events[i].events & EPOLLOUT)
             {
-                INFO("write message to fd == ", this->thread_name);
+
+                LogTrace("write message to fd == " << this->thread_name);
                 eventloop->channel_event_activate(fd, EVENT_WRITE);
             }
         }
@@ -85,7 +86,7 @@ namespace cppServer
             {
                 perror("[error] epoll_ctl add  fd failed");
             }
-            INFO("epoll_ctl add sucess", "");
+            LogTrace("epoll_ctl add sucess");
         }
         else if (type == 2)
         {
@@ -93,7 +94,7 @@ namespace cppServer
             {
                 perror("[error] epoll_ctl delete fd failed");
             }
-            INFO("epoll_ctl delete sucess", "");
+            LogTrace("epoll_ctl delete sucess");
         }
         else if (type == 3)
         {
@@ -101,11 +102,11 @@ namespace cppServer
             {
                 perror("[error] epoll_ctl modify fd failed");
             }
-            INFO("epoll_ctl mod sucess", "");
+            LogTrace("epoll_ctl mod sucess");
         }
         else
         {
-            ERROR("error type!");
+            LogError("error type!");
             return -1;
         }
         return 0;

@@ -37,7 +37,7 @@ namespace cppServer
             exit(1);
         }
 
-        INFO("event loop run, ", this->thread_name);
+        LogTrace("event loop run, " << this->thread_name);
 
         // Timeout setting
         struct timeval timeval;
@@ -51,7 +51,7 @@ namespace cppServer
             // handle the pending channel
             this->handle_pending_channel();
         }
-        INFO("event loop end, ", this->thread_name);
+        LogTrace("event loop end, " << this->thread_name);
 
         return 0;
     }
@@ -63,9 +63,9 @@ namespace cppServer
         ssize_t n = read(event_loop->socketPair[1], &one, sizeof one);
         if (n != sizeof one)
         {
-            ERROR("handleWakeup  failed");
+            LogError("handleWakeup  failed");
         }
-        INFO("wakeup, ", event_loop->thread_name);
+        LogTrace("wakeup, " << event_loop->thread_name);
         return 0;
     }
 
@@ -75,7 +75,7 @@ namespace cppServer
         ssize_t n = write(this->socketPair[0], &one, sizeof one);
         if (n != sizeof(one))
         {
-            ERROR("wakeup event loop thread failed");
+            LogError("wakeup event loop thread failed");
         }
     }
 
@@ -161,7 +161,7 @@ namespace cppServer
 
     int eventLoop::handle_pending_add(int fd, channel::ptr chan)
     {
-        INFO("add channel fd == ", fd);
+        LogTrace("add channel fd == " << fd);
 
         if (fd < 0)
             return 0;
@@ -181,7 +181,7 @@ namespace cppServer
     int eventLoop::handle_pending_remove(int fd, channel::ptr chan)
     {
         assert(fd == chan->fd);
-        INFO("remove channel fd == ", fd);
+        LogTrace("remove channel fd == " << fd);
 
         if (fd < 0)
             return 0;
@@ -189,7 +189,7 @@ namespace cppServer
         auto pos = this->channlMap.find(fd);
         if (pos == this->channlMap.end())
         {
-            ERROR("fd not in channelMap");
+            LogError("fd not in channelMap");
             return (-1);
         }
 
@@ -198,7 +198,7 @@ namespace cppServer
         // update dispatcher(multi-thread)here
         if (this->dispatcher->epoll_del(chan2) == -1)
         {
-            ERROR("epoll_del failed");
+            LogError("epoll_del failed");
             return -1;
         }
 
@@ -208,7 +208,7 @@ namespace cppServer
 
     int eventLoop::handle_pending_update(int fd, channel::ptr chan)
     {
-        INFO("update channel fd ==", fd);
+        LogTrace("update channel fd ==" << fd);
 
         if (fd < 0)
             return 0;
@@ -224,12 +224,12 @@ namespace cppServer
 
     int eventLoop::channel_event_activate(int fd, int revents)
     {
-        INFO("activate channel fd ==", fd);
+        LogTrace("activate channel fd ==" << fd);
 
         auto pos = this->channlMap.find(fd);
         if (pos == this->channlMap.end())
         {
-            ERROR("fd not in channlMap");
+            LogError("fd not in channlMap");
             return (-1);
         }
 

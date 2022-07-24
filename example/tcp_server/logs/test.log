@@ -1,0 +1,151 @@
+ [2022-07-24 05:19:24] Trace wzm 20496 [/home/wzm/project/cppServer/example/tcp_server/tcp_server.cpp main:12] This is a TCP-server Test!
+ [2022-07-24 05:19:24] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp handle_pending_add:164] add channel fd == 7
+ [2022-07-24 05:19:24] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp handle_epoll_event:89] epoll_ctl add sucess
+ [2022-07-24 05:19:24] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp event_loop_thread_run:40] event loop thread init and signal, Thread-0
+ [2022-07-24 05:19:24] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp run:40] event loop run, Thread-0
+ [2022-07-24 05:19:24] Trace wzm 20496 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp thread_start:30] event loop thread started, Thread-0
+ [2022-07-24 05:19:24] Trace wzm 20498 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp handle_pending_add:164] add channel fd == 10
+ [2022-07-24 05:19:24] Trace wzm 20498 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp handle_epoll_event:89] epoll_ctl add sucess
+ [2022-07-24 05:19:24] Trace wzm 20498 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp event_loop_thread_run:40] event loop thread init and signal, Thread-1
+ [2022-07-24 05:19:24] Trace wzm 20498 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp run:40] event loop run, Thread-1
+ [2022-07-24 05:19:24] Trace wzm 20496 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp thread_start:30] event loop thread started, Thread-1
+ [2022-07-24 05:19:24] Trace wzm 20499 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp handle_pending_add:164] add channel fd == 13
+ [2022-07-24 05:19:24] Trace wzm 20499 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp handle_epoll_event:89] epoll_ctl add sucess
+ [2022-07-24 05:19:24] Trace wzm 20499 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp event_loop_thread_run:40] event loop thread init and signal, Thread-2
+ [2022-07-24 05:19:24] Trace wzm 20499 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp run:40] event loop run, Thread-2
+ [2022-07-24 05:19:24] Trace wzm 20496 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp thread_start:30] event loop thread started, Thread-2
+ [2022-07-24 05:19:24] Trace wzm 20500 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp handle_pending_add:164] add channel fd == 16
+ [2022-07-24 05:19:24] Trace wzm 20500 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp handle_epoll_event:89] epoll_ctl add sucess
+ [2022-07-24 05:19:24] Trace wzm 20500 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp event_loop_thread_run:40] event loop thread init and signal, Thread-3
+ [2022-07-24 05:19:24] Trace wzm 20500 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp run:40] event loop run, Thread-3
+ [2022-07-24 05:19:24] Trace wzm 20496 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp thread_start:30] event loop thread started, Thread-3
+ [2022-07-24 05:19:24] Trace wzm 20496 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp handle_pending_add:164] add channel fd == 4
+ [2022-07-24 05:19:24] Trace wzm 20496 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp handle_epoll_event:89] epoll_ctl add sucess
+ [2022-07-24 05:19:24] Trace wzm 20496 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp run:40] event loop run, main thread
+ [2022-07-24 05:39:44] Trace wzm 20496 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:39] epoll_wait wakeup, main thread
+ [2022-07-24 05:39:44] Trace wzm 20496 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:53] read message from fd == main thread
+ [2022-07-24 05:39:44] Trace wzm 20496 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp channel_event_activate:227] activate channel fd ==4
+ [2022-07-24 05:39:44] Trace wzm 20496 [/home/wzm/project/cppServer/net/tcp/src/tcpServer.cpp handle_connection_established:28] new connection established, socket == 17
+ [2022-07-24 05:39:44] Trace wzm 20496 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onConnectionCompleted:28] connection completed
+ [2022-07-24 05:39:44] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:39] epoll_wait wakeup, Thread-0
+ [2022-07-24 05:39:44] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:53] read message from fd == Thread-0
+ [2022-07-24 05:39:44] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp channel_event_activate:227] activate channel fd ==7
+ [2022-07-24 05:39:44] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp handleWakeup:68] wakeup, Thread-0
+ [2022-07-24 05:39:44] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp handle_pending_add:164] add channel fd == 17
+ [2022-07-24 05:39:44] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp handle_epoll_event:89] epoll_ctl add sucess
+ [2022-07-24 05:40:30] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:39] epoll_wait wakeup, Thread-0
+ [2022-07-24 05:40:30] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:53] read message from fd == Thread-0
+ [2022-07-24 05:40:30] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp channel_event_activate:227] activate channel fd ==17
+ [2022-07-24 05:40:30] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:34] get message from tcp connection, connection-17
+ [2022-07-24 05:40:30] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:41]  recv_str=shjfahfasfa
+
+ [2022-07-24 05:40:30] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:46] response:you are sucessful
+, len:18
+ [2022-07-24 05:40:30] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp output_buffer:83] Try to send data to the socket first
+ [2022-07-24 05:40:34] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:39] epoll_wait wakeup, Thread-0
+ [2022-07-24 05:40:34] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:53] read message from fd == Thread-0
+ [2022-07-24 05:40:34] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp channel_event_activate:227] activate channel fd ==17
+ [2022-07-24 05:40:34] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:34] get message from tcp connection, connection-17
+ [2022-07-24 05:40:34] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:41]  recv_str=fsjafsajk
+
+ [2022-07-24 05:40:34] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:46] response:you are sucessful
+, len:18
+ [2022-07-24 05:40:34] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp output_buffer:83] Try to send data to the socket first
+ [2022-07-24 05:40:39] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:39] epoll_wait wakeup, Thread-0
+ [2022-07-24 05:40:39] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:53] read message from fd == Thread-0
+ [2022-07-24 05:40:39] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp channel_event_activate:227] activate channel fd ==17
+ [2022-07-24 05:40:39] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:34] get message from tcp connection, connection-17
+ [2022-07-24 05:40:39] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:41]  recv_str=faklfksal
+
+ [2022-07-24 05:40:39] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:46] response:you are sucessful
+, len:18
+ [2022-07-24 05:40:39] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp output_buffer:83] Try to send data to the socket first
+ [2022-07-24 05:40:40] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:39] epoll_wait wakeup, Thread-0
+ [2022-07-24 05:40:40] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:53] read message from fd == Thread-0
+ [2022-07-24 05:40:40] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp channel_event_activate:227] activate channel fd ==17
+ [2022-07-24 05:40:40] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:34] get message from tcp connection, connection-17
+ [2022-07-24 05:40:40] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:41]  recv_str=fls;alfa
+
+ [2022-07-24 05:40:40] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:46] response:you are sucessful
+, len:18
+ [2022-07-24 05:40:40] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp output_buffer:83] Try to send data to the socket first
+ [2022-07-24 05:40:41] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:39] epoll_wait wakeup, Thread-0
+ [2022-07-24 05:40:41] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:53] read message from fd == Thread-0
+ [2022-07-24 05:40:41] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp channel_event_activate:227] activate channel fd ==17
+ [2022-07-24 05:40:41] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:34] get message from tcp connection, connection-17
+ [2022-07-24 05:40:41] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:41]  recv_str=fsal;
+
+ [2022-07-24 05:40:41] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:46] response:you are sucessful
+, len:18
+ [2022-07-24 05:40:41] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp output_buffer:83] Try to send data to the socket first
+ [2022-07-24 05:40:42] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:39] epoll_wait wakeup, Thread-0
+ [2022-07-24 05:40:42] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:53] read message from fd == Thread-0
+ [2022-07-24 05:40:42] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp channel_event_activate:227] activate channel fd ==17
+ [2022-07-24 05:40:42] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:34] get message from tcp connection, connection-17
+ [2022-07-24 05:40:42] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:41]  recv_str=asl;sa
+
+ [2022-07-24 05:40:42] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:46] response:you are sucessful
+, len:18
+ [2022-07-24 05:40:42] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp output_buffer:83] Try to send data to the socket first
+ [2022-07-24 05:40:43] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:39] epoll_wait wakeup, Thread-0
+ [2022-07-24 05:40:43] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:53] read message from fd == Thread-0
+ [2022-07-24 05:40:43] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp channel_event_activate:227] activate channel fd ==17
+ [2022-07-24 05:40:43] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:34] get message from tcp connection, connection-17
+ [2022-07-24 05:40:43] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:41]  recv_str=a;flsa
+
+ [2022-07-24 05:40:43] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:46] response:you are sucessful
+, len:18
+ [2022-07-24 05:40:43] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp output_buffer:83] Try to send data to the socket first
+ [2022-07-24 05:40:45] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:39] epoll_wait wakeup, Thread-0
+ [2022-07-24 05:40:45] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:53] read message from fd == Thread-0
+ [2022-07-24 05:40:45] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp channel_event_activate:227] activate channel fd ==17
+ [2022-07-24 05:40:45] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:34] get message from tcp connection, connection-17
+ [2022-07-24 05:40:45] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:41]  recv_str=fal;as
+
+ [2022-07-24 05:40:45] Debug wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:46] response:you are sucessful
+, len:18
+ [2022-07-24 05:40:45] Trace wzm 20497 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp output_buffer:83] Try to send data to the socket first
+ [2022-07-24 05:42:27] Trace wzm 15117 [/home/wzm/project/cppServer/example/tcp_server/tcp_server.cpp main:12] This is a TCP-server Test!
+ [2022-07-24 05:42:27] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp handle_pending_add:164] add channel fd == 7
+ [2022-07-24 05:42:27] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp handle_epoll_event:89] epoll_ctl add sucess
+ [2022-07-24 05:42:27] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp event_loop_thread_run:40] event loop thread init and signal, Thread-0
+ [2022-07-24 05:42:27] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp run:40] event loop run, Thread-0
+ [2022-07-24 05:42:27] Trace wzm 15117 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp thread_start:30] event loop thread started, Thread-0
+ [2022-07-24 05:42:27] Trace wzm 15119 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp handle_pending_add:164] add channel fd == 10
+ [2022-07-24 05:42:27] Trace wzm 15119 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp handle_epoll_event:89] epoll_ctl add sucess
+ [2022-07-24 05:42:27] Trace wzm 15119 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp event_loop_thread_run:40] event loop thread init and signal, Thread-1
+ [2022-07-24 05:42:27] Trace wzm 15119 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp run:40] event loop run, Thread-1
+ [2022-07-24 05:42:27] Trace wzm 15117 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp thread_start:30] event loop thread started, Thread-1
+ [2022-07-24 05:42:27] Trace wzm 15120 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp handle_pending_add:164] add channel fd == 13
+ [2022-07-24 05:42:27] Trace wzm 15120 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp handle_epoll_event:89] epoll_ctl add sucess
+ [2022-07-24 05:42:27] Trace wzm 15120 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp event_loop_thread_run:40] event loop thread init and signal, Thread-2
+ [2022-07-24 05:42:27] Trace wzm 15120 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp run:40] event loop run, Thread-2
+ [2022-07-24 05:42:27] Trace wzm 15117 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp thread_start:30] event loop thread started, Thread-2
+ [2022-07-24 05:42:27] Trace wzm 15121 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp handle_pending_add:164] add channel fd == 16
+ [2022-07-24 05:42:27] Trace wzm 15121 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp handle_epoll_event:89] epoll_ctl add sucess
+ [2022-07-24 05:42:27] Trace wzm 15121 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp event_loop_thread_run:40] event loop thread init and signal, Thread-3
+ [2022-07-24 05:42:27] Trace wzm 15121 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp run:40] event loop run, Thread-3
+ [2022-07-24 05:42:27] Trace wzm 15117 [/home/wzm/project/cppServer/net/tcp/src/eventLoopThread.cpp thread_start:30] event loop thread started, Thread-3
+ [2022-07-24 05:42:27] Trace wzm 15117 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp handle_pending_add:164] add channel fd == 4
+ [2022-07-24 05:42:27] Trace wzm 15117 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp handle_epoll_event:89] epoll_ctl add sucess
+ [2022-07-24 05:42:27] Trace wzm 15117 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp run:40] event loop run, main thread
+ [2022-07-24 05:45:05] Trace wzm 15117 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:39] epoll_wait wakeup, main thread
+ [2022-07-24 05:45:05] Trace wzm 15117 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:53] read message from fd == main thread
+ [2022-07-24 05:45:05] Trace wzm 15117 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp channel_event_activate:227] activate channel fd ==4
+ [2022-07-24 05:45:05] Trace wzm 15117 [/home/wzm/project/cppServer/net/tcp/src/tcpServer.cpp handle_connection_established:28] new connection established, socket == 17
+ [2022-07-24 05:45:05] Trace wzm 15117 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onConnectionCompleted:28] connection completed
+ [2022-07-24 05:45:05] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:39] epoll_wait wakeup, Thread-0
+ [2022-07-24 05:45:05] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:53] read message from fd == Thread-0
+ [2022-07-24 05:45:05] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp channel_event_activate:227] activate channel fd ==7
+ [2022-07-24 05:45:05] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp handleWakeup:68] wakeup, Thread-0
+ [2022-07-24 05:45:05] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp handle_pending_add:164] add channel fd == 17
+ [2022-07-24 05:45:05] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp handle_epoll_event:89] epoll_ctl add sucess
+ [2022-07-24 05:45:08] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:39] epoll_wait wakeup, Thread-0
+ [2022-07-24 05:45:08] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/eventDispatcher.cpp epoll_dispatch:53] read message from fd == Thread-0
+ [2022-07-24 05:45:08] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/eventLoop.cpp channel_event_activate:227] activate channel fd ==17
+ [2022-07-24 05:45:08] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:34] get message from tcp connection, connection-17
+ [2022-07-24 05:45:08] Debug wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:41]  recv_str=hjkkl
+
+ [2022-07-24 05:45:08] Debug wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp onMessage:46] response:you are sucessful
+, len:18
+ [2022-07-24 05:45:08] Trace wzm 15118 [/home/wzm/project/cppServer/net/tcp/src/tcpConnection.cpp output_buffer:83] Try to send data to the socket first

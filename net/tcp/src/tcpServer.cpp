@@ -25,7 +25,7 @@ namespace cppServer
         //设为非阻塞套接字描述符
         fcntl(connected_fd, F_SETFL, O_NONBLOCK);
 
-        INFO("new connection established, socket == ", connected_fd);
+        LogTrace("new connection established, socket == " << connected_fd);
 
         // choose event loop from thread pool
         auto event_loop = tcp_server->threadPool->thread_pool_get_loop();

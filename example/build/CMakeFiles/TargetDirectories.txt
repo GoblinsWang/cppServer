@@ -1,3 +1,0 @@
-/home/wzm/project/network/cppServer/example/build/CMakeFiles/rebuild_cache.dir
-/home/wzm/project/network/cppServer/example/build/CMakeFiles/tcp_server.dir
-/home/wzm/project/network/cppServer/example/build/CMakeFiles/edit_cache.dir

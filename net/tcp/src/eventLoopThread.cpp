@@ -27,7 +27,7 @@ namespace cppServer
         }
         assert(pthread_mutex_unlock(&this->mutex) == 0);
 
-        INFO("event loop thread started, ", this->thread_name);
+        LogTrace("event loop thread started, " << this->thread_name);
     }
 
     void *eventLoopThread::event_loop_thread_run(void *arg)
@@ -37,7 +37,7 @@ namespace cppServer
 
         // Initialize the event loop
         eventloopthread->eventloop = std::make_shared<eventLoop>(eventloopthread->thread_name);
-        INFO("event loop thread init and signal, ", eventloopthread->thread_name);
+        LogTrace("event loop thread init and signal, " << eventloopthread->thread_name);
         // notify the main thread
         pthread_cond_signal(&eventloopthread->cond);
         pthread_mutex_unlock(&eventloopthread->mutex);

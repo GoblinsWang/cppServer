@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jul 22 13:19:57 2022
+# Make data base, printed on Sun Jul 24 04:53:24 2022
 
 # Variables
 
@@ -29,7 +29,7 @@ VSCODE_AGENT_FOLDER = /home/wzm/.vscode-server
 # default
 MAKE_VERSION := 4.1
 # makefile
-CURDIR := /home/wzm/project/network/cppServer
+CURDIR := /home/wzm/project/cppServer
 # makefile
 SHELL = /bin/sh
 # environment
@@ -63,9 +63,9 @@ LS_COLORS =
 # automatic
 %F = $(notdir $%)
 # environment
-PWD = /home/wzm/project/network/cppServer
+PWD = /home/wzm/project/cppServer
 # environment
-VSCODE_IPC_HOOK_CLI = /run/user/1001/vscode-ipc-7744ffae-daa7-4c8b-9b2a-a5d32cc3a439.sock
+VSCODE_IPC_HOOK_CLI = /run/user/1001/vscode-ipc-df2e8041-a062-4f83-a160-abec23c2b262.sock
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
@@ -147,9 +147,9 @@ LANG = C
 
 # Directories
 
-# . (device 2050, inode 16255461): 7 files, no impossibilities.
+# . (device 2050, inode 16255461): 8 files, no impossibilities.
 
-# 7 files, no impossibilities in 1 directories.
+# 8 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -199,12 +199,12 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 15 / storage = 125 B / avg = 8 B
-# current buf: size = 8162 B / used = 125 B / count = 15 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 16 / storage = 129 B / avg = 8 B
+# current buf: size = 8162 B / used = 129 B / count = 16 / avg = 8 B
 
-# strcache performance: lookups = 18 / hit rate = 16%
+# strcache performance: lookups = 19 / hit rate = 15%
 # hash-table stats:
-# Load=15/8192=0%, Rehash=0, Collisions=1/18=6%
-# Finished Make data base on Fri Jul 22 13:19:57 2022
+# Load=16/8192=0%, Rehash=0, Collisions=1/19=5%
+# Finished Make data base on Sun Jul 24 04:53:24 2022
 
  
