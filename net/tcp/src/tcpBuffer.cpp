@@ -3,38 +3,38 @@
 namespace cppServer
 {
 
-    tcpBuffer::tcpBuffer(int size)
+    TcpBuffer::TcpBuffer(int size)
     {
         m_buffer.resize(size);
     }
 
-    tcpBuffer::~tcpBuffer()
+    TcpBuffer::~TcpBuffer()
     {
     }
 
-    int tcpBuffer::readAble()
+    int TcpBuffer::readAble()
     {
 
         return m_write_index - m_read_index;
     }
 
-    int tcpBuffer::writeAble()
+    int TcpBuffer::writeAble()
     {
 
         return m_buffer.size() - m_write_index;
     }
 
-    int tcpBuffer::readIndex() const
+    int TcpBuffer::readIndex() const
     {
         return m_read_index;
     }
 
-    int tcpBuffer::writeIndex() const
+    int TcpBuffer::writeIndex() const
     {
         return m_write_index;
     }
 
-    int tcpBuffer::readFromSocket(int sockfd)
+    int TcpBuffer::readFromSocket(int sockfd)
     {
 
         char additional_buffer[INIT_BUFFER_SIZE];
@@ -62,7 +62,7 @@ namespace cppServer
         return result;
     }
 
-    void tcpBuffer::resizeBuffer(int size)
+    void TcpBuffer::resizeBuffer(int size)
     {
         std::vector<char> tmp(size);
         int c = std::min(size, readAble());
@@ -73,7 +73,7 @@ namespace cppServer
         m_write_index = m_read_index + c;
     }
 
-    void tcpBuffer::writeToBuffer(const char *buf, int size)
+    void TcpBuffer::writeToBuffer(const char *buf, int size)
     {
         if (size > writeAble())
         {
@@ -84,7 +84,7 @@ namespace cppServer
         m_write_index += size;
     }
 
-    void tcpBuffer::readFromBuffer(std::vector<char> &re, int size)
+    void TcpBuffer::readFromBuffer(std::vector<char> &re, int size)
     {
         if (readAble() == 0)
         {
@@ -101,7 +101,7 @@ namespace cppServer
         adjustBuffer();
     }
 
-    void tcpBuffer::adjustBuffer()
+    void TcpBuffer::adjustBuffer()
     {
         if (m_read_index > static_cast<int>(m_buffer.size() / 3))
         {
@@ -119,19 +119,19 @@ namespace cppServer
         }
     }
 
-    int tcpBuffer::getSize()
+    int TcpBuffer::getSize()
     {
         return m_buffer.size();
     }
 
-    void tcpBuffer::clearBuffer()
+    void TcpBuffer::clearBuffer()
     {
         m_buffer.clear();
         m_read_index = 0;
         m_write_index = 0;
     }
 
-    void tcpBuffer::recycleRead(int index)
+    void TcpBuffer::recycleRead(int index)
     {
         int j = m_read_index + index;
         if (j > (int)m_buffer.size())
@@ -143,7 +143,7 @@ namespace cppServer
         adjustBuffer();
     }
 
-    void tcpBuffer::recycleWrite(int index)
+    void TcpBuffer::recycleWrite(int index)
     {
         int j = m_write_index + index;
         if (j > (int)m_buffer.size())
@@ -155,14 +155,14 @@ namespace cppServer
         adjustBuffer();
     }
 
-    std::string tcpBuffer::getBufferString()
+    std::string TcpBuffer::getBufferString()
     {
         std::string re(readAble(), '0');
         memcpy(&re[0], &m_buffer[m_read_index], readAble());
         return re;
     }
 
-    std::vector<char> tcpBuffer::getBufferVector()
+    std::vector<char> TcpBuffer::getBufferVector()
     {
         return m_buffer;
     }

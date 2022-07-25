@@ -2,29 +2,29 @@
 #include "../tcpConnection.h"
 namespace cppServer
 {
-    channel::channel(int fd, int events, event_read_callback eventReadCallback, event_write_callback eventWriteCallback, void *data)
-        : fd(fd), events(events), eventReadCallback(eventReadCallback), eventWriteCallback(eventWriteCallback), data(data)
+    Channel::Channel(int fd, int events, event_read_callback eventReadCallback, event_write_callback eventWriteCallback, void *data)
+        : m_fd(fd), m_events(events), m_eventReadCallback(eventReadCallback), m_eventWriteCallback(eventWriteCallback), data(data)
     {
     }
 
-    int channel::channel_write_event_is_enabled(std::shared_ptr<channel> chan)
+    int Channel::channel_write_event_is_enabled(std::shared_ptr<Channel> channel)
     {
-        return chan->events & EVENT_WRITE;
+        return channel->m_events & EVENT_WRITE;
     }
 
-    int channel::channel_write_event_enable(std::shared_ptr<channel> chan)
+    int Channel::channel_write_event_enable(std::shared_ptr<Channel> channel)
     {
-        auto tcp_connection = (tcpConnection *)chan->data;
-        chan->events = chan->events | EVENT_WRITE;
-        tcp_connection->eventloop->update_channel_event(chan->fd, chan);
+        auto tcp_connection = (TcpConnection *)channel->data;
+        channel->m_events = channel->m_events | EVENT_WRITE;
+        tcp_connection->m_eventloop->update_channel_event(channel->m_fd, channel);
         return 0;
     }
 
-    int channel::channel_write_event_disable(std::shared_ptr<channel> chan)
+    int Channel::channel_write_event_disable(std::shared_ptr<Channel> channel)
     {
-        auto tcp_connection = (tcpConnection *)chan->data;
-        chan->events = chan->events | ~EVENT_WRITE;
-        tcp_connection->eventloop->update_channel_event(chan->fd, chan);
+        auto tcp_connection = (TcpConnection *)channel->data;
+        channel->m_events = channel->m_events | ~EVENT_WRITE;
+        tcp_connection->m_eventloop->update_channel_event(channel->m_fd, channel);
         return 0;
     }
 }

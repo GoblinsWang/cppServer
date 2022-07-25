@@ -2,48 +2,47 @@
 
 namespace cppServer
 {
-    eventLoopThread::eventLoopThread(int num)
+    EventLoopThread::EventLoopThread(int num)
     {
-        pthread_mutex_init(&this->mutex, NULL);
-        pthread_cond_init(&this->cond, NULL);
+        pthread_mutex_init(&m_mutex, NULL);
+        pthread_cond_init(&m_cond, NULL);
 
-        this->eventloop = nullptr;
-        this->thread_count = 0;
-        this->thread_tid = 0;
-
-        this->thread_name = "Thread-" + std::to_string(num);
+        m_eventloop = nullptr;
+        m_threadcount = 0;
+        m_thread_tid = 0;
+        m_threadname = "Thread-" + std::to_string(num);
     }
 
-    void eventLoopThread::
-        thread_start()
+    void EventLoopThread::
+        threadStart()
     {
-        pthread_create(&this->thread_tid, NULL, &event_loop_thread_run, this);
+        pthread_create(&m_thread_tid, NULL, &threadRun, this);
 
-        assert(pthread_mutex_lock(&this->mutex) == 0);
+        assert(pthread_mutex_lock(&m_mutex) == 0);
 
-        while (this->eventloop == nullptr)
+        while (m_eventloop == nullptr)
         {
-            assert(pthread_cond_wait(&this->cond, &this->mutex) == 0);
+            assert(pthread_cond_wait(&m_cond, &m_mutex) == 0);
         }
-        assert(pthread_mutex_unlock(&this->mutex) == 0);
+        assert(pthread_mutex_unlock(&m_mutex) == 0);
 
-        LogTrace("event loop thread started, " << this->thread_name);
+        LogTrace("event loop thread started, " << m_threadname);
     }
 
-    void *eventLoopThread::event_loop_thread_run(void *arg)
+    void *EventLoopThread::threadRun(void *arg)
     {
-        auto eventloopthread = (eventLoopThread *)arg;
-        pthread_mutex_lock(&eventloopthread->mutex);
+        auto eventloopthread = (EventLoopThread *)arg;
+        pthread_mutex_lock(&eventloopthread->m_mutex);
 
         // Initialize the event loop
-        eventloopthread->eventloop = std::make_shared<eventLoop>(eventloopthread->thread_name);
-        LogTrace("event loop thread init and signal, " << eventloopthread->thread_name);
+        eventloopthread->m_eventloop = std::make_shared<EventLoop>(eventloopthread->m_threadname);
+        LogTrace("event loop thread init and signal, " << eventloopthread->m_threadname);
         // notify the main thread
-        pthread_cond_signal(&eventloopthread->cond);
-        pthread_mutex_unlock(&eventloopthread->mutex);
+        pthread_cond_signal(&eventloopthread->m_cond);
+        pthread_mutex_unlock(&eventloopthread->m_mutex);
 
         // start this eventloop
-        eventloopthread->eventloop->run();
+        eventloopthread->m_eventloop->run();
         return nullptr;
     }
 }

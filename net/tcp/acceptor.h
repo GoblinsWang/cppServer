@@ -1,19 +1,19 @@
-#ifndef net_tcp_acceptor_h
-#define net_tcp_acceptor_h
+#ifndef net_tcp_Acceptor_h
+#define net_tcp_Acceptor_h
 
 #include "common.h"
 namespace cppServer
 {
-    class acceptor
+    class Acceptor
     {
     public:
-        using ptr = std::shared_ptr<acceptor>;
+        using ptr = std::shared_ptr<Acceptor>;
 
-        acceptor(int port);
+        Acceptor(int port);
 
     public:
-        int listen_port;
-        int listen_fd;
+        int m_listen_port;
+        int m_listen_fd;
     };
 }
 #endif

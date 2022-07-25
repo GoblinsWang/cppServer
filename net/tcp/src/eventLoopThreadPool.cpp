@@ -2,59 +2,59 @@
 
 namespace cppServer
 {
-    eventLoopThreadPool::eventLoopThreadPool(eventLoop::ptr mainloop, int threadNumber)
+    EventLoopThreadPool::EventLoopThreadPool(EventLoop::ptr mainloop, int threadNumber)
     {
-        this->mainloop = mainloop;
+        this->m_mainloop = mainloop;
 
-        this->thread_number = threadNumber;
+        this->m_threadnum = threadNumber;
     }
 
-    void eventLoopThreadPool::thread_pool_start()
+    void EventLoopThreadPool::thread_pool_start()
     {
-        assert(!this->started);
+        assert(!m_started);
 
-        if (this->mainloop->owner_thread_id != pthread_self())
+        if (m_mainloop->m_owner_thread_id != pthread_self())
         {
             exit(-1);
         }
 
         // set to start thread pool
-        this->started = 1;
+        m_started = 1;
 
         // single thread
-        if (this->thread_number <= 0)
+        if (m_threadnum <= 0)
         {
             return;
         }
 
-        for (int i = 0; i < this->thread_number; i++)
+        for (int i = 0; i < m_threadnum; i++)
         {
-            auto thread = std::make_shared<eventLoopThread>(i);
-            thread->thread_start();
-            eventloopthreads.push_back(thread);
+            auto thread = std::make_shared<EventLoopThread>(i);
+            thread->threadStart();
+            m_eventloopthreads.push_back(thread);
         }
     }
 
-    eventLoop::ptr
-    eventLoopThreadPool::thread_pool_get_loop()
+    EventLoop::ptr
+    EventLoopThreadPool::thread_pool_get_loop()
     {
-        assert(this->started);
+        assert(m_started);
         // assertInSameThread
-        if (this->mainloop->owner_thread_id != pthread_self())
+        if (m_mainloop->m_owner_thread_id != pthread_self())
         {
             exit(-1);
         }
 
         // Choose the current main thread first
-        eventLoop::ptr selected = this->mainloop;
+        auto selected = m_mainloop;
 
         // Select a thread from the thread pool in order
-        if (this->thread_number > 0)
+        if (m_threadnum > 0)
         {
-            selected = this->eventloopthreads[this->position]->eventloop;
-            if (++this->position >= this->thread_number)
+            selected = m_eventloopthreads[m_position]->m_eventloop;
+            if (++m_position >= m_threadnum)
             {
-                this->position = 0;
+                m_position = 0;
             }
         }
 

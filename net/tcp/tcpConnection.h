@@ -1,5 +1,5 @@
-#ifndef net_tcp_tcpConnection_hpp
-#define net_tcp_tcpConnection_hpp
+#ifndef net_tcp_TcpConnection_hpp
+#define net_tcp_TcpConnection_hpp
 
 #include "eventLoop.h"
 #include "channel.h"
@@ -7,38 +7,38 @@
 
 namespace cppServer
 {
-    class tcpConnection
+    class TcpConnection
     {
     public:
-        tcpConnection(int connected_fd, eventLoop::ptr eventloop);
+        TcpConnection(int connected_fd, EventLoop::ptr eventloop);
         // 连接建立之后的callback
         int onConnectionCompleted();
         // 数据读到buffer之后的callback
-        int onMessage();
+        int onMessageProcess();
         //数据通过buffer写完之后的callback
         int onWriteCompleted();
         // 连接关闭之后的callback
         int onConnectionClosed();
 
         // 将写缓存中的数据发送出去
-        int output_buffer();
+        int sendBuffer();
 
-        // channel的读回调函数
-        static int handle_read(void *data);
-        // channel的写回调函数
-        static int handle_write(void *data);
+        // channel的读处理函数
+        static int handleRead(void *data);
+        // channel的写处理函数
+        static int handleWrite(void *data);
         // 关闭channel的连接套接字
-        static int handle_connection_closed(tcpConnection *tcp_connection);
+        static int handleConnectionClosed(TcpConnection *tcp_connection);
 
-        void tcp_connection_shutdown();
+        void tcpConnectionShutdown();
 
     public:
-        eventLoop::ptr eventloop;
-        channel::ptr chan;
-        std::string name;
+        std::string m_name;
+        Channel::ptr m_channel;
+        EventLoop::ptr m_eventloop;
         // buffer for read and write
-        tcpBuffer::ptr m_read_buffer;
-        tcpBuffer::ptr m_write_buffer;
+        TcpBuffer::ptr m_read_buffer;
+        TcpBuffer::ptr m_write_buffer;
 
         void *data;                   // for callback use: http_server
         struct http_request *request; // for callback use

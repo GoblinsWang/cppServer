@@ -1,5 +1,5 @@
-#ifndef net_tcp_eventLoop_h
-#define net_tcp_eventLoop_h
+#ifndef net_tcp_EventLoop_h
+#define net_tcp_EventLoop_h
 
 #include "common.h"
 #include "channel.h"
@@ -7,67 +7,68 @@
 
 namespace cppServer
 {
-    class channelElement
+    class ChannelElement
     {
     public:
-        using ptr = std::shared_ptr<channelElement>;
+        using ptr = std::shared_ptr<ChannelElement>;
 
-        channelElement(int type, channel::ptr chan) : type(type), chan(chan){};
+        ChannelElement(int type, Channel::ptr channel) : m_type(type), m_channel(channel){};
 
     public:
-        int type; // 1:add, 2: del, 3:update
-        channel::ptr chan;
+        int m_type; // 1:add, 2: del, 3:update
+        Channel::ptr m_channel;
     };
 
-    class eventLoop
+    class EventLoop
     {
     public:
-        using ptr = std::shared_ptr<eventLoop>;
+        using ptr = std::shared_ptr<EventLoop>;
 
-        eventLoop(std::string thread_name); // Initialize the loop by thread name
+        EventLoop(std::string thread_name); // Initialize the loop by thread name
 
         int run(); // enter the event loop
 
-        int handle_pending_channel(); // handle channelElement in pending_queue
-
         void wakeup(); // Used to wake up the slave thread
+
+        int handle_pending_channel(); // handle channelElement in pending_queue
 
         static int handleWakeup(void *data); // handle the Wakeup event
 
-        void channel_buffer_nolock(int fd, channel::ptr chan, int type);
+        void channel_buffer_nolock(int fd, Channel::ptr chan, int type);
 
-        int do_channel_event(int fd, channel::ptr chan, int type);
+        int do_channel_event(int fd, Channel::ptr chan, int type);
 
-        int add_channel_event(int fd, channel::ptr chan);
+        int add_channel_event(int fd, Channel::ptr chan);
 
-        int remove_channel_event(int fd, channel::ptr chan);
+        int remove_channel_event(int fd, Channel::ptr chan);
 
-        int update_channel_event(int fd, channel::ptr chan);
+        int update_channel_event(int fd, Channel::ptr chan);
 
-        int handle_pending_add(int fd, channel::ptr chan);
+        int handle_pending_add(int fd, Channel::ptr chan);
 
-        int handle_pending_remove(int fd, channel::ptr chan);
+        int handle_pending_remove(int fd, Channel::ptr chan);
 
-        int handle_pending_update(int fd, channel::ptr chan);
+        int handle_pending_update(int fd, Channel::ptr chan);
 
         int channel_event_activate(int fd, int revents); // Activate the event corresponding to the channel
 
     public:
-        int quit; // Marks the exit of the event cycle
+        int m_quit;              // Marks the exit of the event cycle
+        int m_is_handle_pending; // Identifies whether the pending queue is being processed
 
-        eventDispatcher::ptr dispatcher;
+        pthread_t m_owner_thread_id;
+        std::string m_thread_name;
 
-        std::map<int, channel::ptr> channlMap;
+        EventDispatcher::ptr m_dispatcher;
 
-        int is_handle_pending; // Identifies whether the pending queue is being processed
+        std::map<int, Channel::ptr> m_channlMap;
 
-        std::queue<channelElement::ptr> pending_queue;
+        std::queue<ChannelElement::ptr> m_pending_queue;
 
-        pthread_t owner_thread_id;
-        pthread_mutex_t mutex;
-        pthread_cond_t cond;
-        int socketPair[2];
-        std::string thread_name;
+    private:
+        int m_socketPair[2];
+        pthread_mutex_t m_mutex;
+        pthread_cond_t m_cond;
     };
 }
 #endif

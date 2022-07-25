@@ -4,75 +4,75 @@
 namespace cppServer
 {
     // 初始化epollDispatcherData
-    eventDispatcher::eventDispatcher(eventLoop *eventloop)
+    EventDispatcher::EventDispatcher(EventLoop *eventloop)
     {
-        this->thread_name = eventloop->thread_name;
+        m_thread_name = eventloop->m_thread_name;
 
-        this->epoll_dispatcher_data = std::make_shared<epollDispatcherData>();
+        m_epoll_dispatcher_data = std::make_shared<EpollDispatcherData>();
 
         // 构建epoll的监听红黑树
-        epoll_dispatcher_data->efd = epoll_create(1);
-        if (epoll_dispatcher_data->efd == -1)
+        m_epoll_dispatcher_data->efd = epoll_create(1);
+        if (m_epoll_dispatcher_data->efd == -1)
         {
             perror("epoll create failed");
         }
     }
 
-    int eventDispatcher::epoll_add(channel::ptr chan)
+    int EventDispatcher::epoll_add(Channel::ptr channel)
     {
-        return this->handle_epoll_event(chan, 1);
+        return this->handle_epoll_event(channel, 1);
     }
 
-    int eventDispatcher::epoll_del(channel::ptr chan)
+    int EventDispatcher::epoll_del(Channel::ptr channel)
     {
-        return this->handle_epoll_event(chan, 2);
+        return this->handle_epoll_event(channel, 2);
     }
 
-    int eventDispatcher::epoll_update(channel::ptr chan)
+    int EventDispatcher::epoll_update(Channel::ptr channel)
     {
-        return this->handle_epoll_event(chan, 3);
+        return this->handle_epoll_event(channel, 3);
     }
 
-    int eventDispatcher::epoll_dispatch(eventLoop *eventloop, struct timeval *timeval)
+    int EventDispatcher::epoll_dispatch(EventLoop *eventloop, struct timeval *timeval)
     {
-        int n = epoll_wait(epoll_dispatcher_data->efd, epoll_dispatcher_data->events, 128, -1);
-        LogTrace("epoll_wait wakeup, " << this->thread_name);
+        int n = epoll_wait(m_epoll_dispatcher_data->efd, m_epoll_dispatcher_data->events, 128, -1);
+        LogTrace("epoll_wait wakeup, " << m_thread_name);
 
         for (auto i = 0; i < n; i++)
         {
-            int fd = epoll_dispatcher_data->events[i].data.fd;
-            if ((epoll_dispatcher_data->events[i].events & EPOLLERR) || (epoll_dispatcher_data->events[i].events & EPOLLHUP))
+            int fd = m_epoll_dispatcher_data->events[i].data.fd;
+            if ((m_epoll_dispatcher_data->events[i].events & EPOLLERR) || (m_epoll_dispatcher_data->events[i].events & EPOLLHUP))
             {
                 fprintf(stderr, "epoll error\n");
                 close(fd);
                 continue;
             }
 
-            if (epoll_dispatcher_data->events[i].events & EPOLLIN)
+            if (m_epoll_dispatcher_data->events[i].events & EPOLLIN)
             {
-                LogTrace("read message from fd == " << this->thread_name);
+                LogTrace("read message from fd == " << m_thread_name);
                 eventloop->channel_event_activate(fd, EVENT_READ);
             }
 
-            if (epoll_dispatcher_data->events[i].events & EPOLLOUT)
+            if (m_epoll_dispatcher_data->events[i].events & EPOLLOUT)
             {
 
-                LogTrace("write message to fd == " << this->thread_name);
+                LogTrace("write message to fd == " << m_thread_name);
                 eventloop->channel_event_activate(fd, EVENT_WRITE);
             }
         }
         return 0;
     }
 
-    int eventDispatcher::handle_epoll_event(channel::ptr chan, int type)
+    int EventDispatcher::handle_epoll_event(Channel::ptr channel, int type)
     {
-        int fd = chan->fd;
+        int fd = channel->m_fd;
         int events = 0;
-        if (chan->events & EVENT_READ)
+        if (channel->m_events & EVENT_READ)
         {
             events = events | EPOLLIN;
         }
-        if (chan->events & EVENT_WRITE)
+        if (channel->m_events & EVENT_WRITE)
         {
             events = events | EPOLLOUT;
         }
@@ -82,7 +82,7 @@ namespace cppServer
 
         if (type == 1)
         {
-            if (epoll_ctl(this->epoll_dispatcher_data->efd, EPOLL_CTL_ADD, fd, &event) == -1)
+            if (epoll_ctl(m_epoll_dispatcher_data->efd, EPOLL_CTL_ADD, fd, &event) == -1)
             {
                 perror("[error] epoll_ctl add  fd failed");
             }
@@ -90,7 +90,7 @@ namespace cppServer
         }
         else if (type == 2)
         {
-            if (epoll_ctl(epoll_dispatcher_data->efd, EPOLL_CTL_DEL, fd, &event) == -1)
+            if (epoll_ctl(m_epoll_dispatcher_data->efd, EPOLL_CTL_DEL, fd, &event) == -1)
             {
                 perror("[error] epoll_ctl delete fd failed");
             }
@@ -98,7 +98,7 @@ namespace cppServer
         }
         else if (type == 3)
         {
-            if (epoll_ctl(epoll_dispatcher_data->efd, EPOLL_CTL_MOD, fd, &event) == -1)
+            if (epoll_ctl(m_epoll_dispatcher_data->efd, EPOLL_CTL_MOD, fd, &event) == -1)
             {
                 perror("[error] epoll_ctl modify fd failed");
             }

@@ -1,19 +1,19 @@
-#ifndef net_tcp_tcpBuffer_h
-#define net_tcp_tcpBuffer_h
+#ifndef net_tcp_TcpBuffer_h
+#define net_tcp_TcpBuffer_h
 
 #define INIT_BUFFER_SIZE 65536
 #include "common.h"
 namespace cppServer
 {
-    class tcpBuffer
+    class TcpBuffer
     {
 
     public:
-        using ptr = std::shared_ptr<tcpBuffer>;
+        using ptr = std::shared_ptr<TcpBuffer>;
 
-        explicit tcpBuffer(int size);
+        explicit TcpBuffer(int size);
 
-        ~tcpBuffer();
+        ~TcpBuffer();
 
         int readAble();
 
