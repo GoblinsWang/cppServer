@@ -1,5 +1,5 @@
-#ifndef TINYRPC_NET_CODEC_H
-#define TINYRPC_NET_CODEC_H
+#ifndef NET_CODEC_H
+#define NET_CODEC_H
 
 #include <string>
 #include <memory>

@@ -4,8 +4,9 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/net/tcp/include",
-                "${workspaceFolder}/net"
+                "${workspaceFolder}/net/tcp/",
+                "${workspaceFolder}/net/",
+                "${workspaceFolder}/log/"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
