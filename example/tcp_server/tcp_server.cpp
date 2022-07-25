@@ -1,10 +1,4 @@
-#include "../../net/tcp/common.h"
-#include "../../net/tcp/eventLoop.h"
-#include "../../net/tcp/acceptor.h"
 #include "../../net/tcp/tcpServer.h"
-#include "../../log/logger.h"
-// using namespace cppServer;
-
 using namespace cppServer;
 
 int main(int argc, char **argv)
