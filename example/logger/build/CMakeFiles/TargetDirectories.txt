@@ -1,3 +1,0 @@
-/home/wzm/project/network/cppServer/example/logger/build/CMakeFiles/rebuild_cache.dir
-/home/wzm/project/network/cppServer/example/logger/build/CMakeFiles/test_log.dir
-/home/wzm/project/network/cppServer/example/logger/build/CMakeFiles/edit_cache.dir

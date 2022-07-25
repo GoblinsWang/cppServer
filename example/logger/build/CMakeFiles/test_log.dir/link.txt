@@ -1,1 +1,0 @@
-/usr/bin/c++   -Wall -std=c++11 -g  -rdynamic CMakeFiles/test_log.dir/test_log.cpp.o CMakeFiles/test_log.dir/home/wzm/project/network/cppServer/log/src/fileManagement.cpp.o CMakeFiles/test_log.dir/home/wzm/project/network/cppServer/log/src/logger.cpp.o  -o test_log  -lpthread 
