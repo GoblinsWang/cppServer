@@ -10,8 +10,9 @@
 
 ## 环境依赖
 
-linux、cmake等
-
+- linux
+- cmake
+- pthread
 
 
 ## 目录结构描述
