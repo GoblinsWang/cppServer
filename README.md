@@ -37,11 +37,7 @@
 
 ## 快速示例
 ```C++
-#include "../../net/tcp/common.h"
-#include "../../net/tcp/eventLoop.h"
-#include "../../net/tcp/acceptor.h"
 #include "../../net/tcp/tcpServer.h"
-#include "../../log/logger.h"
 
 using namespace cppServer;
 
