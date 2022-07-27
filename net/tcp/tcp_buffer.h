@@ -2,7 +2,7 @@
 #define net_tcp_TcpBuffer_h
 
 #define INIT_BUFFER_SIZE 65536
-#include "common.h"
+#include "../common.h"
 namespace cppServer
 {
     class TcpBuffer

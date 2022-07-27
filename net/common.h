@@ -25,6 +25,6 @@
 #include <map>
 #include <functional>
 
-#include "../../log/logger.h"
+#include "../log/logger.h"
 
 #endif

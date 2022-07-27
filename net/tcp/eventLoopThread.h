@@ -1,7 +1,7 @@
 #ifndef net_tcp_EventLoopThread_h
 #define net_tcp_EventLoopThread_h
 
-#include "common.h"
+#include "../common.h"
 #include "eventLoop.h"
 
 namespace cppServer

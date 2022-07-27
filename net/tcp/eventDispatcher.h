@@ -1,7 +1,7 @@
 #ifndef net_tcp_EventDispatcher_h
 #define net_tcp_EventDispatcher_h
 
-#include "common.h"
+#include "../common.h"
 #include "channel.h"
 
 namespace cppServer

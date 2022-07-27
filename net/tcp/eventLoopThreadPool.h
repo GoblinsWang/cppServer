@@ -1,6 +1,6 @@
 #ifndef net_tcp_EventLoopThreadPool_h
 #define net_tcp_EventLoopThreadPool_h
-#include "common.h"
+#include "../common.h"
 #include "eventLoop.h"
 #include "eventLoopThread.h"
 
@@ -24,7 +24,7 @@ namespace cppServer
         // start threadpool, it must be launched by main thread
         void thread_pool_start();
         // Select a thread from the thread pool according to the policy
-        EventLoop::ptr thread_pool_get_loop();
+        EventLoop::ptr getLoopFromThreadPool();
     };
 }
 #endif

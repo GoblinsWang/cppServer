@@ -1,7 +1,7 @@
 #ifndef net_tcp_EventLoop_h
 #define net_tcp_EventLoop_h
 
-#include "common.h"
+#include "../common.h"
 #include "channel.h"
 #include "eventDispatcher.h"
 
@@ -32,7 +32,7 @@ namespace cppServer
 
         int handle_pending_channel(); // handle channelElement in pending_queue
 
-        static int handleWakeup(void *data); // handle the Wakeup event
+        void handleWakeup(); // handle the Wakeup event
 
         void channel_buffer_nolock(int fd, Channel::ptr chan, int type);
 
@@ -61,6 +61,7 @@ namespace cppServer
 
         EventDispatcher::ptr m_dispatcher;
 
+        // use to save active channels
         std::map<int, Channel::ptr> m_channlMap;
 
         std::queue<ChannelElement::ptr> m_pending_queue;

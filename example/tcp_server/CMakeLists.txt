@@ -21,8 +21,8 @@ aux_source_directory(../../net/tcp/src SRC1)
 aux_source_directory(../../log/src SRC2)
 
 # 生成可执行文件
-add_executable(tcp_server  tcp_server.cpp  ${SRC1} ${SRC2})
-target_link_libraries(tcp_server pthread)
+add_executable(test  test.cpp  ${SRC1} ${SRC2})
+target_link_libraries(test pthread)
 
 
 
