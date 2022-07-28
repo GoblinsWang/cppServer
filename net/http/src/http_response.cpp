@@ -2,36 +2,31 @@
 
 using namespace cppServer;
 
-void HttpResponse::encodeBuffer(TcpBuffer::ptr buffer)
+void HttpResponse::appendToBuffer(TcpBuffer::ptr buffer)
 {
-    std::string response = "HTTP/1.1 " + std::to_string(m_statusCode) + " " + m_statusMessage + "\r\n";
+    char buf[32];
+    snprintf(buf, sizeof buf, "HTTP/1.1 %d ", m_statusCode);
+    std::string response = buf + m_statusMessage + "\r\n";
 
-    if (m_keepConnected)
+    if (m_closeConnection)
     {
         response += "Connection: close\r\n";
     }
     else
     {
-        response += "Content-Length: ";
-        response += std::to_string(m_body.size());
-        response += "\r\n";
+        snprintf(buf, sizeof buf, "Content-Length: %zd\r\n", m_body.size());
+        response += buf;
         response += "Connection: Keep-Alive\r\n";
     }
-    // 遍历map
+
     auto iter = m_responseHeaders.begin();
     while (iter != m_responseHeaders.end())
     {
-        response += iter->first;
-        response += ": ";
-        response += iter->second;
-        response += "\r\n";
+        response += iter->first + ": " + iter->second + "\r\n";
         iter++;
     }
 
-    response += "\r\n";
-    response += m_body;
-
-    LogDebug("response: " << response);
+    response += "\r\n" + m_body;
 
     buffer->writeToBuffer(response.c_str(), response.size());
 }

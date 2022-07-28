@@ -1,14 +1,13 @@
 #include "../http_server.h"
 using namespace cppServer;
 
-HttpServer::HttpServer(EventLoop::ptr eventloop, int port, int threadNum)
+void HttpServer::listen(std::string ip, int port, int threadNum)
 {
     // initialize acceptor
-    auto acceptor = std::make_shared<Acceptor>(port);
+    auto acceptor = std::make_shared<Acceptor>(ip, port);
+    m_tcpServer = std::make_shared<TcpServer>(acceptor, threadNum);
 
-    m_tcpServer = std::make_shared<TcpServer>(eventloop, acceptor, threadNum);
-
-    // TODO: set callback functions
+    // set callback functions
     m_tcpServer->setConnectionCallback(std::bind(&HttpServer::onConnection, this, _1));
     m_tcpServer->setMessageCallback(std::bind(&HttpServer::onMessage, this, _1));
 }
@@ -30,28 +29,34 @@ void HttpServer::onMessage(const TcpConnection::ptr &conn)
 
     if (parseHttpRequest(conn->m_read_buffer, conn->m_httpRequest) == 0)
     {
-        std::string response = "HTTP/1.1 400 Bad Request\r\n\r\n";
-        conn->m_write_buffer->writeToBuffer(response.c_str(), response.size());
+        LogError("parseHttpRequest failed");
+        std::string error_response = "HTTP/1.1 400 Bad Request\r\n\r\n";
+        conn->m_write_buffer->writeToBuffer(error_response.c_str(), error_response.size());
+        conn->sendBuffer();
         conn->shutDown();
     }
 
-    //处理完了所有的request数据，接下来进行编码和发送
+    // after processing all the request data, then code and send.
     if (conn->m_httpRequest->getCurrentState() == REQUEST_DONE)
     {
         LogDebug("parseHttpRequest completed ...");
 
         auto httpResponse = std::make_shared<HttpResponse>();
-
-        // httpServer暴露的requestCallback回调
-        if (m_httpCallback != NULL)
+        if (conn->m_httpRequest->closeConnection())
+        {
+            httpResponse->m_closeConnection = 1;
+        }
+        // call m_httpCallback that you set
+        if (m_httpCallback)
         {
             m_httpCallback(conn->m_httpRequest, httpResponse);
         }
 
-        httpResponse->encodeBuffer(conn->m_write_buffer);
+        LogTrace("httpResponse->body:" << httpResponse->m_body);
+        httpResponse->appendToBuffer(conn->m_write_buffer);
         conn->sendBuffer();
 
-        if (conn->m_httpRequest->closeConnection())
+        if (httpResponse->m_closeConnection)
         {
             conn->shutDown();
         }
@@ -62,113 +67,100 @@ void HttpServer::onMessage(const TcpConnection::ptr &conn)
 int HttpServer::parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr httpRequest)
 {
     int ok = 1;
-    while (httpRequest->m_currentState != REQUEST_DONE)
+    // get bufferString
+    std::string buffer_s = input_buffer->getBufferString();
+    // LogDebug("buffer_s : " << buffer_s << "len : " << buffer_s.length());
+    int start = 0;
+    int end = -2;
+
+    while (httpRequest->m_currentState != REQUEST_DONE && ok)
     {
+        start = end + 2;
         if (httpRequest->m_currentState == REQUEST_STATUS)
         {
-            char *crlf = input_buffer->findCRLF();
-            if (crlf)
+            end = buffer_s.find("\r\n", start); // find CLRF
+            if (end != -1)
             {
-                LogDebug("------ 解析请求头 ------");
-                int request_line_size = processStatusLine(&input_buffer->m_buffer[input_buffer->m_read_index], crlf, httpRequest);
-                if (request_line_size)
+                // LogDebug("------ parse status line ------");
+                std::string statusLine = buffer_s.substr(start, end - start);
+
+                if (processStatusLine(statusLine, httpRequest))
                 {
-                    input_buffer->recycleRead(request_line_size + 2);
+                    input_buffer->recycleRead(end - start + 2);
                     httpRequest->m_currentState = REQUEST_HEADERS;
+                    continue;
                 }
             }
+            ok = 0;
         }
         else if (httpRequest->m_currentState == REQUEST_HEADERS)
         {
-            LogDebug("------ 解析头部字段 ------");
-            char *crlf = input_buffer->findCRLF();
-            if (crlf)
+            end = buffer_s.find("\r\n", start);
+            // LogDebug("header : " << buffer_s.substr(start, end - start));
+            if (end != -1)
             {
-                /**
-                 *    <start>-------<colon>:-------<crlf>
-                 */
-                char *start = &input_buffer->m_buffer[input_buffer->m_read_index];
-                int request_line_size = crlf - start;
-                char *colon = (char *)memmem(start, request_line_size, ": ", 2);
-                if (colon != NULL)
+                // LogDebug("------ parse header lines ------");
+                int colon = buffer_s.find(':', start); // find " "
+                if (colon != -1)
                 {
-                    // get key
-                    char *key = (char *)malloc(colon - start + 1);
-                    strncpy(key, start, colon - start);
-                    key[colon - start] = '\0';
-                    // get value
-                    char *value = (char *)malloc(crlf - colon - 2 + 1);
-                    strncpy(value, colon + 2, crlf - colon - 2);
-                    value[crlf - colon - 2] = '\0';
+                    std::string key = buffer_s.substr(start, colon - start);
+                    std::string value = buffer_s.substr(colon + 2, end - colon - 2);
 
-                    std::string s_key = key;
-                    std::string s_value = value;
-                    free(key);
-                    free(value);
-
-                    // LogDebug(KV(s_key) << KV(s_value));
-                    httpRequest->addHeader(s_key, s_value); // TODO: release
-
-                    // request_line_size + CRLF size(2)
-                    input_buffer->recycleRead(request_line_size + 2);
+                    // LogDebug(KV(key) << KV(value));
+                    httpRequest->addHeader(key, value);
+                    input_buffer->recycleRead(end - start + 2); // request_line_size + CRLF size(2)
+                    continue;
                 }
                 else
                 {
                     /*
-                     * 读到这里说明:没找到，就说明这个是最后一行
+                     * if the program is executed here, currentLine must be emptyLine.
                      */
-                    // CRLF size
                     input_buffer->recycleRead(2);
-                    httpRequest->m_currentState = REQUEST_DONE;
+                    httpRequest->m_currentState = REQUEST_BODY;
+                    continue;
                 }
             }
+            ok = 0;
+        }
+        else if (httpRequest->m_currentState == REQUEST_BODY)
+        {
+            // TODO:
+
+            httpRequest->m_currentState = REQUEST_DONE;
         }
     }
+    // LogDebug("m_write_index:" << input_buffer->m_read_index);
     return ok;
 }
 
-int HttpServer::processStatusLine(char *start, char *end, HttpRequest::ptr httpRequest)
+int HttpServer::processStatusLine(std::string &statusLine, HttpRequest::ptr httpRequest)
 {
-    int size = end - start;
+    int start = 0;
+    int pos = 0;
 
-    LogDebug("try to get method");
     // 1. try to get method
-    char *space = (char *)memmem(start, end - start, " ", 1);
-    assert(space != NULL);
+    pos = statusLine.find(" ", start);
+    if (pos == -1)
+    {
+        LogError("try to get method failed");
+        return 0;
+    }
+    httpRequest->m_method = statusLine.substr(start, pos - start);
 
-    int method_size = space - start;
-    char *method = (char *)malloc(method_size + 1);
-    strncpy(method, start, space - start);
-    method[method_size + 1] = '\0';
-    // set method
-    httpRequest->m_method = method;
-    free(method);
-
-    LogDebug("try to get url");
     // 2. try to get url
-    start = space + 1;
-    space = (char *)memmem(start, end - start, " ", 1);
-    assert(space != NULL);
+    start = pos + 1;
+    pos = statusLine.find(" ", start);
+    if (pos == -1)
+    {
+        LogError("try to get url failed");
+        return 0;
+    }
+    httpRequest->m_url = statusLine.substr(start, pos - start);
 
-    int url_size = space - start;
-    char *url = (char *)malloc(url_size + 1);
-    strncpy(url, start, space - start);
-    url[url_size + 1] = '\0';
-    // set url
-    httpRequest->m_url = url;
-    free(url);
-
-    LogDebug("try to get version");
     // 3. try to get version
-    start = space + 1;
-    char *version = (char *)malloc(end - start + 1);
-    strncpy(version, start, end - start);
-    version[end - start + 1] = '\0';
-    // set version
-    httpRequest->m_version = version;
-    free(version);
+    start = pos + 1;
+    httpRequest->m_version = statusLine.substr(start, statusLine.length());
 
-    assert(space != NULL);
-
-    return size;
+    return 1;
 }

@@ -13,19 +13,23 @@ namespace cppServer
     class HttpServer
     {
     public:
-        HttpServer(EventLoop::ptr eventloop, int port, int threadNum);
+        HttpServer() = default;
 
         ~HttpServer() = default;
 
+        void listen(std::string ip, int port, int threadNum = 0);
+
         void start();
 
+        // callback for created connection
         void onConnection(const TcpConnection::ptr &conn);
 
+        // callback for message process
         void onMessage(const TcpConnection::ptr &conn);
 
         int parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr httpRequest);
 
-        int processStatusLine(char *start, char *end, HttpRequest::ptr httpRequest);
+        int processStatusLine(std::string &statusLine, HttpRequest::ptr httpRequest);
 
         void setHttpCallback(const HttpCallback &cb)
         {

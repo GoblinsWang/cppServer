@@ -9,11 +9,12 @@ namespace cppServer
     public:
         using ptr = std::shared_ptr<Acceptor>;
 
-        Acceptor(int port);
+        Acceptor(std::string ip, int port);
 
     public:
-        int m_listen_port;
-        int m_listen_fd;
+        std::string m_ip;
+        int m_port;
+        int m_fd;
     };
 }
 #endif

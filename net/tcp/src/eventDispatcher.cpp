@@ -1,4 +1,4 @@
-#include "../eventDispatcher.h"
+#include "../event_dispatcher.h"
 #include "../eventLoop.h"
 
 using namespace cppServer;
@@ -42,7 +42,7 @@ int EventDispatcher::epoll_dispatch(EventLoop *eventloop, struct timeval *timeva
         int fd = m_epoll_dispatcher_data->events[i].data.fd;
         if ((m_epoll_dispatcher_data->events[i].events & EPOLLERR) || (m_epoll_dispatcher_data->events[i].events & EPOLLHUP))
         {
-            fprintf(stderr, "epoll error\n");
+            LogError("epoll error");
             close(fd);
             continue;
         }

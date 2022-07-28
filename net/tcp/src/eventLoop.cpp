@@ -65,7 +65,6 @@ void EventLoop::handleWakeup()
     {
         LogError("handleWakeup  failed");
     }
-    LogTrace("wakeup, " << this->m_thread_name);
 }
 
 void EventLoop::wakeup()

@@ -29,7 +29,7 @@ namespace cppServer
 
         void readFromBuffer(std::vector<char> &re, int size);
 
-        char *findCRLF();
+        // char *findCRLF();
 
         void resizeBuffer(int size);
 

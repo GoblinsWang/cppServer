@@ -26,15 +26,14 @@ namespace cppServer
         string m_body;
 
         std::map<string, string> m_responseHeaders;
-        int m_headersNum = 0;
-        int m_keepConnected = 0;
+        int m_closeConnection = 0;
 
     public:
         HttpResponse() = default;
 
         ~HttpResponse() = default;
 
-        void encodeBuffer(TcpBuffer::ptr buffer);
+        void appendToBuffer(TcpBuffer::ptr buffer);
     };
 
 } // namespace cppServer

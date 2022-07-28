@@ -3,12 +3,12 @@
 
 using namespace cppServer;
 
-TcpServer::TcpServer(EventLoop::ptr event_loop, Acceptor::ptr acceptor, int threadNum)
+TcpServer::TcpServer(Acceptor::ptr acceptor, int threadNum)
 {
-    m_eventloop = event_loop;
+    m_eventloop = std::make_shared<EventLoop>("");
     m_acceptor = acceptor;
     m_threadNum = threadNum;
-    m_threadPool = std::make_shared<EventLoopThreadPool>(event_loop, threadNum);
+    m_threadPool = std::make_shared<EventLoopThreadPool>(m_eventloop, threadNum);
 }
 
 void TcpServer::start()
@@ -17,13 +17,13 @@ void TcpServer::start()
     m_threadPool->thread_pool_start();
 
     // set acceptor to main thread
-    auto channel = std::make_shared<Channel>(m_acceptor->m_listen_fd, EVENT_READ, m_eventloop.get());
+    auto channel = std::make_shared<Channel>(m_acceptor->m_fd, EVENT_READ, m_eventloop.get());
     // currently, only need to set ReadCallback
     channel->setReadCallback(std::bind(&TcpServer::handleNewConnection, this));
 
     m_eventloop->add_channel_event(channel->m_fd, channel);
 
-    return;
+    m_eventloop->run();
 }
 
 void TcpServer::handleNewConnection()
@@ -31,7 +31,7 @@ void TcpServer::handleNewConnection()
 
     struct sockaddr_in client_addr;
     socklen_t client_len = sizeof(client_addr);
-    int connected_fd = accept(m_acceptor->m_listen_fd, (struct sockaddr *)&client_addr, &client_len);
+    int connected_fd = accept(m_acceptor->m_fd, (struct sockaddr *)&client_addr, &client_len);
 
     //设为非阻塞套接字描述符
     fcntl(connected_fd, F_SETFL, O_NONBLOCK);
@@ -41,7 +41,7 @@ void TcpServer::handleNewConnection()
     // choose event loop from thread pool
     auto event_loop = m_threadPool->getLoopFromThreadPool();
 
-    // create a new tcp connection
+    LogTrace("create a new tcp connection");
     TcpConnection::ptr tcp_connection(new TcpConnection(connected_fd, event_loop));
     m_connectionMap[connected_fd] = tcp_connection;
 

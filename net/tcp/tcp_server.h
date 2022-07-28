@@ -13,7 +13,7 @@ namespace cppServer
     public:
         using ptr = std::shared_ptr<TcpServer>;
 
-        TcpServer(EventLoop::ptr event_loop, Acceptor::ptr listener, int threadNum);
+        TcpServer(Acceptor::ptr listener, int threadNum);
 
         // start this tcp_server
         void start();

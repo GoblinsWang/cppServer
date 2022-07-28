@@ -150,7 +150,7 @@ void TcpConnection::handleError()
 
 void TcpConnection::shutDown()
 {
-
+    // TODO: there may be a channel with write event.
     if (shutdown(m_fd, SHUT_WR) < 0)
     {
         LogTrace("tcp_connection_shutdown failed, socket == " << m_fd);

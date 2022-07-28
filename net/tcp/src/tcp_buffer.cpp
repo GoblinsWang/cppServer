@@ -63,12 +63,12 @@ int TcpBuffer::readFromSocket(int sockfd)
     return result;
 }
 
-char *TcpBuffer::findCRLF()
-{
+// char *TcpBuffer::findCRLF()
+// {
 
-    char *crlf = (char *)memmem(&m_buffer[m_read_index], readAble(), CRLF, 2);
-    return crlf;
-}
+//     char *crlf = (char *)memmem(&m_buffer[m_read_index], readAble(), CRLF, 2);
+//     return crlf;
+// }
 
 void TcpBuffer::resizeBuffer(int size)
 {
@@ -167,6 +167,8 @@ std::string TcpBuffer::getBufferString()
 {
     std::string re(readAble(), '0');
     memcpy(&re[0], &m_buffer[m_read_index], readAble());
+    // m_read_index += readAble();
+    // re[readAble()] = '\0';
     return re;
 }
 
