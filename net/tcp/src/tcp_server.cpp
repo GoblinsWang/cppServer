@@ -46,10 +46,14 @@ void TcpServer::handleNewConnection()
     m_connectionMap[connected_fd] = tcp_connection;
 
     // set callback functions
-    tcp_connection->setConnectionCallback(m_connectionCallback);
-    tcp_connection->setMessageCallback(m_messageCallback);
-    tcp_connection->setWriteCompleteCallback(m_writeCompleteCallback);
-    tcp_connection->setCloseCallback(std::bind(&TcpServer::handleCloseConnection, this, std::placeholders::_1));
+    if (m_connectionCallback)
+        tcp_connection->setConnectionCallback(m_connectionCallback);
+    if (m_messageCallback)
+        tcp_connection->setMessageCallback(m_messageCallback);
+    if (m_writeCompleteCallback)
+        tcp_connection->setWriteCompleteCallback(m_writeCompleteCallback);
+    // it must be set.
+    tcp_connection->setCloseCallback(std::bind(&TcpServer::handleCloseConnection, this, _1));
 
     tcp_connection->m_connectionCallback(tcp_connection);
 }

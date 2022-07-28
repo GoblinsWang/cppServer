@@ -11,6 +11,8 @@ namespace cppServer
     class TcpServer
     {
     public:
+        using ptr = std::shared_ptr<TcpServer>;
+
         TcpServer(EventLoop::ptr event_loop, Acceptor::ptr listener, int threadNum);
 
         // start this tcp_server

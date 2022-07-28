@@ -4,7 +4,7 @@
 
 namespace cppServer
 {
-    enum http_request_state
+    enum HttpRequestState
     {
         REQUEST_STATUS,  //等待解析状态行
         REQUEST_HEADERS, //等待解析headers
@@ -22,32 +22,30 @@ namespace cppServer
         ~HttpRequest() = default;
 
         //清除一个request对象
-        void http_request_clear();
+        void Clear();
 
         //重置一个request对象
-        void http_request_reset();
+        void Reset();
 
         //给request增加header
-        void http_request_add_header(string key, string value);
+        void addHeader(std::string &key, std::string &value);
 
         //根据key值获取header数据
-        string http_request_get_header(string key);
+        std::string getHeader(std::string key);
 
         //获得request解析的当前状态
-        enum http_request_state http_request_current_state();
+        HttpRequestState getCurrentState();
 
         //根据request请求判断是否需要关闭服务器-->客户端单向连接
-        int http_request_close_connection();
+        int closeConnection();
 
     public:
-        using string = std::string;
-
-        string m_version;
-        string m_method;
-        string m_url;
-        enum http_request_state m_current_state;
-        std::map<string, string> m_request_headers;
-        int m_headers_num;
+        std::string m_version;
+        std::string m_method;
+        std::string m_url;
+        std::map<std::string, std::string> m_requestHeaders;
+        int m_headersNum;
+        HttpRequestState m_currentState;
     };
 
 }

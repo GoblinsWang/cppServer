@@ -3,6 +3,9 @@
 #include "../common.h"
 namespace cppServer
 {
+    using std::placeholders::_1;
+    using std::placeholders::_2;
+    using std::placeholders::_3;
 
     class TcpConnection;
     typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
@@ -11,5 +14,9 @@ namespace cppServer
     typedef std::function<void(const TcpConnectionPtr &)> MessageCallback;
     typedef std::function<void(const TcpConnectionPtr &)> WriteCompleteCallback;
     typedef std::function<void(const TcpConnectionPtr &)> CloseCallback;
+
+    void defaultConnectionCallback(const TcpConnectionPtr &conn);
+    void defaultMessageCallback(const TcpConnectionPtr &conn);
+    void defaultWriteCompleteCallback(const TcpConnectionPtr &conn);
 }
 #endif

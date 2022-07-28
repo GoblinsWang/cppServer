@@ -5,6 +5,7 @@
 #include "channel.h"
 #include "tcp_buffer.h"
 #include "callbacks.h"
+#include "../http/http_request.h"
 
 namespace cppServer
 {
@@ -47,6 +48,8 @@ namespace cppServer
             m_closeCallback = cb;
         }
 
+        void shutDown();
+
     public:
         int m_fd;
         std::string m_name;
@@ -61,6 +64,9 @@ namespace cppServer
         MessageCallback m_messageCallback;
         WriteCompleteCallback m_writeCompleteCallback;
         CloseCallback m_closeCallback;
+
+        // for http
+        HttpRequest::ptr m_httpRequest;
     };
 }
 #endif

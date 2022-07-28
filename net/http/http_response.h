@@ -1,7 +1,7 @@
 #ifndef net_http_HttpResponse_h
 #define net_http_HttpResponse_h
 #include "../common.h"
-#include "../tcp/tcpBuffer.h"
+#include "../tcp/tcp_buffer.h"
 
 namespace cppServer
 {
@@ -16,24 +16,25 @@ namespace cppServer
 
     class HttpResponse
     {
-    private:
+    public:
+        using ptr = std::shared_ptr<HttpResponse>;
         using string = std::string;
 
-        enum HttpStatusCode m_statusCode;
+        enum HttpStatusCode m_statusCode = Unknown;
         string m_statusMessage;
         string m_contentType;
         string m_body;
 
-        std::map<string, string> m_response_headers;
-        int m_headers_num;
-        int m_keep_connected;
+        std::map<string, string> m_responseHeaders;
+        int m_headersNum = 0;
+        int m_keepConnected = 0;
 
     public:
-        HttpResponse();
+        HttpResponse() = default;
 
         ~HttpResponse() = default;
 
-        void http_response_encode_buffer(TcpBuffer::ptr buffer);
+        void encodeBuffer(TcpBuffer::ptr buffer);
     };
 
 } // namespace cppServer

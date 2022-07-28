@@ -29,6 +29,8 @@ namespace cppServer
 
         void readFromBuffer(std::vector<char> &re, int size);
 
+        char *findCRLF();
+
         void resizeBuffer(int size);
 
         void clearBuffer();
@@ -45,7 +47,7 @@ namespace cppServer
 
         void adjustBuffer();
 
-    private:
+    public:
         int m_read_index{0};
         int m_write_index{0};
         int m_size{0};

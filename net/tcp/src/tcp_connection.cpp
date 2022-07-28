@@ -2,11 +2,29 @@
 
 using namespace cppServer;
 
-TcpConnection::TcpConnection(int connected_fd, EventLoop::ptr eventloop)
+void cppServer::defaultConnectionCallback(const TcpConnection::ptr &conn)
 {
+    //
+    LogTrace("connection completed");
+}
 
-    m_fd = connected_fd;
-    m_eventloop = eventloop;
+void cppServer::defaultMessageCallback(const TcpConnection::ptr &conn)
+{
+    // TODO:
+}
+
+void cppServer::defaultWriteCompleteCallback(const TcpConnection::ptr &conn)
+{
+    //
+    LogTrace("write completed");
+}
+
+TcpConnection::TcpConnection(int connected_fd, EventLoop::ptr eventloop)
+    : m_fd(connected_fd), m_eventloop(eventloop),
+      m_connectionCallback(defaultConnectionCallback),
+      m_messageCallback(defaultMessageCallback),
+      m_writeCompleteCallback(defaultWriteCompleteCallback)
+{
 
     int size = 1024;
     m_write_buffer = std::make_shared<TcpBuffer>(size);
@@ -128,4 +146,13 @@ void TcpConnection::handleClose()
 void TcpConnection::handleError()
 {
     // TODO:
+}
+
+void TcpConnection::shutDown()
+{
+
+    if (shutdown(m_fd, SHUT_WR) < 0)
+    {
+        LogTrace("tcp_connection_shutdown failed, socket == " << m_fd);
+    }
 }

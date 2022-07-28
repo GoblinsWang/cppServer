@@ -1,11 +1,6 @@
 #include "../../net/tcp/tcp_server.h"
 using namespace cppServer;
 
-int onConnectionCompleted(const TcpConnection::ptr &tcp_connection)
-{
-    LogTrace("connection completed");
-    return 0;
-}
 // callback for processing recv_data
 int onMessageProcess(const TcpConnection::ptr &tcp_connection)
 {
@@ -32,13 +27,6 @@ int onMessageProcess(const TcpConnection::ptr &tcp_connection)
     return 0;
 }
 
-// callback for Write complete
-int onWriteCompleted(const TcpConnection::ptr &tcp_connection)
-{
-    LogTrace("write completed");
-    return 0;
-}
-
 int main(int argc, char **argv)
 {
     LogTrace("This is a TCP-server Test!");
@@ -52,9 +40,7 @@ int main(int argc, char **argv)
     // initialize tcp_server, and set the num of threads in thread pool to handle connected fd.
     auto tcp_server = std::make_shared<TcpServer>(event_loop, listener, 4);
 
-    tcp_server->setConnectionCallback(onConnectionCompleted);
     tcp_server->setMessageCallback(onMessageProcess);
-    tcp_server->setWriteCompleteCallback(onWriteCompleted);
 
     // start thread pool and let eventloops run
     tcp_server->start();

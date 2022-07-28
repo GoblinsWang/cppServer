@@ -2,6 +2,8 @@
 
 using namespace cppServer;
 
+const char *CRLF = "\r\n";
+
 TcpBuffer::TcpBuffer(int size)
 {
     m_buffer.resize(size);
@@ -59,6 +61,13 @@ int TcpBuffer::readFromSocket(int sockfd)
         writeToBuffer(additional_buffer, result - max_writable);
     }
     return result;
+}
+
+char *TcpBuffer::findCRLF()
+{
+
+    char *crlf = (char *)memmem(&m_buffer[m_read_index], readAble(), CRLF, 2);
+    return crlf;
 }
 
 void TcpBuffer::resizeBuffer(int size)
