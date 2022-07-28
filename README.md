@@ -120,7 +120,7 @@ int main(int argc, char **argv)
 ```
 ## 使用说明
 
-- 功能暂未完善，httpServer目前仅支持短连接
+- 功能暂未完善，httpServer功能有待扩展
 
 
 
