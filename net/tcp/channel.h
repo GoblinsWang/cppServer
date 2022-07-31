@@ -12,7 +12,7 @@
 /** Wait for a socket or FD to become writeable */
 #define EVENT_WRITE 0x04
 /** Wait for a POSIX signal to be raised*/
-#define EVENT_SIGNAL 0x08
+#define EVENT_ERROR 0x08
 
 namespace cppServer
 {

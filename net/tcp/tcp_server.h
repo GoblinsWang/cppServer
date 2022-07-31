@@ -45,6 +45,8 @@ namespace cppServer
     public:
         int m_port;
         int m_threadNum;
+        mutex *m_mapMutex;
+
         Acceptor::ptr m_acceptor;
         EventLoop::ptr m_eventloop;
         std::shared_ptr<EventLoopThreadPool> m_threadPool;

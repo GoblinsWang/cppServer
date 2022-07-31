@@ -17,6 +17,7 @@
 #include <sys/wait.h>
 #include <sys/un.h> /* for Unix domain sockets */
 #include <sys/epoll.h>
+#include <sys/eventfd.h>
 
 #include <iostream>
 #include <string>
@@ -25,6 +26,7 @@
 #include <memory>
 #include <map>
 #include <functional>
+#include <mutex>
 
 #include "../log/logger.h"
 

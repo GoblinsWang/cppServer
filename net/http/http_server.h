@@ -25,7 +25,7 @@ namespace cppServer
         void onConnection(const TcpConnection::ptr &conn);
 
         // callback for message process
-        void onMessage(const TcpConnection::ptr &conn);
+        void onMessage(TcpConnection *conn);
 
         int parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr httpRequest);
 

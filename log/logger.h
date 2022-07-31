@@ -177,21 +177,21 @@ namespace cppServer
         std::string ret = oss.str();                                                                                               \
         std::cout.rdbuf(pOldBuf);                                                                                                  \
         std::string messagesAll = __LOGTIME__ + coutTypeInfo + __USERNAME__ + __LOGTID__ + SQUARE_BRACKETS_LEFT +                  \
-                                  __LOGFILE__ + SPACE + __LOGFUNC__ + COLON + std::to_string(__LOGLINE__) + SQUARE_BRACKETS_RIGHT; \
+                                  __LOGFILE__ + COLON + std::to_string(__LOGLINE__) + SPACE + __LOGFUNC__ + SQUARE_BRACKETS_RIGHT; \
         Logger::getInstance()->logFileWrite(messagesAll, ret, LINE_FEED);                                                          \
     } while (0);
 
 #ifdef __linux__
-#define COMBINATION_INFO_TERMINAL(coutTypeInfo, message)                                                                           \
-    do                                                                                                                             \
-    {                                                                                                                              \
-        std::string color = Logger::getInstance()->getCoutTypeColor(coutTypeInfo);                                                 \
-        std::string logFormatCout = __LOGTIME__ + color + coutTypeInfo + DEFA + __USERNAME__ + __LOGTID__ + SQUARE_BRACKETS_LEFT + \
-                                    __LOGFILE__ + COLON + std::to_string(__LOGLINE__) + SQUARE_BRACKETS_RIGHT;                     \
-        Logger::mutex_terminal->lock();                                                                                            \
-        std::cout << logFormatCout << message << LINE_FEED;                                                                        \
-        fflush(stdout);                                                                                                            \
-        Logger::mutex_terminal->unlock();                                                                                          \
+#define COMBINATION_INFO_TERMINAL(coutTypeInfo, message)                                                                             \
+    do                                                                                                                               \
+    {                                                                                                                                \
+        std::string color = Logger::getInstance()->getCoutTypeColor(coutTypeInfo);                                                   \
+        std::string logFormatCout = __LOGTIME__ + color + coutTypeInfo + DEFA + __USERNAME__ + __LOGTID__ + SQUARE_BRACKETS_LEFT +   \
+                                    __LOGFILE__ + COLON + std::to_string(__LOGLINE__) + SPACE + __LOGFUNC__ + SQUARE_BRACKETS_RIGHT; \
+        Logger::mutex_terminal->lock();                                                                                              \
+        std::cout << logFormatCout << message << LINE_FEED;                                                                          \
+        fflush(stdout);                                                                                                              \
+        Logger::mutex_terminal->unlock();                                                                                            \
     } while (0);
 #elif _WIN32
 #define COMBINATION_INFO_TERMINAL(coutTypeInfo, message)                                                                             \

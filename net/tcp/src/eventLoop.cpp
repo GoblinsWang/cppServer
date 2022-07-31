@@ -2,6 +2,17 @@
 
 using namespace cppServer;
 
+int createEventfd()
+{
+    int evtfd = ::eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
+    if (evtfd < 0)
+    {
+        LogError("Failed in eventfd");
+        abort();
+    }
+    return evtfd;
+}
+
 EventLoop::EventLoop(std::string thread_name)
 {
     pthread_mutex_init(&m_mutex, NULL);
@@ -15,19 +26,12 @@ EventLoop::EventLoop(std::string thread_name)
     m_owner_thread_id = pthread_self();
     m_is_handle_pending = 0;
 
-    // Create a pair of full duplex sockets for the slave thread, and each socket is readable and writable
-    if (m_thread_name != "main thread")
-    {
-        if (socketpair(AF_UNIX, SOCK_STREAM, 0, m_socketPair) < 0)
-        {
-            perror("[error] socketpair set failed");
-        }
+    // Create eventfd
+    m_wakeupFd = createEventfd();
+    auto chan = std::make_shared<Channel>(m_wakeupFd, EVENT_READ, this);
+    chan->setReadCallback(std::bind(&EventLoop::handleWakeup, this));
 
-        auto chan = std::make_shared<Channel>(m_socketPair[1], EVENT_READ, this);
-        chan->setReadCallback(std::bind(&EventLoop::handleWakeup, this));
-
-        this->add_channel_event(m_socketPair[0], chan);
-    }
+    this->add_channel_event(m_wakeupFd, chan);
 }
 
 int EventLoop::run()
@@ -59,8 +63,8 @@ int EventLoop::run()
 
 void EventLoop::handleWakeup()
 {
-    char one;
-    ssize_t n = read(this->m_socketPair[1], &one, sizeof one);
+    uint64_t one = 1;
+    ssize_t n = read(m_wakeupFd, &one, sizeof one);
     if (n != sizeof one)
     {
         LogError("handleWakeup  failed");
@@ -69,8 +73,8 @@ void EventLoop::handleWakeup()
 
 void EventLoop::wakeup()
 {
-    char one = 'a';
-    ssize_t n = write(m_socketPair[0], &one, sizeof one);
+    uint64_t one = 1;
+    ssize_t n = write(m_wakeupFd, &one, sizeof one);
     if (n != sizeof(one))
     {
         LogError("wakeup event loop thread failed");
@@ -82,7 +86,7 @@ int EventLoop::handle_pending_channel()
     // get the lock
     pthread_mutex_lock(&m_mutex);
     m_is_handle_pending = 1;
-
+    LogDebug(KV(this->m_owner_thread_id) << KV(pthread_self()) << KV(m_thread_name));
     while (m_pending_queue.size() > 0)
     {
         // Get the top chanElment of the queue
@@ -133,7 +137,8 @@ int EventLoop::do_channel_event(int fd, Channel::ptr channel, int type)
 
     if (m_owner_thread_id != pthread_self())
     {
-        // Wake up the corresponding slave thread by writing
+        // LogDebug("Wake up the corresponding slave thread by writing");
+        //  Wake up the corresponding slave thread by writing
         this->wakeup();
     }
     else
@@ -222,7 +227,6 @@ int EventLoop::handle_pending_update(int fd, Channel::ptr channel)
 
 int EventLoop::channel_event_activate(int fd, int revents)
 {
-    LogTrace("activate channel fd ==" << fd);
 
     auto pos = m_channlMap.find(fd);
     if (pos == m_channlMap.end())
@@ -233,16 +237,22 @@ int EventLoop::channel_event_activate(int fd, int revents)
 
     auto channel = pos->second;
     assert(fd == channel->m_fd);
+    if (revents & (EVENT_ERROR))
+    {
+        LogDebug("channel->m_readCallback in ......" << KV(fd));
+        if (channel->m_closeCallback)
+            channel->m_closeCallback();
+    }
 
     if (revents & (EVENT_READ))
     {
-        LogDebug("channel->m_readCallback in ......");
+        LogDebug("channel->m_readCallback in ......" << KV(fd));
         if (channel->m_readCallback)
             channel->m_readCallback();
     }
     if (revents & (EVENT_WRITE))
     {
-        LogDebug("channel->m_writeCallback in ......");
+        LogDebug("channel->m_writeCallback in ......" << KV(fd));
         if (channel->m_writeCallback)
             channel->m_writeCallback();
     }

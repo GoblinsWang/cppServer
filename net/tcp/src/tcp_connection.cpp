@@ -8,7 +8,7 @@ void cppServer::defaultConnectionCallback(const TcpConnection::ptr &conn)
     LogTrace("connection completed");
 }
 
-void cppServer::defaultMessageCallback(const TcpConnection::ptr &conn)
+void cppServer::defaultMessageCallback(TcpConnection *)
 {
     // TODO:
 }
@@ -93,19 +93,21 @@ int TcpConnection::sendBuffer()
 
 void TcpConnection::handleRead()
 {
-    LogDebug("in handleRead ......");
+
     // reads the data in the buffer, and you can process data in this callback function.
     int rt = m_read_buffer->readFromSocket(m_channel->m_fd);
     if (rt > 0)
     {
         LogDebug("TcpConnection->m_messageCallback in ......");
-        m_messageCallback(shared_from_this());
+        LogDebug(KV(this->m_fd));
+        m_messageCallback(this);
     }
     else
     {
         LogTrace("TcpConnection->handClose in ......");
         this->handleClose();
     }
+    LogDebug("handleRead over ......");
 }
 
 // Write out the data in the sending buffer
@@ -136,10 +138,17 @@ void TcpConnection::handleWrite()
 
 void TcpConnection::handleClose()
 {
-
-    m_eventloop->remove_channel_event(m_channel->m_fd, m_channel);
-    m_closeCallback(shared_from_this());
-    LogDebug("after m_closeCallback ...");
+    LogDebug("in handlecolse .... fd = " << m_fd);
+    try
+    {
+        m_eventloop->remove_channel_event(m_channel->m_fd, m_channel);
+        m_closeCallback(shared_from_this());
+        LogDebug("after m_closeCallback ...");
+    }
+    catch (const exception &e)
+    {
+        LogError("-----------------------error-----------------------");
+    }
     // LogDebug("shared_from_this().use_count: " << shared_from_this().use_count());
 }
 

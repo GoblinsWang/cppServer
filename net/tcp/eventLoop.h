@@ -67,7 +67,7 @@ namespace cppServer
         std::queue<ChannelElement::ptr> m_pending_queue;
 
     private:
-        int m_socketPair[2];
+        int m_wakeupFd;
         pthread_mutex_t m_mutex;
         pthread_cond_t m_cond;
     };

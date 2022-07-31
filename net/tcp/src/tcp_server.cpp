@@ -4,7 +4,9 @@
 using namespace cppServer;
 
 TcpServer::TcpServer(Acceptor::ptr acceptor, int threadNum)
+    : m_mapMutex(new mutex)
 {
+
     m_eventloop = std::make_shared<EventLoop>("");
     m_acceptor = acceptor;
     m_threadNum = threadNum;
@@ -28,7 +30,7 @@ void TcpServer::start()
 
 void TcpServer::handleNewConnection()
 {
-
+    LogWarn(" enter handleNewConnection ......");
     struct sockaddr_in client_addr;
     socklen_t client_len = sizeof(client_addr);
     int connected_fd = accept(m_acceptor->m_fd, (struct sockaddr *)&client_addr, &client_len);
@@ -36,14 +38,15 @@ void TcpServer::handleNewConnection()
     //设为非阻塞套接字描述符
     fcntl(connected_fd, F_SETFL, O_NONBLOCK);
 
-    LogTrace("new connection established, socket == " << connected_fd);
-
     // choose event loop from thread pool
-    auto event_loop = m_threadPool->getLoopFromThreadPool();
+    auto eventloop = m_threadPool->getLoopFromThreadPool();
+    LogDebug("new connection socket == " << connected_fd << KV(eventloop->m_thread_name));
 
-    LogTrace("create a new tcp connection");
-    TcpConnection::ptr tcp_connection(new TcpConnection(connected_fd, event_loop));
+    auto tcp_connection = std::make_shared<TcpConnection>(connected_fd, eventloop);
+    LogDebug(KV(m_connectionMap.size()));
+    m_mapMutex->lock();
     m_connectionMap[connected_fd] = tcp_connection;
+    m_mapMutex->unlock();
 
     // set callback functions
     if (m_connectionCallback)
@@ -60,7 +63,7 @@ void TcpServer::handleNewConnection()
 
 void TcpServer::handleCloseConnection(const TcpConnection::ptr &tcp_connection)
 {
-    // LogDebug("tcp_connection->use_count:" << tcp_connection.use_count()); // 2
+    m_mapMutex->lock();
     m_connectionMap.erase(tcp_connection->m_fd);
-    // LogDebug("tcp_connection->use_count:" << tcp_connection.use_count()); // 1
+    m_mapMutex->unlock();
 }

@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.0)
 project(HTTP_SERVER)
 
 # 设置编译的一些参数
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g -no-pie -std=c++11")
 
 # 编译类型选择，debug or release
 set(CMAKE_BUILD_TYPE Debug)

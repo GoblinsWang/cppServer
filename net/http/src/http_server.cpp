@@ -23,9 +23,9 @@ void HttpServer::onConnection(const TcpConnection::ptr &conn)
     conn->m_httpRequest = std::make_shared<HttpRequest>();
 }
 
-void HttpServer::onMessage(const TcpConnection::ptr &conn)
+void HttpServer::onMessage(TcpConnection *conn)
 {
-    LogTrace("get message from tcp connection" << conn->m_name);
+    LogDebug("get message from tcp connection" << conn->m_name);
 
     if (parseHttpRequest(conn->m_read_buffer, conn->m_httpRequest) == 0)
     {
@@ -39,7 +39,7 @@ void HttpServer::onMessage(const TcpConnection::ptr &conn)
     // after processing all the request data, then code and send.
     if (conn->m_httpRequest->getCurrentState() == REQUEST_DONE)
     {
-        LogDebug("parseHttpRequest completed ...");
+        // LogDebug("parseHttpRequest completed ...");
 
         auto httpResponse = std::make_shared<HttpResponse>();
         if (conn->m_httpRequest->closeConnection())
@@ -52,7 +52,7 @@ void HttpServer::onMessage(const TcpConnection::ptr &conn)
             m_httpCallback(conn->m_httpRequest, httpResponse);
         }
 
-        LogTrace("httpResponse->body:" << httpResponse->m_body);
+        // LogDebug("httpResponse->body:" << httpResponse->m_body);
         httpResponse->appendToBuffer(conn->m_write_buffer);
         conn->sendBuffer();
 
