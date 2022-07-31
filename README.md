@@ -122,7 +122,7 @@ int main(int argc, char **argv)
 ![1659261556621](https://user-images.githubusercontent.com/45566796/182021042-9975a245-903f-45ee-a22d-c4cb2a6e8407.png)
 
 
-- 在线程池线程数量为3时，TPS两万二左右
+- 在线程池线程数量为3时，TPS四万四左右
 
 
 
