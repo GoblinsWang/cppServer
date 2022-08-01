@@ -17,7 +17,7 @@ void HttpServer::start()
     m_tcpServer->start();
 }
 
-void HttpServer::onConnection(const TcpConnection::ptr &conn)
+void HttpServer::onConnection(TcpConnection *conn)
 {
     // initialize httpRequest for conn
     conn->m_httpRequest = std::make_shared<HttpRequest>();

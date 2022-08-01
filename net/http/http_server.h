@@ -22,7 +22,7 @@ namespace cppServer
         void start();
 
         // callback for created connection
-        void onConnection(const TcpConnection::ptr &conn);
+        void onConnection(TcpConnection *conn);
 
         // callback for message process
         void onMessage(TcpConnection *conn);

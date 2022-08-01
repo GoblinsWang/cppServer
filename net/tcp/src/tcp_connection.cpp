@@ -2,7 +2,7 @@
 
 using namespace cppServer;
 
-void cppServer::defaultConnectionCallback(const TcpConnection::ptr &conn)
+void cppServer::defaultConnectionCallback(TcpConnection *conn)
 {
     //
     LogTrace("connection completed");
@@ -13,7 +13,7 @@ void cppServer::defaultMessageCallback(TcpConnection *)
     // TODO:
 }
 
-void cppServer::defaultWriteCompleteCallback(const TcpConnection::ptr &conn)
+void cppServer::defaultWriteCompleteCallback(TcpConnection *conn)
 {
     //
     LogTrace("write completed");
@@ -132,7 +132,7 @@ void TcpConnection::handleWrite()
         }
 
         // Call callback function
-        m_writeCompleteCallback(shared_from_this());
+        m_writeCompleteCallback(this);
     }
 }
 
@@ -142,7 +142,7 @@ void TcpConnection::handleClose()
     try
     {
         m_eventloop->remove_channel_event(m_channel->m_fd, m_channel);
-        m_closeCallback(shared_from_this());
+        m_closeCallback(this);
         LogDebug("after m_closeCallback ...");
     }
     catch (const exception &e)

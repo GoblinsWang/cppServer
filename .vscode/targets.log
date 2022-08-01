@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun Jul 31 06:25:10 2022
+# Make data base, printed on Mon Aug  1 10:10:03 2022
 
 # Variables
 
@@ -49,7 +49,7 @@ LESSOPEN = | /usr/bin/lesspipe %s
 # environment
 VSCODE_CWD = /home/wzm
 # environment
-SSH_CONNECTION = 192.168.1.75 57654 192.168.1.220 22
+SSH_CONNECTION = 192.168.1.75 59518 192.168.1.220 22
 # environment
 PATH = /home/wzm/.vscode-server/bin/3b889b090b5ad5793f524b5d1d39fda662b96a2a/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # environment
@@ -65,7 +65,7 @@ LS_COLORS =
 # environment
 PWD = /home/wzm/project/cppServer
 # environment
-VSCODE_IPC_HOOK_CLI = /run/user/1001/vscode-ipc-adc6007f-bc68-40d6-b140-2177ccbbc7c1.sock
+VSCODE_IPC_HOOK_CLI = /run/user/1001/vscode-ipc-6ba0c786-45db-4d35-b91e-d13d25cba2d9.sock
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
@@ -93,7 +93,7 @@ MAKECMDGOALS := all
 # environment
 SHLVL = 3
 # environment
-XDG_SESSION_ID = 973
+XDG_SESSION_ID = 1071
 # environment
 USER = wzm
 # makefile
@@ -111,7 +111,7 @@ MAKEFLAGS = pqrR
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_CLIENT = 192.168.1.75 57654 22
+SSH_CLIENT = 192.168.1.75 59518 22
 # environment
 MAIL = /var/mail/wzm
 # automatic
@@ -205,6 +205,6 @@ GNUmakefile:
 # strcache performance: lookups = 19 / hit rate = 15%
 # hash-table stats:
 # Load=16/8192=0%, Rehash=0, Collisions=1/19=5%
-# Finished Make data base on Sun Jul 31 06:25:10 2022
+# Finished Make data base on Mon Aug  1 10:10:03 2022
 
  

@@ -58,12 +58,12 @@ void TcpServer::handleNewConnection()
     // it must be set.
     tcp_connection->setCloseCallback(std::bind(&TcpServer::handleCloseConnection, this, _1));
 
-    tcp_connection->m_connectionCallback(tcp_connection);
+    tcp_connection->m_connectionCallback(tcp_connection.get());
 }
 
-void TcpServer::handleCloseConnection(const TcpConnection::ptr &tcp_connection)
+void TcpServer::handleCloseConnection(TcpConnection *conn)
 {
     m_mapMutex->lock();
-    m_connectionMap.erase(tcp_connection->m_fd);
+    m_connectionMap.erase(conn->m_fd);
     m_mapMutex->unlock();
 }

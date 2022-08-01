@@ -22,7 +22,7 @@ namespace cppServer
         void handleNewConnection();
 
         // handle close connection
-        void handleCloseConnection(const TcpConnection::ptr &tcp_connection);
+        void handleCloseConnection(TcpConnection *conn);
 
         // Set connection callback.Not thread safe.
         void setConnectionCallback(const ConnectionCallback &cb)

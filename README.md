@@ -23,28 +23,19 @@
 
 ```C++
 	|—— README.md 				// 帮助文档
-
 	|—— example 				// 功能测试代码，目前只有tcp_server、http_server和log测试
-
-	|—— log						// 包含日志类实现
-
-	|	|—— src					// 包含日志类的cpp文件
-
-	|—— net						// 包含服务器框架代码
-
-	| 	|—— http				// 包含http的相关实现
-            |—— src             // 包含http实现的cpp文件
-
-	|	|—— tcp					// 包含tcp的相关实现
-
-	|		|—— src				// 包含tcp实现的cpp文件
+	|—— log					// 包含日志类实现
+	|    |—— src				// 包含日志类的cpp文件
+	|—— net					// 包含服务器框架代码
+	|    |—— http			        // 包含http的相关实现
+        |        |—— src             		// 包含http实现的cpp文件
+	|    |—— tcp				// 包含tcp的相关实现
+	|        |—— src			// 包含tcp实现的cpp文件
 ```
 
 ## 快速示例 
 ### TcpServer
 ```C++
-#include "../../net/tcp/tcpServer.h"
-
 #include "../../net/tcp/tcp_server.h"
 using namespace cppServer;
 
