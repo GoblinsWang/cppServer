@@ -8,7 +8,7 @@ void cppServer::defaultConnectionCallback(TcpConnection *conn)
     LogTrace("connection completed");
 }
 
-void cppServer::defaultMessageCallback(TcpConnection *)
+void cppServer::defaultMessageCallback(TcpConnection *conn)
 {
     // TODO:
 }
@@ -58,7 +58,7 @@ int TcpConnection::sendBuffer()
     size_t nleft = total_size;
     int fault = 0;
     // Try to send data to the socket first
-    if (!m_channel->channel_write_event_is_enabled(m_channel))
+    if (!m_channel->isWriteEventEnabled())
     {
         nwrited = write(m_channel->m_fd, &(m_write_buffer->m_buffer[read_index]), total_size);
         if (nwrited >= 0)
@@ -83,9 +83,9 @@ int TcpConnection::sendBuffer()
     if (!fault && nleft > 0)
     {
         LogTrace("add a write event");
-        if (!m_channel->channel_write_event_is_enabled(m_channel))
+        if (!m_channel->isWriteEventEnabled())
         {
-            m_channel->channel_write_event_enable(m_channel);
+            m_channel->enableWriteEvent();
         }
     }
     return nwrited;
@@ -128,7 +128,7 @@ void TcpConnection::handleWrite()
         // If the data is completely sent out, there is no need to continue
         if (m_write_buffer->readAble() == 0)
         {
-            m_channel->channel_write_event_disable(m_channel);
+            m_channel->disableWriteEvent();
         }
 
         // Call callback function

@@ -19,6 +19,7 @@ void HttpRequest::Reset()
     m_version.clear();
     m_method.clear();
     m_url.clear();
+    m_body.clear();
     m_currentState = REQUEST_STATUS;
     m_requestHeaders.clear();
 }

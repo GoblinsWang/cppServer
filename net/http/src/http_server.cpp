@@ -39,7 +39,7 @@ void HttpServer::onMessage(TcpConnection *conn)
     // after processing all the request data, then code and send.
     if (conn->m_httpRequest->getCurrentState() == REQUEST_DONE)
     {
-        // LogDebug("parseHttpRequest completed ...");
+        LogTrace("parseHttpRequest completed ...");
 
         auto httpResponse = std::make_shared<HttpResponse>();
         if (conn->m_httpRequest->closeConnection())
@@ -69,7 +69,7 @@ int HttpServer::parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr h
     int ok = 1;
     // get bufferString
     std::string buffer_s = input_buffer->getBufferString();
-    // LogDebug("buffer_s : " << buffer_s << "len : " << buffer_s.length());
+    LogDebug("buffer_s : " << buffer_s << "len : " << buffer_s.length());
     int start = 0;
     int end = -2;
 
@@ -81,7 +81,7 @@ int HttpServer::parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr h
             end = buffer_s.find("\r\n", start); // find CLRF
             if (end != -1)
             {
-                // LogDebug("------ parse status line ------");
+                LogTrace("------ parse status line ------");
                 std::string statusLine = buffer_s.substr(start, end - start);
 
                 if (processStatusLine(statusLine, httpRequest))
@@ -96,10 +96,10 @@ int HttpServer::parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr h
         else if (httpRequest->m_currentState == REQUEST_HEADERS)
         {
             end = buffer_s.find("\r\n", start);
-            // LogDebug("header : " << buffer_s.substr(start, end - start));
+            LogTrace(KV(start) << KV(end));
             if (end != -1)
             {
-                // LogDebug("------ parse header lines ------");
+                LogTrace("------ parse header lines ------");
                 int colon = buffer_s.find(':', start); // find " "
                 if (colon != -1)
                 {
@@ -126,7 +126,13 @@ int HttpServer::parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr h
         else if (httpRequest->m_currentState == REQUEST_BODY)
         {
             // TODO:
-
+            // end = buffer_s.find("\r\n", start);
+            LogTrace("---------- REQUEST_BODY -----------");
+            // if (end != start)
+            // {
+            //     httpRequest->m_body = std::move(buffer_s.substr(start, end - start));
+            //     input_buffer->recycleRead(+2);
+            // }
             httpRequest->m_currentState = REQUEST_DONE;
         }
     }

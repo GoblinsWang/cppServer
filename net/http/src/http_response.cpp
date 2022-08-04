@@ -26,7 +26,7 @@ void HttpResponse::appendToBuffer(TcpBuffer::ptr buffer)
         iter++;
     }
 
-    response += "\r\n" + m_body;
+    response += "\r\n" + m_body + "\r\n";
 
     buffer->writeToBuffer(response.c_str(), response.size());
 }

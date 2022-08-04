@@ -17,16 +17,16 @@
 namespace cppServer
 {
     class EventLoop;
-    class Channel
+    class Channel : public std::enable_shared_from_this<Channel>
     {
     public:
         using ptr = std::shared_ptr<Channel>;
 
-        /* 定义两个用于回调的函数指针 */
+        /* 定义四个用于回调的函数指针 */
         typedef std::function<void()> EventCallback;
 
-        // 构造函数
         Channel(int fd, int events, EventLoop *eventloop);
+
         ~Channel() = default;
 
         void setReadCallback(EventCallback cb)
@@ -46,11 +46,11 @@ namespace cppServer
             m_errorCallback = std::move(cb);
         }
         // 判断是否可写
-        static int channel_write_event_is_enabled(ptr channel);
+        int isWriteEventEnabled();
         // 使可写
-        static int channel_write_event_enable(ptr channel);
+        int enableWriteEvent();
         // 使不可写
-        static int channel_write_event_disable(ptr channel);
+        int disableWriteEvent();
 
     public:
         int m_fd;

@@ -40,6 +40,7 @@ namespace cppServer
         std::string m_version;
         std::string m_method;
         std::string m_url;
+        std::string m_body;
         std::map<std::string, std::string> m_requestHeaders;
         int m_headersNum;
         HttpRequestState m_currentState;

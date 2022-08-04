@@ -7,21 +7,21 @@ Channel::Channel(int fd, int events, EventLoop *eventloop)
 {
 }
 
-int Channel::channel_write_event_is_enabled(std::shared_ptr<Channel> channel)
+int Channel::isWriteEventEnabled()
 {
-    return channel->m_events & EVENT_WRITE;
+    return m_events & EVENT_WRITE;
 }
 
-int Channel::channel_write_event_enable(std::shared_ptr<Channel> channel)
+int Channel::enableWriteEvent()
 {
-    channel->m_events = channel->m_events | EVENT_WRITE;
-    channel->m_eventloop->update_channel_event(channel->m_fd, channel);
+    m_events = m_events | EVENT_WRITE;
+    m_eventloop->update_channel_event(m_fd, shared_from_this());
     return 0;
 }
 
-int Channel::channel_write_event_disable(std::shared_ptr<Channel> channel)
+int Channel::disableWriteEvent()
 {
-    channel->m_events = channel->m_events | ~EVENT_WRITE;
-    channel->m_eventloop->update_channel_event(channel->m_fd, channel);
+    m_events = m_events | ~EVENT_WRITE;
+    m_eventloop->update_channel_event(m_fd, shared_from_this());
     return 0;
 }

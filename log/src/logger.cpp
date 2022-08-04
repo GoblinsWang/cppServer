@@ -67,7 +67,7 @@ void Logger::initLogConfig()
 #ifdef __linux__
     file.open("../log.conf");
 #elif _WIN32
-    file.open("fdoglogconf.conf");
+    file.open("./log.conf");
 #endif
     if (!file.is_open())
     {
