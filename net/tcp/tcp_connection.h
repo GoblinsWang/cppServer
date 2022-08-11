@@ -1,7 +1,7 @@
 #ifndef net_tcp_TcpConnection_h
 #define net_tcp_TcpConnection_h
 
-#include "eventLoop.h"
+#include "event_loop.h"
 #include "channel.h"
 #include "tcp_buffer.h"
 #include "callbacks.h"
@@ -55,9 +55,10 @@ namespace cppServer
         std::string m_name;
         Channel::ptr m_channel;
         EventLoop::ptr m_eventloop;
+
         // buffer for read and write
-        TcpBuffer::ptr m_read_buffer;
-        TcpBuffer::ptr m_write_buffer;
+        TcpBuffer::ptr m_readBuffer;
+        TcpBuffer::ptr m_writeBuffer;
 
         // callback functions
         ConnectionCallback m_connectionCallback;

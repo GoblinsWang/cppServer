@@ -1,4 +1,4 @@
-#include "../eventLoop.h"
+#include "../event_loop.h"
 
 using namespace cppServer;
 
@@ -18,31 +18,31 @@ EventLoop::EventLoop(std::string thread_name)
     pthread_mutex_init(&m_mutex, NULL);
     pthread_cond_init(&m_cond, NULL);
 
-    m_thread_name = (thread_name != "") ? thread_name : "main thread";
+    m_threadName = (thread_name != "") ? thread_name : "main thread";
 
     m_dispatcher = std::make_shared<EventDispatcher>(this);
     m_quit = 0;
 
-    m_owner_thread_id = pthread_self();
-    m_is_handle_pending = 0;
+    m_ownerThreadId = pthread_self();
+    m_isHandlePending = 0;
 
     // Create eventfd
     m_wakeupFd = createEventfd();
     auto chan = std::make_shared<Channel>(m_wakeupFd, EVENT_READ, this);
     chan->setReadCallback(std::bind(&EventLoop::handleWakeup, this));
 
-    this->add_channel_event(m_wakeupFd, chan);
+    this->addChannelEvent(m_wakeupFd, chan);
 }
 
 int EventLoop::run()
 {
     // Determine whether it is in your own thread
-    if (m_owner_thread_id != pthread_self())
+    if (m_ownerThreadId != pthread_self())
     {
         exit(1);
     }
 
-    LogTrace("event loop run, " << m_thread_name);
+    LogTrace("event loop run, " << m_threadName);
 
     // Timeout setting
     struct timeval timeval;
@@ -51,12 +51,12 @@ int EventLoop::run()
     while (!m_quit)
     {
         // block here to wait I/O event, and get active channels
-        m_dispatcher->epoll_dispatch(this, &timeval);
+        m_dispatcher->epollDispatch(this, &timeval);
 
         // handle the pending channel
-        this->handle_pending_channel();
+        this->handlePendingChannel();
     }
-    LogTrace("event loop end, " << m_thread_name);
+    LogTrace("event loop end, " << m_threadName);
 
     return 0;
 }
@@ -81,61 +81,61 @@ void EventLoop::wakeup()
     }
 }
 
-int EventLoop::handle_pending_channel()
+int EventLoop::handlePendingChannel()
 {
     // get the lock
     pthread_mutex_lock(&m_mutex);
-    m_is_handle_pending = 1;
-    LogDebug(KV(this->m_owner_thread_id) << KV(pthread_self()) << KV(m_thread_name));
-    while (m_pending_queue.size() > 0)
+    m_isHandlePending = 1;
+    // LogDebug(KV(this->m_ownerThreadId) << KV(pthread_self()) << KV(m_threadName));
+    while (m_pendingQueue.size() > 0)
     {
         // Get the top chanElment of the queue
-        auto chanElement = m_pending_queue.front();
+        auto chanElement = m_pendingQueue.front();
 
         auto channel = chanElement->m_channel;
         int fd = channel->m_fd;
         if (chanElement->m_type == 1)
         {
-            handle_pending_add(fd, channel);
+            handlePendingAdd(fd, channel);
         }
         else if (chanElement->m_type == 2)
         {
-            handle_pending_remove(fd, channel);
+            handlePendingRemove(fd, channel);
         }
         else if (chanElement->m_type == 3)
         {
-            handle_pending_update(fd, channel);
+            handlePendingUpdate(fd, channel);
         }
-        m_pending_queue.pop();
+        m_pendingQueue.pop();
     }
-    m_is_handle_pending = 0;
+    m_isHandlePending = 0;
     // release the lock
     pthread_mutex_unlock(&m_mutex);
 
     return 0;
 }
 
-void EventLoop::channel_buffer_nolock(int fd, Channel::ptr channel, int type)
+void EventLoop::addChannelToPendingQueue(int fd, Channel::ptr channel, int type)
 {
     // add channel into the pending list
     auto chanElement = std::make_shared<ChannelElement>(type, channel);
 
-    m_pending_queue.push(chanElement);
+    m_pendingQueue.push(chanElement);
 }
 
-int EventLoop::do_channel_event(int fd, Channel::ptr channel, int type)
+int EventLoop::doChannelEvent(int fd, Channel::ptr channel, int type)
 {
     // get the lock
     pthread_mutex_lock(&m_mutex);
-    assert(m_is_handle_pending == 0);
+    assert(m_isHandlePending == 0);
 
     // add channel event in pending_queue
-    this->channel_buffer_nolock(fd, channel, type);
+    this->addChannelToPendingQueue(fd, channel, type);
 
     // release the lock
     pthread_mutex_unlock(&m_mutex);
 
-    if (m_owner_thread_id != pthread_self())
+    if (m_ownerThreadId != pthread_self())
     {
         // LogDebug("Wake up the corresponding slave thread by writing");
         //  Wake up the corresponding slave thread by writing
@@ -143,26 +143,26 @@ int EventLoop::do_channel_event(int fd, Channel::ptr channel, int type)
     }
     else
     {
-        this->handle_pending_channel();
+        this->handlePendingChannel();
     }
     return 0;
 }
-int EventLoop::add_channel_event(int fd, Channel::ptr channel)
+int EventLoop::addChannelEvent(int fd, Channel::ptr channel)
 {
-    return this->do_channel_event(fd, channel, 1);
+    return this->doChannelEvent(fd, channel, 1);
 }
 
-int EventLoop::remove_channel_event(int fd, Channel::ptr channel)
+int EventLoop::removeChannelEvent(int fd, Channel::ptr channel)
 {
-    return this->do_channel_event(fd, channel, 2);
+    return this->doChannelEvent(fd, channel, 2);
 }
 
-int EventLoop::update_channel_event(int fd, Channel::ptr channel)
+int EventLoop::updateChannelEvent(int fd, Channel::ptr channel)
 {
-    return this->do_channel_event(fd, channel, 3);
+    return this->doChannelEvent(fd, channel, 3);
 }
 
-int EventLoop::handle_pending_add(int fd, Channel::ptr channel)
+int EventLoop::handlePendingAdd(int fd, Channel::ptr channel)
 {
     LogTrace("add channel fd == " << fd);
 
@@ -175,13 +175,13 @@ int EventLoop::handle_pending_add(int fd, Channel::ptr channel)
     {
         m_channlMap[fd] = channel;
         // add channel
-        m_dispatcher->epoll_add(channel);
+        m_dispatcher->epollAdd(channel);
         return 1;
     }
     return 0;
 }
 
-int EventLoop::handle_pending_remove(int fd, Channel::ptr channel)
+int EventLoop::handlePendingRemove(int fd, Channel::ptr channel)
 {
     assert(fd == channel->m_fd);
     LogTrace("remove channel fd == " << fd);
@@ -199,9 +199,9 @@ int EventLoop::handle_pending_remove(int fd, Channel::ptr channel)
     auto chan2 = pos->second;
 
     // update dispatcher(multi-thread)here
-    if (m_dispatcher->epoll_del(chan2) == -1)
+    if (m_dispatcher->epollDel(chan2) == -1)
     {
-        LogError("epoll_del failed");
+        LogError("epollDel failed");
         return -1;
     }
 
@@ -209,7 +209,7 @@ int EventLoop::handle_pending_remove(int fd, Channel::ptr channel)
     return 1;
 }
 
-int EventLoop::handle_pending_update(int fd, Channel::ptr channel)
+int EventLoop::handlePendingUpdate(int fd, Channel::ptr channel)
 {
     LogTrace("update channel fd ==" << fd);
 
@@ -221,11 +221,11 @@ int EventLoop::handle_pending_update(int fd, Channel::ptr channel)
         return (-1);
 
     // update channel
-    m_dispatcher->epoll_update(channel);
+    m_dispatcher->epollUpdate(channel);
     return 1;
 }
 
-int EventLoop::channel_event_activate(int fd, int revents)
+int EventLoop::activateChannelEvent(int fd, int revents)
 {
 
     auto pos = m_channlMap.find(fd);

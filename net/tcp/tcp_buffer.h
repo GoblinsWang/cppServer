@@ -48,8 +48,8 @@ namespace cppServer
         void adjustBuffer();
 
     public:
-        int m_read_index{0};
-        int m_write_index{0};
+        int m_readIndex{0};
+        int m_writeIndex{0};
         int m_size{0};
 
     public:

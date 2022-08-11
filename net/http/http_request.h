@@ -25,10 +25,10 @@ namespace cppServer
         void Reset();
 
         // add header to HttpRequest.
-        void addHeader(std::string &key, std::string &value);
+        void setHead(std::string &key, std::string &value);
 
         // get header by key
-        std::string getHeader(std::string key);
+        std::string getHead(std::string key);
 
         // get currentState of httpRequest.
         HttpRequestState getCurrentState();
@@ -41,7 +41,7 @@ namespace cppServer
         std::string m_method;
         std::string m_url;
         std::string m_body;
-        std::map<std::string, std::string> m_requestHeaders;
+        std::map<std::string, std::string> m_headMap;
         int m_headersNum;
         HttpRequestState m_currentState;
     };

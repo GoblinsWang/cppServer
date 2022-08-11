@@ -21,21 +21,21 @@ void HttpRequest::Reset()
     m_url.clear();
     m_body.clear();
     m_currentState = REQUEST_STATUS;
-    m_requestHeaders.clear();
+    m_headMap.clear();
 }
 
-void HttpRequest::addHeader(std::string &key, std::string &value)
+void HttpRequest::setHead(std::string &key, std::string &value)
 {
-    m_requestHeaders[key] = value;
+    m_headMap[key] = value;
 }
 
-string HttpRequest::getHeader(std::string key)
+string HttpRequest::getHead(std::string key)
 {
-    if (!m_requestHeaders.size())
+    if (!m_headMap.size())
         return "";
 
-    auto pos = m_requestHeaders.find(key);
-    if (pos != m_requestHeaders.end())
+    auto pos = m_headMap.find(key);
+    if (pos != m_headMap.end())
     {
         return pos->second;
     }
@@ -49,7 +49,7 @@ HttpRequestState HttpRequest::getCurrentState()
 
 int HttpRequest::closeConnection()
 {
-    string value = getHeader("Connection");
+    string value = getHead("Connection");
     if (value.compare(CLOSE) == 0)
     {
         return 1;

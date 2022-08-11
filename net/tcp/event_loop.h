@@ -30,41 +30,42 @@ namespace cppServer
 
         void wakeup(); // Used to wake up the slave thread
 
-        int handle_pending_channel(); // handle channelElement in pending_queue
-
         void handleWakeup(); // handle the Wakeup event
 
-        void channel_buffer_nolock(int fd, Channel::ptr chan, int type);
+        int handlePendingChannel(); // handle channelElement in pending_queue
 
-        int do_channel_event(int fd, Channel::ptr chan, int type);
+        int addChannelEvent(int fd, Channel::ptr chan);
 
-        int add_channel_event(int fd, Channel::ptr chan);
+        int removeChannelEvent(int fd, Channel::ptr chan);
 
-        int remove_channel_event(int fd, Channel::ptr chan);
+        int updateChannelEvent(int fd, Channel::ptr chan);
 
-        int update_channel_event(int fd, Channel::ptr chan);
+        int activateChannelEvent(int fd, int revents); // Activate the event corresponding to the channel
 
-        int handle_pending_add(int fd, Channel::ptr chan);
+    private:
+        int doChannelEvent(int fd, Channel::ptr chan, int type);
 
-        int handle_pending_remove(int fd, Channel::ptr chan);
+        void addChannelToPendingQueue(int fd, Channel::ptr chan, int type);
 
-        int handle_pending_update(int fd, Channel::ptr chan);
+        int handlePendingAdd(int fd, Channel::ptr chan);
 
-        int channel_event_activate(int fd, int revents); // Activate the event corresponding to the channel
+        int handlePendingRemove(int fd, Channel::ptr chan);
+
+        int handlePendingUpdate(int fd, Channel::ptr chan);
 
     public:
-        int m_quit;              // Marks the exit of the event cycle
-        int m_is_handle_pending; // Identifies whether the pending queue is being processed
+        int m_quit;            // Marks the exit of the event cycle
+        int m_isHandlePending; // Identifies whether the pending queue is being processed
 
-        pthread_t m_owner_thread_id;
-        std::string m_thread_name;
+        pthread_t m_ownerThreadId;
+        std::string m_threadName;
 
         EventDispatcher::ptr m_dispatcher;
 
         // use to save active channels
         std::map<int, Channel::ptr> m_channlMap;
 
-        std::queue<ChannelElement::ptr> m_pending_queue;
+        std::queue<ChannelElement::ptr> m_pendingQueue;
 
     private:
         int m_wakeupFd;

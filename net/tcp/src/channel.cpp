@@ -1,5 +1,5 @@
 #include "../channel.h"
-#include "eventLoop.h"
+#include "event_loop.h"
 using namespace cppServer;
 
 Channel::Channel(int fd, int events, EventLoop *eventloop)
@@ -15,13 +15,13 @@ int Channel::isWriteEventEnabled()
 int Channel::enableWriteEvent()
 {
     m_events = m_events | EVENT_WRITE;
-    m_eventloop->update_channel_event(m_fd, shared_from_this());
+    m_eventloop->updateChannelEvent(m_fd, shared_from_this());
     return 0;
 }
 
 int Channel::disableWriteEvent()
 {
     m_events = m_events | ~EVENT_WRITE;
-    m_eventloop->update_channel_event(m_fd, shared_from_this());
+    m_eventloop->updateChannelEvent(m_fd, shared_from_this());
     return 0;
 }

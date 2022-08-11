@@ -27,8 +27,8 @@ TcpConnection::TcpConnection(int connected_fd, EventLoop::ptr eventloop)
 {
 
     int size = 1024;
-    m_write_buffer = std::make_shared<TcpBuffer>(size);
-    m_read_buffer = std::make_shared<TcpBuffer>(size);
+    m_writeBuffer = std::make_shared<TcpBuffer>(size);
+    m_readBuffer = std::make_shared<TcpBuffer>(size);
 
     m_name = "connection-" + std::to_string(connected_fd);
 
@@ -45,14 +45,14 @@ TcpConnection::TcpConnection(int connected_fd, EventLoop::ptr eventloop)
         std::bind(&TcpConnection::handleError, this));
 
     // connectionCompletedCallBack callback
-    m_eventloop->add_channel_event(connected_fd, m_channel);
+    m_eventloop->addChannelEvent(connected_fd, m_channel);
 }
 
 // return the num of char had writen
 int TcpConnection::sendBuffer()
 {
-    int total_size = m_write_buffer->readAble();
-    int read_index = m_write_buffer->readIndex();
+    int total_size = m_writeBuffer->readAble();
+    int read_index = m_writeBuffer->readIndex();
 
     size_t nwrited = 0;
     size_t nleft = total_size;
@@ -60,7 +60,7 @@ int TcpConnection::sendBuffer()
     // Try to send data to the socket first
     if (!m_channel->isWriteEventEnabled())
     {
-        nwrited = write(m_channel->m_fd, &(m_write_buffer->m_buffer[read_index]), total_size);
+        nwrited = write(m_channel->m_fd, &(m_writeBuffer->m_buffer[read_index]), total_size);
         if (nwrited >= 0)
         {
             nleft = nleft - nwrited;
@@ -78,7 +78,7 @@ int TcpConnection::sendBuffer()
             }
         }
     }
-    m_write_buffer->recycleRead(nwrited);
+    m_writeBuffer->recycleRead(nwrited);
     // If there is any remaining data not sent, add a write event
     if (!fault && nleft > 0)
     {
@@ -95,7 +95,7 @@ void TcpConnection::handleRead()
 {
 
     // reads the data in the buffer, and you can process data in this callback function.
-    int rt = m_read_buffer->readFromSocket(m_channel->m_fd);
+    int rt = m_readBuffer->readFromSocket(m_channel->m_fd);
     if (rt > 0)
     {
         LogDebug("TcpConnection->m_messageCallback in ......");
@@ -114,7 +114,7 @@ void TcpConnection::handleRead()
 void TcpConnection::handleWrite()
 {
     // assertInSameThread(eventLoop);
-    if (m_eventloop->m_owner_thread_id != pthread_self())
+    if (m_eventloop->m_ownerThreadId != pthread_self())
     {
         exit(-1);
     }
@@ -123,10 +123,10 @@ void TcpConnection::handleWrite()
     if (nwrited > 0)
     {
         // nwrited bytes had read
-        m_write_buffer->recycleWrite(nwrited);
+        m_writeBuffer->recycleWrite(nwrited);
 
         // If the data is completely sent out, there is no need to continue
-        if (m_write_buffer->readAble() == 0)
+        if (m_writeBuffer->readAble() == 0)
         {
             m_channel->disableWriteEvent();
         }
@@ -139,16 +139,10 @@ void TcpConnection::handleWrite()
 void TcpConnection::handleClose()
 {
     LogDebug("in handlecolse .... fd = " << m_fd);
-    try
-    {
-        m_eventloop->remove_channel_event(m_channel->m_fd, m_channel);
-        m_closeCallback(this);
-        LogDebug("after m_closeCallback ...");
-    }
-    catch (const exception &e)
-    {
-        LogError("-----------------------error-----------------------");
-    }
+    m_eventloop->removeChannelEvent(m_channel->m_fd, m_channel);
+    m_closeCallback(this);
+    LogDebug("after m_closeCallback ...");
+
     // LogDebug("shared_from_this().use_count: " << shared_from_this().use_count());
 }
 

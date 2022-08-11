@@ -27,11 +27,11 @@ void HttpServer::onMessage(TcpConnection *conn)
 {
     LogDebug("get message from tcp connection" << conn->m_name);
 
-    if (parseHttpRequest(conn->m_read_buffer, conn->m_httpRequest) == 0)
+    if (parseHttpRequest(conn->m_readBuffer, conn->m_httpRequest) == 0)
     {
         LogError("parseHttpRequest failed");
         std::string error_response = "HTTP/1.1 400 Bad Request\r\n\r\n";
-        conn->m_write_buffer->writeToBuffer(error_response.c_str(), error_response.size());
+        conn->m_writeBuffer->writeToBuffer(error_response.c_str(), error_response.size());
         conn->sendBuffer();
         conn->shutDown();
     }
@@ -53,7 +53,7 @@ void HttpServer::onMessage(TcpConnection *conn)
         }
 
         // LogDebug("httpResponse->body:" << httpResponse->m_body);
-        httpResponse->appendToBuffer(conn->m_write_buffer);
+        httpResponse->appendToBuffer(conn->m_writeBuffer);
         conn->sendBuffer();
 
         if (httpResponse->m_closeConnection)
@@ -81,7 +81,7 @@ int HttpServer::parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr h
             end = buffer_s.find("\r\n", start); // find CLRF
             if (end != -1)
             {
-                LogTrace("------ parse status line ------");
+                // LogTrace("------ parse status line ------");
                 std::string statusLine = buffer_s.substr(start, end - start);
 
                 if (processStatusLine(statusLine, httpRequest))
@@ -96,10 +96,10 @@ int HttpServer::parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr h
         else if (httpRequest->m_currentState == REQUEST_HEADERS)
         {
             end = buffer_s.find("\r\n", start);
-            LogTrace(KV(start) << KV(end));
+            // LogTrace(KV(start) << KV(end));
             if (end != -1)
             {
-                LogTrace("------ parse header lines ------");
+                // LogTrace("------ parse header lines ------");
                 int colon = buffer_s.find(':', start); // find " "
                 if (colon != -1)
                 {
@@ -107,7 +107,7 @@ int HttpServer::parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr h
                     std::string value = buffer_s.substr(colon + 2, end - colon - 2);
 
                     // LogDebug(KV(key) << KV(value));
-                    httpRequest->addHeader(key, value);
+                    httpRequest->setHead(key, value);
                     input_buffer->recycleRead(end - start + 2); // request_line_size + CRLF size(2)
                     continue;
                 }
@@ -136,7 +136,7 @@ int HttpServer::parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr h
             httpRequest->m_currentState = REQUEST_DONE;
         }
     }
-    // LogDebug("m_write_index:" << input_buffer->m_read_index);
+    // LogDebug("m_writeIndex:" << input_buffer->m_readIndex);
     return ok;
 }
 

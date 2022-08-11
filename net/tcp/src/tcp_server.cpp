@@ -1,5 +1,4 @@
 #include "../tcp_server.h"
-#include "../tcp_connection.h"
 
 using namespace cppServer;
 
@@ -23,7 +22,7 @@ void TcpServer::start()
     // currently, only need to set ReadCallback
     channel->setReadCallback(std::bind(&TcpServer::handleNewConnection, this));
 
-    m_eventloop->add_channel_event(channel->m_fd, channel);
+    m_eventloop->addChannelEvent(channel->m_fd, channel);
 
     m_eventloop->run();
 }
@@ -40,7 +39,7 @@ void TcpServer::handleNewConnection()
 
     // choose event loop from thread pool
     auto eventloop = m_threadPool->getLoopFromThreadPool();
-    LogDebug("new connection socket == " << connected_fd << KV(eventloop->m_thread_name));
+    LogDebug("new connection socket == " << connected_fd << KV(eventloop->m_threadName));
 
     auto tcp_connection = std::make_shared<TcpConnection>(connected_fd, eventloop);
     LogDebug(KV(m_connectionMap.size()));

@@ -14,27 +14,27 @@ namespace cppServer
 
         EventDispatcher(EventLoop *eventloop);
 
-        int epoll_add(Channel::ptr channel); // Add event into epoll
+        int epollAdd(Channel::ptr channel); // Add event into epoll
 
-        int epoll_del(Channel::ptr channel); // delete event in epoll
+        int epollDel(Channel::ptr channel); // delete event in epoll
 
-        int epoll_update(Channel::ptr channel); // update event into epoll
+        int epollUpdate(Channel::ptr channel); // update event into epoll
 
-        int epoll_dispatch(EventLoop *eventloop, struct timeval *timeval); // Event distribution
+        int epollDispatch(EventLoop *eventloop, struct timeval *timeval); // Event distribution
 
     private:
         using EventList = std::vector<struct epoll_event>;
 
         static const int kInitEventListSize = 32;
 
-        int handle_epoll_event(Channel::ptr channel, int type); // handle different events of dispatcher
+        int handleEpollEvent(Channel::ptr channel, int type); // handle different events of dispatcher
 
     public:
-        std::string m_dispatcher_name = "epoll"; // Epoll is temporarily supported
+        std::string m_dispatcherName = "epoll"; // Epoll is temporarily supported
 
-        std::string m_thread_name; // Name of the thread where the dispatcher is located
+        std::string m_threadName; // Name of the thread where the dispatcher is located
 
-        int m_epollfd;
+        int m_epollFd;
 
         EventList m_events;
     };

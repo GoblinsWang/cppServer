@@ -1,19 +1,17 @@
-#include "../eventLoopThreadPool.h"
+#include "../event_loop_thread_pool.h"
 
 using namespace cppServer;
 
-EventLoopThreadPool::EventLoopThreadPool(EventLoop::ptr mainloop, int threadNumber)
+EventLoopThreadPool::EventLoopThreadPool(EventLoop::ptr mainloop, int threadNum)
+    : m_mainloop(mainloop), m_threadNum(threadNum)
 {
-    this->m_mainloop = mainloop;
-
-    this->m_threadnum = threadNumber;
 }
 
 void EventLoopThreadPool::thread_pool_start()
 {
     assert(!m_started);
 
-    if (m_mainloop->m_owner_thread_id != pthread_self())
+    if (m_mainloop->m_ownerThreadId != pthread_self())
     {
         exit(-1);
     }
@@ -22,12 +20,12 @@ void EventLoopThreadPool::thread_pool_start()
     m_started = 1;
 
     // single thread
-    if (m_threadnum <= 0)
+    if (m_threadNum <= 0)
     {
         return;
     }
 
-    for (int i = 0; i < m_threadnum; i++)
+    for (int i = 0; i < m_threadNum; i++)
     {
         auto thread = std::make_shared<EventLoopThread>(i);
         thread->threadStart();
@@ -40,7 +38,7 @@ EventLoopThreadPool::getLoopFromThreadPool()
 {
     assert(m_started);
     // assertInSameThread
-    if (m_mainloop->m_owner_thread_id != pthread_self())
+    if (m_mainloop->m_ownerThreadId != pthread_self())
     {
         exit(-1);
     }
@@ -49,10 +47,10 @@ EventLoopThreadPool::getLoopFromThreadPool()
     auto selected = m_mainloop;
 
     // Select a thread from the thread pool in order
-    if (m_threadnum > 0)
+    if (m_threadNum > 0)
     {
         selected = m_eventloopthreads[m_position]->m_eventloop;
-        if (++m_position >= m_threadnum)
+        if (++m_position >= m_threadNum)
         {
             m_position = 0;
         }

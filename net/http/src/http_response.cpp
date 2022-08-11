@@ -19,8 +19,8 @@ void HttpResponse::appendToBuffer(TcpBuffer::ptr buffer)
         response += "Connection: Keep-Alive\r\n";
     }
 
-    auto iter = m_responseHeaders.begin();
-    while (iter != m_responseHeaders.end())
+    auto iter = m_headMap.begin();
+    while (iter != m_headMap.end())
     {
         response += iter->first + ": " + iter->second + "\r\n";
         iter++;

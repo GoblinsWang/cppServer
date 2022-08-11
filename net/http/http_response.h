@@ -18,22 +18,25 @@ namespace cppServer
     {
     public:
         using ptr = std::shared_ptr<HttpResponse>;
-        using string = std::string;
 
-        enum HttpStatusCode m_statusCode = Unknown;
-        string m_statusMessage;
-        string m_contentType;
-        string m_body;
-
-        std::map<string, string> m_responseHeaders;
-        int m_closeConnection = 0;
-
-    public:
         HttpResponse() = default;
 
         ~HttpResponse() = default;
 
+        // add header to HttpResponse.
+        void setHead(std::string &key, std::string &value);
+
         void appendToBuffer(TcpBuffer::ptr buffer);
+
+    public:
+        HttpStatusCode m_statusCode = Unknown;
+
+        std::string m_statusMessage;
+        std::string m_contentType;
+        std::string m_body;
+        std::map<std::string, std::string> m_headMap;
+
+        int m_closeConnection = 0;
     };
 
 } // namespace cppServer
