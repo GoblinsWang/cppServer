@@ -25,7 +25,7 @@
 
 ```C++
 	|—— README.md 				// 帮助文档
-	|—— example 				// 功能测试代码，目前只有tcp_server、http_server和log测试
+	|—— example 				// 功能测试代码，目前只有tcp_server、http_server的运行测试
 	|—— log					// 包含日志类实现
 	|    |—— src				// 包含日志类的cpp文件
 	|—— net					// 包含服务器框架代码
