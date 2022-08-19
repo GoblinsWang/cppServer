@@ -1,6 +1,5 @@
 #include "../../net/http/http_server.h"
 using namespace cppServer;
-using namespace cpplog;
 
 // HttpCallback
 void onRequest(HttpRequest::ptr httpRequest, HttpResponse::ptr httpResponse)

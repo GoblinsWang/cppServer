@@ -2,7 +2,7 @@
 using namespace cppServer;
 
 // callback for processing recv_data
-int onMessageProcess(const TcpConnection::ptr &tcp_connection)
+void onMessageProcess(TcpConnection *tcp_connection)
 {
     LogTrace("get message from tcp connection, " << tcp_connection->m_name);
 
@@ -13,10 +13,9 @@ int onMessageProcess(const TcpConnection::ptr &tcp_connection)
     // tcp_connection->m_read_buffer->readFromBuffer(recv_data, tcp_connection->m_read_buffer->readAble());
 
     std::string response = "you are sucessful\n";
-    tcp_connection->m_write_buffer->writeToBuffer(response.c_str(), response.length());
+    tcp_connection->m_writeBuffer->writeToBuffer(response.c_str(), response.length());
     // Send the reply message back to the client
     tcp_connection->sendBuffer();
-    return 0;
 }
 
 int main(int argc, char **argv)
