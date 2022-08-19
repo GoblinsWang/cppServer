@@ -3,7 +3,7 @@
 
 #include "../common.h"
 #include "channel.h"
-
+using namespace cpplog;
 namespace cppServer
 {
     class EventLoop;

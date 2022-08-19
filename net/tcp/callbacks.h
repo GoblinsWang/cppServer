@@ -1,6 +1,7 @@
 #ifndef net_tcp_callbacks_h
 #define net_tcp_callbacks_h
 #include "../common.h"
+using namespace cpplog;
 namespace cppServer
 {
     using std::placeholders::_1;

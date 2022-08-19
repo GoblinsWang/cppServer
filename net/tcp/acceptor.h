@@ -2,6 +2,7 @@
 #define net_tcp_Acceptor_h
 
 #include "../common.h"
+using namespace cpplog;
 namespace cppServer
 {
     class Acceptor

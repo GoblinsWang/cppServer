@@ -47,7 +47,7 @@ int EventDispatcher::epollDispatch(EventLoop *eventloop, struct timeval *timeval
             LogDebug(KV(fd) << KV(pthread_self()));
             LogError("error occur in fd == " << fd << ", " << m_threadName);
             eventloop->activateChannelEvent(fd, EVENT_ERROR);
-            close(fd);
+            // close(fd);
             continue;
         }
 
@@ -97,7 +97,9 @@ int EventDispatcher::handleEpollEvent(Channel::ptr channel, int type)
         {
             perror("[error] epoll_ctl delete fd failed");
         }
-        LogTrace("epoll_ctl delete sucess");
+        // TODO:If you don't monitor it, turn it off. but there is a problem, maybe you still have some data don't send in system buffer.
+        close(fd);
+        LogTrace("epoll_ctl delete success");
     }
     else if (type == 3)
     {

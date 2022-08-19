@@ -2,9 +2,9 @@
 #define _CRT_NONSTDC_NO_DEPRECATE
 #define _CRT_SECURE_NO_WARNINGS
 #endif
-#include "logger.h"
+#include "../logger.h"
 
-using namespace cppServer;
+using namespace cpplog;
 
 Logger *Logger::singleObject = nullptr;
 mutex *Logger::mutex_log = new (mutex);
@@ -67,7 +67,7 @@ void Logger::initLogConfig()
 #ifdef __linux__
     file.open("../log.conf");
 #elif _WIN32
-    file.open("./log.conf");
+    file.open("../log.conf");
 #endif
     if (!file.is_open())
     {

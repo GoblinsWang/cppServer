@@ -5,6 +5,7 @@
     封装套接字的事件
 */
 #include "../common.h"
+using namespace cpplog;
 
 #define EVENT_TIMEOUT 0x01
 /** Wait for a socket or FD to become readable */

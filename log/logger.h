@@ -7,7 +7,7 @@
 #include <map>
 #include <mutex>
 #include <queue>
-#include "fileManagement.h"
+#include "file.h"
 
 #ifdef __linux__
 #include <unistd.h>
@@ -21,7 +21,7 @@
 #include <Windows.h>
 #endif
 
-namespace cppServer
+namespace cpplog
 {
 
 #define Error1 __LOGNAME__(Error)
@@ -229,34 +229,34 @@ namespace cppServer
         }                                                                           \
     } while (0);
 
-#define LogError(...)                                                                                                           \
-    do                                                                                                                          \
-    {                                                                                                                           \
-        LoggerCout(cppServer::coutType::Error, Error1, cppServer::fileType::Error, cppServer::terminalType::Error, __VA_ARGS__) \
+#define LogError(...)                                                                                                  \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        LoggerCout(cpplog::coutType::Error, Error1, cpplog::fileType::Error, cpplog::terminalType::Error, __VA_ARGS__) \
     } while (0);
 
-#define LogWarn(...)                                                                                                        \
-    do                                                                                                                      \
-    {                                                                                                                       \
-        LoggerCout(cppServer::coutType::Warn, Warn1, cppServer::fileType::Warn, cppServer::terminalType::Warn, __VA_ARGS__) \
+#define LogWarn(...)                                                                                               \
+    do                                                                                                             \
+    {                                                                                                              \
+        LoggerCout(cpplog::coutType::Warn, Warn1, cpplog::fileType::Warn, cpplog::terminalType::Warn, __VA_ARGS__) \
     } while (0);
 
-#define LogInfo(...)                                                                                                        \
-    do                                                                                                                      \
-    {                                                                                                                       \
-        LoggerCout(cppServer::coutType::Info, Info1, cppServer::fileType::Info, cppServer::terminalType::Info, __VA_ARGS__) \
+#define LogInfo(...)                                                                                               \
+    do                                                                                                             \
+    {                                                                                                              \
+        LoggerCout(cpplog::coutType::Info, Info1, cpplog::fileType::Info, cpplog::terminalType::Info, __VA_ARGS__) \
     } while (0);
 
-#define LogDebug(...)                                                                                                           \
-    do                                                                                                                          \
-    {                                                                                                                           \
-        LoggerCout(cppServer::coutType::Debug, Debug1, cppServer::fileType::Debug, cppServer::terminalType::Debug, __VA_ARGS__) \
+#define LogDebug(...)                                                                                                  \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        LoggerCout(cpplog::coutType::Debug, Debug1, cpplog::fileType::Debug, cpplog::terminalType::Debug, __VA_ARGS__) \
     } while (0);
 
-#define LogTrace(...)                                                                                                           \
-    do                                                                                                                          \
-    {                                                                                                                           \
-        LoggerCout(cppServer::coutType::Trace, Trace1, cppServer::fileType::Trace, cppServer::terminalType::Trace, __VA_ARGS__) \
+#define LogTrace(...)                                                                                                  \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        LoggerCout(cpplog::coutType::Trace, Trace1, cpplog::fileType::Trace, cpplog::terminalType::Trace, __VA_ARGS__) \
     } while (0);
 }
 

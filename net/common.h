@@ -29,5 +29,6 @@
 #include <mutex>
 
 #include "../log/logger.h"
+using namespace cpplog;
 
 #endif
