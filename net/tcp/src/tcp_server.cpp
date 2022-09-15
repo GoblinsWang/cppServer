@@ -32,9 +32,10 @@ void TcpServer::handleNewConnection()
     LogWarn(" enter handleNewConnection ......");
     struct sockaddr_in client_addr;
     socklen_t client_len = sizeof(client_addr);
-    int connected_fd = accept(m_acceptor->m_fd, (struct sockaddr *)&client_addr, &client_len);
 
-    //设为非阻塞套接字描述符
+    // TODO:if accept failed?
+    int connected_fd = accept(m_acceptor->m_fd, (struct sockaddr *)&client_addr, &client_len);
+    // set non-block fd
     fcntl(connected_fd, F_SETFL, O_NONBLOCK);
 
     // choose event loop from thread pool
@@ -43,9 +44,7 @@ void TcpServer::handleNewConnection()
 
     auto tcp_connection = std::make_shared<TcpConnection>(connected_fd, eventloop);
     LogDebug(KV(m_connectionMap.size()));
-    m_mapMutex->lock();
     m_connectionMap[connected_fd] = tcp_connection;
-    m_mapMutex->unlock();
 
     // set callback functions
     if (m_connectionCallback)

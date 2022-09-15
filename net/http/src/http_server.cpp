@@ -33,7 +33,7 @@ void HttpServer::onMessage(TcpConnection *conn)
         std::string error_response = "HTTP/1.1 400 Bad Request\r\n\r\n";
         conn->m_writeBuffer->writeToBuffer(error_response.c_str(), error_response.size());
         conn->sendBuffer();
-        conn->shutDown();
+        conn->shutdown();
     }
 
     // after processing all the request data, then code and send.
@@ -52,13 +52,13 @@ void HttpServer::onMessage(TcpConnection *conn)
             m_httpCallback(conn->m_httpRequest, httpResponse);
         }
 
-        // LogDebug("httpResponse->body:" << httpResponse->m_body);
+        LogDebug("httpResponse->body:" << httpResponse->m_body);
         httpResponse->appendToBuffer(conn->m_writeBuffer);
         conn->sendBuffer();
 
         if (httpResponse->m_closeConnection)
         {
-            conn->shutDown();
+            conn->shutdown();
         }
         conn->m_httpRequest->Reset();
     }

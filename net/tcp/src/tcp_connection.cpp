@@ -20,7 +20,7 @@ void cppServer::defaultWriteCompleteCallback(TcpConnection *conn)
 }
 
 TcpConnection::TcpConnection(int connected_fd, EventLoop::ptr eventloop)
-    : m_fd(connected_fd), m_eventloop(eventloop),
+    : m_fd(connected_fd), m_eventloop(eventloop), m_state(kConnected),
       m_connectionCallback(defaultConnectionCallback),
       m_messageCallback(defaultMessageCallback),
       m_writeCompleteCallback(defaultWriteCompleteCallback)
@@ -51,6 +51,11 @@ TcpConnection::TcpConnection(int connected_fd, EventLoop::ptr eventloop)
 // return the num of char had writen
 int TcpConnection::sendBuffer()
 {
+    // only when m_state = kConnected, connection can send data.
+    if (m_state != kConnected)
+    {
+        return 0;
+    }
     int total_size = m_writeBuffer->readAble();
     int read_index = m_writeBuffer->readIndex();
 
@@ -118,31 +123,44 @@ void TcpConnection::handleWrite()
     {
         exit(-1);
     }
-
-    ssize_t nwrited = this->sendBuffer();
-    if (nwrited > 0)
+    if (m_channel->isWriteEventEnabled())
     {
-        // nwrited bytes had read
-        m_writeBuffer->recycleWrite(nwrited);
+        int total_size = m_writeBuffer->readAble();
+        int read_index = m_writeBuffer->readIndex();
 
-        // If the data is completely sent out, there is no need to continue
-        if (m_writeBuffer->readAble() == 0)
+        size_t nwrited = write(m_channel->m_fd, &(m_writeBuffer->m_buffer[read_index]), total_size);
+        if (nwrited > 0)
         {
-            m_channel->disableWriteEvent();
-        }
+            // nwrited bytes had read
+            m_writeBuffer->recycleWrite(nwrited);
 
-        // Call callback function
-        m_writeCompleteCallback(this);
+            // If the data is completely sent out, there is no need to continue
+            if (m_writeBuffer->readAble() == 0)
+            {
+                m_channel->disableWriteEvent();
+                m_writeCompleteCallback(this);
+                if (m_state == kConnecting)
+                {
+                    shutdownWrite();
+                }
+            }
+        }
+    }
+    else
+    {
+        LogTrace("Connection fd = " << m_channel->m_fd
+                                    << " is down, no more writing");
     }
 }
 
 void TcpConnection::handleClose()
 {
-    LogDebug("in handlecolse .... fd = " << m_fd);
+    LogTrace("in handlecolse .... fd = " << m_fd << "state = " << stateToString());
+    assert(m_state == kConnected || m_state == kDisconnecting);
+    // it will close(fd)
     m_eventloop->removeChannelEvent(m_channel->m_fd, m_channel);
     m_closeCallback(this);
     LogDebug("after m_closeCallback ...");
-
     // LogDebug("shared_from_this().use_count: " << shared_from_this().use_count());
 }
 
@@ -151,11 +169,40 @@ void TcpConnection::handleError()
     // TODO:
 }
 
-void TcpConnection::shutDown()
+const char *TcpConnection::stateToString() const
 {
-    // TODO: there may be a channel with write event.
-    if (shutdown(m_fd, SHUT_WR) < 0)
+    switch (m_state)
     {
-        LogTrace("tcp_connection_shutdown failed, socket == " << m_fd);
+    case kDisconnected:
+        return "kDisconnected";
+    case kConnecting:
+        return "kConnecting";
+    case kConnected:
+        return "kConnected";
+    case kDisconnecting:
+        return "kDisconnecting";
+    default:
+        return "unknown state";
+    }
+}
+
+void TcpConnection::shutdown()
+{
+    // 半关闭
+    if (m_state == kConnected)
+    {
+        setState(kDisconnecting);
+    }
+    shutdownWrite();
+}
+
+void TcpConnection::shutdownWrite()
+{
+    if (!m_channel->isWriteEventEnabled())
+    {
+        if (::shutdown(m_fd, SHUT_WR) < 0)
+        {
+            LogError("tcp_connection_shutdown failed, socket == " << m_fd);
+        }
     }
 }

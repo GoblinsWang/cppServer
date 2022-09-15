@@ -29,7 +29,7 @@ int main(int argc, char **argv)
     LogTrace("This is a http-server Test!");
     HttpServer http_server;
 
-    http_server.listen("0.0.0.0", 12345, 0);
+    http_server.listen("0.0.0.0", 12345, 2);
     http_server.setHttpCallback(onRequest);
 
     http_server.start();

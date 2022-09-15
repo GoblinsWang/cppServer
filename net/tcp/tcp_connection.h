@@ -15,6 +15,14 @@ namespace cppServer
     public:
         using ptr = std::shared_ptr<TcpConnection>;
 
+        enum StateE
+        {
+            kDisconnected,
+            kConnecting,
+            kConnected,
+            kDisconnecting
+        };
+
         TcpConnection(int connected_fd, EventLoop::ptr eventloop);
 
         // send data in m_writeBuffer
@@ -48,13 +56,20 @@ namespace cppServer
             m_closeCallback = cb;
         }
 
-        void shutDown();
+        void setState(StateE s) { m_state = s; }
+
+        const char *stateToString() const;
+
+        void shutdown();
+
+        void shutdownWrite();
 
     public:
         int m_fd;
         std::string m_name;
         Channel::ptr m_channel;
         EventLoop::ptr m_eventloop;
+        StateE m_state;
 
         // buffer for read and write
         TcpBuffer::ptr m_readBuffer;
