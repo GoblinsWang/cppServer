@@ -25,7 +25,7 @@ namespace cppServer
         void Reset();
 
         // add header to HttpRequest.
-        void setHead(std::string &key, std::string &value);
+        void setHead(std::string key, std::string value);
 
         // get header by key
         std::string getHead(std::string key);

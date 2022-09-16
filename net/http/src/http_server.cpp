@@ -70,23 +70,21 @@ int HttpServer::parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr h
     // get bufferString
     std::string buffer_s = input_buffer->getBufferString();
     LogDebug("buffer_s : " << buffer_s << "len : " << buffer_s.length());
-    int start = 0;
-    int end = -2;
 
+    std::stringstream buffer_ss(buffer_s);
+    std::string line;
+    std::regex head_e("^([^:]*): ?(.*)$");
+    std::smatch sub_match;
     while (httpRequest->m_currentState != REQUEST_DONE && ok)
     {
-        start = end + 2;
         if (httpRequest->m_currentState == REQUEST_STATUS)
         {
-            end = buffer_s.find("\r\n", start); // find CLRF
-            if (end != -1)
+            if (std::getline(buffer_ss, line, '\n'))
             {
-                // LogTrace("------ parse status line ------");
-                std::string statusLine = buffer_s.substr(start, end - start);
-
-                if (processStatusLine(statusLine, httpRequest))
+                line.pop_back();
+                if (processStatusLine(line, httpRequest))
                 {
-                    input_buffer->recycleRead(end - start + 2);
+                    input_buffer->recycleRead(line.size() + 2);
                     httpRequest->m_currentState = REQUEST_HEADERS;
                     continue;
                 }
@@ -95,27 +93,18 @@ int HttpServer::parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr h
         }
         else if (httpRequest->m_currentState == REQUEST_HEADERS)
         {
-            end = buffer_s.find("\r\n", start);
-            // LogTrace(KV(start) << KV(end));
-            if (end != -1)
-            {
-                // LogTrace("------ parse header lines ------");
-                int colon = buffer_s.find(':', start); // find " "
-                if (colon != -1)
-                {
-                    std::string key = buffer_s.substr(start, colon - start);
-                    std::string value = buffer_s.substr(colon + 2, end - colon - 2);
 
-                    // LogDebug(KV(key) << KV(value));
-                    httpRequest->setHead(key, value);
-                    input_buffer->recycleRead(end - start + 2); // request_line_size + CRLF size(2)
+            if (std::getline(buffer_ss, line, '\n'))
+            {
+                line.pop_back();
+                if (std::regex_match(line, sub_match, head_e))
+                {
+                    httpRequest->setHead(std::move(sub_match[1]), std::move(sub_match[2]));
+                    input_buffer->recycleRead(line.size() + 2); // request_line_size + CRLF size(2)
                     continue;
                 }
                 else
                 {
-                    /*
-                     * if the program is executed here, currentLine must be emptyLine.
-                     */
                     input_buffer->recycleRead(2);
                     httpRequest->m_currentState = REQUEST_BODY;
                     continue;
@@ -125,48 +114,26 @@ int HttpServer::parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr h
         }
         else if (httpRequest->m_currentState == REQUEST_BODY)
         {
-            // TODO:
-            // end = buffer_s.find("\r\n", start);
+            // TODO: parse content
             LogTrace("---------- REQUEST_BODY -----------");
-            // if (end != start)
-            // {
-            //     httpRequest->m_body = std::move(buffer_s.substr(start, end - start));
-            //     input_buffer->recycleRead(+2);
-            // }
             httpRequest->m_currentState = REQUEST_DONE;
         }
     }
-    // LogDebug("m_writeIndex:" << input_buffer->m_readIndex);
     return ok;
 }
 
-int HttpServer::processStatusLine(std::string &statusLine, HttpRequest::ptr httpRequest)
+int HttpServer::processStatusLine(std::string &statusLine, HttpRequest::ptr req)
 {
-    int start = 0;
-    int pos = 0;
+    std::regex e("^([^ ]*) ([^ ]*) HTTP/([^ ]*)$");
+    std::smatch sub_match;
 
-    // 1. try to get method
-    pos = statusLine.find(" ", start);
-    if (pos == -1)
+    if (std::regex_match(statusLine, sub_match, e))
     {
-        LogError("try to get method failed");
-        return 0;
+        req->m_method = sub_match[1];
+        req->m_url = sub_match[2];
+        req->m_version = sub_match[3];
+
+        return 1;
     }
-    httpRequest->m_method = statusLine.substr(start, pos - start);
-
-    // 2. try to get url
-    start = pos + 1;
-    pos = statusLine.find(" ", start);
-    if (pos == -1)
-    {
-        LogError("try to get url failed");
-        return 0;
-    }
-    httpRequest->m_url = statusLine.substr(start, pos - start);
-
-    // 3. try to get version
-    start = pos + 1;
-    httpRequest->m_version = statusLine.substr(start, statusLine.length());
-
-    return 1;
+    return 0;
 }

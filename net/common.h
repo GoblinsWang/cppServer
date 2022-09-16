@@ -27,6 +27,8 @@
 #include <map>
 #include <functional>
 #include <mutex>
+#include <sstream>
+#include <regex>
 
 #include "../log/logger.h"
 using namespace cpplog;

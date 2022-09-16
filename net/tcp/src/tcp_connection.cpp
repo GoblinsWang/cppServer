@@ -155,7 +155,7 @@ void TcpConnection::handleWrite()
 
 void TcpConnection::handleClose()
 {
-    LogTrace("in handlecolse .... fd = " << m_fd << "state = " << stateToString());
+    LogTrace("in handlecolse .... fd = " << m_fd << ", state = " << stateToString());
     assert(m_state == kConnected || m_state == kDisconnecting);
     // it will close(fd)
     m_eventloop->removeChannelEvent(m_channel->m_fd, m_channel);

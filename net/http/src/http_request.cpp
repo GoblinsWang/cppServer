@@ -24,9 +24,9 @@ void HttpRequest::Reset()
     m_headMap.clear();
 }
 
-void HttpRequest::setHead(std::string &key, std::string &value)
+void HttpRequest::setHead(std::string key, std::string value)
 {
-    m_headMap[key] = value;
+    m_headMap[std::move(key)] = std::move(value);
 }
 
 string HttpRequest::getHead(std::string key)
