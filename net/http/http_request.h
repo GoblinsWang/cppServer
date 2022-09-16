@@ -37,12 +37,10 @@ namespace cppServer
         int closeConnection();
 
     public:
-        std::string m_version;
-        std::string m_method;
-        std::string m_url;
-        std::string m_body;
+        std::string m_version, m_method, m_url, m_body;
         std::map<std::string, std::string> m_headMap;
-        int m_headersNum;
+        // use regular expression for path match
+        std::smatch m_pathMatch;
         HttpRequestState m_currentState;
     };
 

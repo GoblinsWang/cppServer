@@ -14,6 +14,15 @@ void HttpServer::listen(std::string ip, int port, int threadNum)
 
 void HttpServer::start()
 {
+    // default resource in the end of vector, as response method
+    for (auto it = m_resource.begin(); it != m_resource.end(); it++)
+    {
+        m_allResources.push_back(it);
+    }
+    for (auto it = m_defaultResource.begin(); it != m_defaultResource.end(); it++)
+    {
+        m_allResources.push_back(it);
+    }
     m_tcpServer->start();
 }
 
@@ -46,11 +55,8 @@ void HttpServer::onMessage(TcpConnection *conn)
         {
             httpResponse->m_closeConnection = 1;
         }
-        // call m_httpCallback that you set
-        if (m_httpCallback)
-        {
-            m_httpCallback(conn->m_httpRequest, httpResponse);
-        }
+        // handle resources
+        handleResources(conn->m_httpRequest, httpResponse);
 
         LogDebug("httpResponse->body:" << httpResponse->m_body);
         httpResponse->appendToBuffer(conn->m_writeBuffer);
@@ -61,6 +67,24 @@ void HttpServer::onMessage(TcpConnection *conn)
             conn->shutdown();
         }
         conn->m_httpRequest->Reset();
+    }
+}
+
+void HttpServer::handleResources(HttpRequest::ptr req, HttpResponse::ptr res)
+{
+    for (auto res_it : m_allResources)
+    {
+        std::regex e(res_it->first);
+        std::smatch sm_res;
+        if (std::regex_match(req->m_url, sm_res, e))
+        {
+            if (res_it->second.count(req->m_method) > 0)
+            {
+                req->m_pathMatch = move(sm_res);
+                res_it->second[req->m_method](req, res);
+                return;
+            }
+        }
     }
 }
 

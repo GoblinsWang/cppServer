@@ -4,11 +4,12 @@
 #include "../tcp/tcp_server.h"
 #include "http_request.h"
 #include "http_response.h"
+#include <unordered_map>
 
 namespace cppServer
 {
-
-    typedef std::function<void(HttpRequest::ptr, HttpResponse::ptr)> HttpCallback;
+    // typedef  resource type
+    typedef std::map<std::string, std::unordered_map<std::string, std::function<void(HttpRequest::ptr, HttpResponse::ptr)>>> resource_type;
 
     class HttpServer
     {
@@ -31,14 +32,14 @@ namespace cppServer
 
         int processStatusLine(std::string &statusLine, HttpRequest::ptr httpRequest);
 
-        void setHttpCallback(const HttpCallback &cb)
-        {
-            m_httpCallback = cb;
-        }
+        void handleResources(HttpRequest::ptr httpRequest, HttpResponse::ptr httpResponse);
 
     public:
+        resource_type m_resource;
+        resource_type m_defaultResource;
+        std::vector<resource_type::iterator> m_allResources;
+
         TcpServer::ptr m_tcpServer;
-        HttpCallback m_httpCallback;
     };
 
 } // namespace cppServer

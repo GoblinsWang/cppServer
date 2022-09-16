@@ -11,7 +11,6 @@ const std::string CLOSE = "close";
 HttpRequest::HttpRequest()
 {
     m_currentState = REQUEST_STATUS;
-    m_headersNum = 0;
 }
 
 void HttpRequest::Reset()
