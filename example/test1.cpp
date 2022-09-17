@@ -1,73 +1,22 @@
 #include <iostream>
-#include <memory>
-#include <vector>
-#include <functional>
-using namespace std;
+#include <string>
 
-typedef function<void()> EventCallback;
-
-class A : public enable_shared_from_this<A>
+// 字符串字面量自定义必须设置如下的参数列表
+std::string operator"" _wow1(const char *wow1, size_t len)
 {
-public:
-    using ptr = shared_ptr<A>;
-    A(string name) : m_name(name)
-    {
-        //
-    }
-    void Print()
-    {
-        cout << "in A::Print ...." << endl;
-        cout << "shared_from_this().use_count: " << shared_from_this().use_count() << endl;
-        auto self_ptr = shared_from_this();
-        cout << "self_ptr.use_count: " << self_ptr.use_count() << endl;
-        cout << self_ptr->m_name << endl;
-    }
+    return std::string(wow1) + "woooooooooow, amazing";
+}
 
-private:
-    string m_name;
-};
-
-class B : public enable_shared_from_this<A>
+std::string operator"" _wow2(unsigned long long i)
 {
-public:
-    B() = default;
-
-    void newB(string name)
-    {
-        m_name = name;
-        string a_name = "AAAAAA";
-        A::ptr a_ptr(new A(a_name));
-        vec_A.push_back(a_ptr);
-        cout << "a_ptr.use_count: " << a_ptr.use_count() << endl;
-    }
-
-    void setEventCallback(EventCallback &cb)
-    {
-        eventCallback = cb;
-    }
-
-    void Print()
-    {
-        cout << "vec_A[0].use_count: " << vec_A[0].use_count() << endl;
-        cout << "in B::Print ...." << endl;
-        vec_A[0]->Print();
-        cout << "vec_A[0].use_count: " << vec_A[0].use_count() << endl;
-    }
-
-private:
-    string m_name;
-    EventCallback eventCallback;
-    vector<A::ptr> vec_A;
-};
-
-void message(A::ptr a_ptr)
-{
+    return std::to_string(i) + "woooooooooow, amazing";
 }
 
 int main()
 {
-    B *b = new B();
-    string b_name = "BBBB";
-    b->newB(b_name);
-    b->Print();
+    auto str = "abc"_wow1;
+    auto num = 1_wow2;
+    std::cout << str << std::endl;
+    std::cout << num << std::endl;
+    return 0;
 }

@@ -20,6 +20,9 @@
 #include <sys/eventfd.h>
 
 #include <iostream>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
 #include <string>
 #include <vector>
 #include <queue>

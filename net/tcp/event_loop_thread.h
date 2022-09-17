@@ -16,14 +16,13 @@ namespace cppServer
         // 线程启动
         void threadStart();
         // 线程执行的函数
-        static void *threadRun(void *arg);
+        void threadRun();
 
     public:
         EventLoop::ptr m_eventloop;
-        long m_threadcount;     /* # connections handled */
-        pthread_t m_thread_tid; /* thread ID */
-        pthread_mutex_t m_mutex;
-        pthread_cond_t m_cond;
+        std::size_t m_threadcount; /* # connections handled */
+        std::mutex m_mutex;
+        std::condition_variable m_cond;
         std::string m_threadname;
     };
 }

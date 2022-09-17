@@ -44,7 +44,7 @@ int EventDispatcher::epollDispatch(EventLoop *eventloop, struct timeval *timeval
         if ((m_events[i].events & EPOLLERR) || (m_events[i].events & EPOLLHUP))
         {
             // TODO:
-            LogDebug(KV(fd) << KV(pthread_self()));
+            LogDebug(KV(fd) << KV(std::this_thread::get_id()));
             LogError("error occur in fd == " << fd << ", " << m_threadName);
             eventloop->activateChannelEvent(fd, EVENT_ERROR);
             // close(fd);

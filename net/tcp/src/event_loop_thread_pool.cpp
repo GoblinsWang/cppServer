@@ -11,7 +11,7 @@ void EventLoopThreadPool::thread_pool_start()
 {
     assert(!m_started);
 
-    if (m_mainloop->m_ownerThreadId != pthread_self())
+    if (m_mainloop->m_ownerThreadId != std::this_thread::get_id())
     {
         exit(-1);
     }
@@ -24,13 +24,14 @@ void EventLoopThreadPool::thread_pool_start()
     {
         return;
     }
-
+    LogTrace(" start init thread pool");
     for (int i = 0; i < m_threadNum; i++)
     {
         auto thread = std::make_shared<EventLoopThread>(i);
         thread->threadStart();
         m_eventloopthreads.push_back(thread);
     }
+    LogTrace(" end init thread pool");
 }
 
 EventLoop::ptr
@@ -38,7 +39,7 @@ EventLoopThreadPool::getLoopFromThreadPool()
 {
     assert(m_started);
     // assertInSameThread
-    if (m_mainloop->m_ownerThreadId != pthread_self())
+    if (m_mainloop->m_ownerThreadId != std::this_thread::get_id())
     {
         exit(-1);
     }

@@ -57,7 +57,7 @@ namespace cppServer
         int m_quit;            // Marks the exit of the event cycle
         int m_isHandlePending; // Identifies whether the pending queue is being processed
 
-        pthread_t m_ownerThreadId;
+        std::thread::id m_ownerThreadId;
         std::string m_threadName;
 
         EventDispatcher::ptr m_dispatcher;
@@ -69,8 +69,7 @@ namespace cppServer
 
     private:
         int m_wakeupFd;
-        pthread_mutex_t m_mutex;
-        pthread_cond_t m_cond;
+        std::mutex m_mutex;
     };
 }
 #endif

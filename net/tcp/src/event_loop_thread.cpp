@@ -4,44 +4,37 @@ using namespace cppServer;
 
 EventLoopThread::EventLoopThread(int num)
 {
-    pthread_mutex_init(&m_mutex, NULL);
-    pthread_cond_init(&m_cond, NULL);
-
     m_eventloop = nullptr;
     m_threadcount = 0;
-    m_thread_tid = 0;
     m_threadname = "Thread-" + std::to_string(num);
 }
 
 void EventLoopThread::
     threadStart()
 {
-    pthread_create(&m_thread_tid, NULL, &threadRun, this);
-
-    assert(pthread_mutex_lock(&m_mutex) == 0);
+    std::thread t(std::bind(&EventLoopThread::threadRun, this));
+    std::unique_lock<std::mutex> lock(m_mutex);
 
     while (m_eventloop == nullptr)
     {
-        assert(pthread_cond_wait(&m_cond, &m_mutex) == 0);
+        LogTrace("thread " << m_threadname << " starting......");
+        m_cond.wait(lock);
     }
-    assert(pthread_mutex_unlock(&m_mutex) == 0);
-
+    t.detach();
     LogTrace("event loop thread started, " << m_threadname);
 }
 
-void *EventLoopThread::threadRun(void *arg)
+void EventLoopThread::threadRun()
 {
-    auto eventloopthread = (EventLoopThread *)arg;
-    pthread_mutex_lock(&eventloopthread->m_mutex);
-
-    // Initialize the event loop
-    eventloopthread->m_eventloop = std::make_shared<EventLoop>(eventloopthread->m_threadname);
-    LogTrace("event loop thread init and signal, " << eventloopthread->m_threadname);
+    {
+        std::unique_lock<std::mutex> lock(m_mutex);
+        // Initialize the event loop
+        m_eventloop = std::make_shared<EventLoop>(m_threadname);
+    }
+    LogTrace("event loop thread init and signal, " << m_threadname);
     // notify the main thread
-    pthread_cond_signal(&eventloopthread->m_cond);
-    pthread_mutex_unlock(&eventloopthread->m_mutex);
+    m_cond.notify_one();
 
     // start this eventloop
-    eventloopthread->m_eventloop->run();
-    return nullptr;
+    m_eventloop->run();
 }

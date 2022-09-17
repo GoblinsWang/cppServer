@@ -15,15 +15,12 @@ int createEventfd()
 
 EventLoop::EventLoop(std::string thread_name)
 {
-    pthread_mutex_init(&m_mutex, NULL);
-    pthread_cond_init(&m_cond, NULL);
-
     m_threadName = (thread_name != "") ? thread_name : "main thread";
 
     m_dispatcher = std::make_shared<EventDispatcher>(this);
     m_quit = 0;
 
-    m_ownerThreadId = pthread_self();
+    m_ownerThreadId = std::this_thread::get_id();
     m_isHandlePending = 0;
 
     // Create eventfd
@@ -37,7 +34,7 @@ EventLoop::EventLoop(std::string thread_name)
 int EventLoop::run()
 {
     // Determine whether it is in your own thread
-    if (m_ownerThreadId != pthread_self())
+    if (m_ownerThreadId != std::this_thread::get_id())
     {
         exit(1);
     }
@@ -84,9 +81,9 @@ void EventLoop::wakeup()
 int EventLoop::handlePendingChannel()
 {
     // get the lock
-    pthread_mutex_lock(&m_mutex);
+    std::lock_guard<std::mutex> lock(m_mutex);
     m_isHandlePending = 1;
-    // LogDebug(KV(this->m_ownerThreadId) << KV(pthread_self()) << KV(m_threadName));
+    // LogDebug(KV(this->m_ownerThreadId) << KV(std::this_thread::get_id()) << KV(m_threadName));
     while (m_pendingQueue.size() > 0)
     {
         // Get the top chanElment of the queue
@@ -110,7 +107,6 @@ int EventLoop::handlePendingChannel()
     }
     m_isHandlePending = 0;
     // release the lock
-    pthread_mutex_unlock(&m_mutex);
 
     return 0;
 }
@@ -125,17 +121,16 @@ void EventLoop::addChannelToPendingQueue(int fd, Channel::ptr channel, int type)
 
 int EventLoop::doChannelEvent(int fd, Channel::ptr channel, int type)
 {
-    // get the lock
-    pthread_mutex_lock(&m_mutex);
-    assert(m_isHandlePending == 0);
+    {
+        // get the lock
+        std::lock_guard<std::mutex> lock(m_mutex);
+        assert(m_isHandlePending == 0);
 
-    // add channel event in pending_queue
-    this->addChannelToPendingQueue(fd, channel, type);
+        // add channel event in pending_queue
+        this->addChannelToPendingQueue(fd, channel, type);
+    }
 
-    // release the lock
-    pthread_mutex_unlock(&m_mutex);
-
-    if (m_ownerThreadId != pthread_self())
+    if (m_ownerThreadId != std::this_thread::get_id())
     {
         // LogDebug("Wake up the corresponding slave thread by writing");
         //  Wake up the corresponding slave thread by writing

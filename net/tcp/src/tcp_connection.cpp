@@ -119,7 +119,7 @@ void TcpConnection::handleRead()
 void TcpConnection::handleWrite()
 {
     // assertInSameThread(eventLoop);
-    if (m_eventloop->m_ownerThreadId != pthread_self())
+    if (m_eventloop->m_ownerThreadId != std::this_thread::get_id())
     {
         exit(-1);
     }
