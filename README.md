@@ -12,6 +12,8 @@
 
 - 支持tcp、http两种通信方式，数据处理的回调函数可以自由设置。
 
+- 简单易用的路由资源添加方式。
+
 
 
 ## 环境依赖
@@ -83,38 +85,30 @@ int main(int argc, char **argv)
 #include "../../net/http/http_server.h"
 using namespace cppServer;
 
-// HttpCallback
-void onRequest(HttpRequest::ptr httpRequest, HttpResponse::ptr httpResponse)
-{
-    int pos = httpRequest->m_url.find("?");
-
-    std::string path = (pos == -1) ? httpRequest->m_url : httpRequest->m_url.substr(0, pos);
-
-    if (path == "/")
-    {
-        httpResponse->m_statusCode = OK;
-        httpResponse->m_statusMessage = "OK";
-        httpResponse->m_contentType = "text/html";
-        httpResponse->m_body = "<html><body><h1>Hello, cppServer is running</h1></body></html>";
-        // httpResponse->m_close = 1;
-    }
-    else
-    {
-        httpResponse->m_statusCode = NotFound;
-        httpResponse->m_statusMessage = "Not Found";
-        httpResponse->m_closeConnection = 1;
-    }
-}
-
 int main(int argc, char **argv)
 {
     LogTrace("This is a http-server Test!");
-    HttpServer http_server;
 
-    http_server.listen("0.0.0.0", 12345, 0); // the third arg is threadNum
-    http_server.setHttpCallback(onRequest);
+    HttpServer http_server;
+    http_server.listen("0.0.0.0", 12345, 2);
+
+    http_server.m_resource["^/home$"]["GET"] = [](HttpRequest::ptr req, HttpResponse::ptr res)
+    {
+        res->m_statusCode = OK;
+        res->m_statusMessage = "OK";
+        res->m_contentType = "text/html";
+        res->m_body = "<html><body><h1>Hello, you are in home page</h1></body></html>";
+    };
+
+    // default: NotFound
+    http_server.m_defaultResource["^/?(.*)$"]["GET"] = [](HttpRequest::ptr req, HttpResponse::ptr res)
+    {
+        res->m_statusCode = NotFound;
+        res->m_statusMessage = "NotFound";
+    };
 
     http_server.start();
+    return 0;
 }
 
 ```
@@ -141,13 +135,13 @@ int main(int argc, char **argv)
 
 - 相关回调函数接口优化，给予更高的自由度
 
-##### 2022.9.16 😀😀😀😀😀😀 v1.5.1:
+##### 2022.9.16 😀😀😀😀😀😀 v1.5.5:
 - 修改服务端关闭写端时，存在继续写导致服务端崩溃的情况
 - 优化http解析，使用regex、stringstream等特性。
+- 增加了简单易用的路由添加方式
 
 
 ## TODO
 - 解决解析报文超时的问题，应对报文不完整的情况
 - 增加有content内容的请求解析
-- 提供简单便利的路由添加方式
 - 定时器
