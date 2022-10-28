@@ -28,7 +28,7 @@
 
 ```sh
 git clone https://github.com/GoblinsWang/cppServer.git
-cd workflow
+cd cppServer
 mkdir build && cd build
 cmake ..
 make
