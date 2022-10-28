@@ -47,12 +47,12 @@ make
 
 ```C++
 	|—— README.md 				// 帮助文档
-    |—— _include                // 编译成库文件之后的头文件目录
-    |—— _lib                    // 库文件目录（包含了静态、动态链接库）
+    	|—— _include                // 编译成库文件之后的头文件目录
+    	|—— _lib                    // 库文件目录（包含了静态、动态链接库）
 	|—— example 				// 功能测试代码，目前只有tcp_server、http_server的运行测试
 	|—— src					// 包含服务器框架代码
 	|    |—— http			        // 包含http的相关实现
-    |       |—— src             		// 包含http实现的cpp文件
+    	|       |—— src             		// 包含http实现的cpp文件
 	|    |—— tcp				// 包含tcp的相关实现
 	|       |—— src			// 包含tcp实现的cpp文件
 	|    |—— log				// 包含log的相关实现
