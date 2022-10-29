@@ -11,13 +11,13 @@ namespace cppServer
     class TcpConnection;
     typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
 
-    typedef std::function<void(TcpConnection *)> ConnectionCallback;
-    typedef std::function<void(TcpConnection *)> MessageCallback;
-    typedef std::function<void(TcpConnection *)> WriteCompleteCallback;
-    typedef std::function<void(TcpConnection *)> CloseCallback;
+    typedef std::function<void(const TcpConnectionPtr &)> ConnectionCallback;
+    typedef std::function<void(const TcpConnectionPtr &)> MessageCallback;
+    typedef std::function<void(const TcpConnectionPtr &)> WriteCompleteCallback;
+    typedef std::function<void(const TcpConnectionPtr &)> CloseCallback;
 
-    void defaultConnectionCallback(TcpConnection *);
-    void defaultMessageCallback(TcpConnection *);
-    void defaultWriteCompleteCallback(TcpConnection *);
+    void defaultConnectionCallback(const TcpConnectionPtr &);
+    void defaultMessageCallback(const TcpConnectionPtr &);
+    void defaultWriteCompleteCallback(const TcpConnectionPtr &);
 }
 #endif

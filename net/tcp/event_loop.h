@@ -28,6 +28,8 @@ namespace cppServer
 
         int run(); // enter the event loop
 
+        bool isInThreadLoop() { return m_ownerThreadId == std::this_thread::get_id(); }
+
         void wakeup(); // Used to wake up the slave thread
 
         void handleWakeup(); // handle the Wakeup event

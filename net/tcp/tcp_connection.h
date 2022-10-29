@@ -25,6 +25,8 @@ namespace cppServer
 
         TcpConnection(int connected_fd, EventLoop::ptr eventloop);
 
+        ~TcpConnection();
+
         // send data in m_writeBuffer
         int sendBuffer();
 

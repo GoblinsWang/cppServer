@@ -2,18 +2,18 @@
 
 using namespace cppServer;
 
-void cppServer::defaultConnectionCallback(TcpConnection *conn)
+void cppServer::defaultConnectionCallback(const TcpConnectionPtr &)
 {
     //
     LogTrace("connection completed");
 }
 
-void cppServer::defaultMessageCallback(TcpConnection *conn)
+void cppServer::defaultMessageCallback(const TcpConnectionPtr &)
 {
     // TODO:
 }
 
-void cppServer::defaultWriteCompleteCallback(TcpConnection *conn)
+void cppServer::defaultWriteCompleteCallback(const TcpConnectionPtr &)
 {
     //
     LogTrace("write completed");
@@ -46,6 +46,11 @@ TcpConnection::TcpConnection(int connected_fd, EventLoop::ptr eventloop)
 
     // connectionCompletedCallBack callback
     m_eventloop->addChannelEvent(connected_fd, m_channel);
+}
+
+TcpConnection::~TcpConnection()
+{
+    ::close(m_fd);
 }
 
 // return the num of char had writen
@@ -105,7 +110,7 @@ void TcpConnection::handleRead()
     {
         LogDebug("TcpConnection->m_messageCallback in ......");
         LogDebug(KV(this->m_fd));
-        m_messageCallback(this);
+        m_messageCallback(shared_from_this());
     }
     else
     {
@@ -138,7 +143,7 @@ void TcpConnection::handleWrite()
             if (m_writeBuffer->readAble() == 0)
             {
                 m_channel->disableWriteEvent();
-                m_writeCompleteCallback(this);
+                m_writeCompleteCallback(shared_from_this());
                 if (m_state == kConnecting)
                 {
                     shutdownWrite();
@@ -157,9 +162,9 @@ void TcpConnection::handleClose()
 {
     LogTrace("in handlecolse .... fd = " << m_fd << ", state = " << stateToString());
     assert(m_state == kConnected || m_state == kDisconnecting);
-    // it will close(fd)
+
     m_eventloop->removeChannelEvent(m_channel->m_fd, m_channel);
-    m_closeCallback(this);
+    m_closeCallback(shared_from_this());
     LogDebug("after m_closeCallback ...");
     // LogDebug("shared_from_this().use_count: " << shared_from_this().use_count());
 }
@@ -167,6 +172,7 @@ void TcpConnection::handleClose()
 void TcpConnection::handleError()
 {
     // TODO:
+    // this->handleClose();
 }
 
 const char *TcpConnection::stateToString() const

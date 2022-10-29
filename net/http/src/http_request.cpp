@@ -3,8 +3,8 @@ using namespace cppServer;
 
 #define INIT_REQUEST_HEADER_SIZE 128
 
-const std::string HTTP10 = "HTTP/1.0";
-const std::string HTTP11 = "HTTP/1.1";
+const std::string HTTP10 = "1.0";
+const std::string HTTP11 = "1.1";
 const std::string KEEP_ALIVE = "Keep-Alive";
 const std::string CLOSE = "close";
 

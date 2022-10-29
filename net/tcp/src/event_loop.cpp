@@ -34,10 +34,7 @@ EventLoop::EventLoop(std::string thread_name)
 int EventLoop::run()
 {
     // Determine whether it is in your own thread
-    if (m_ownerThreadId != std::this_thread::get_id())
-    {
-        exit(1);
-    }
+    assert(isInThreadLoop());
 
     LogTrace("event loop run, " << m_threadName);
 
@@ -80,9 +77,10 @@ void EventLoop::wakeup()
 
 int EventLoop::handlePendingChannel()
 {
+    assert(isInThreadLoop());
     // get the lock
     std::lock_guard<std::mutex> lock(m_mutex);
-    m_isHandlePending = 1;
+
     // LogDebug(KV(this->m_ownerThreadId) << KV(std::this_thread::get_id()) << KV(m_threadName));
     while (m_pendingQueue.size() > 0)
     {
@@ -105,9 +103,6 @@ int EventLoop::handlePendingChannel()
         }
         m_pendingQueue.pop();
     }
-    m_isHandlePending = 0;
-    // release the lock
-
     return 0;
 }
 
@@ -124,7 +119,6 @@ int EventLoop::doChannelEvent(int fd, Channel::ptr channel, int type)
     {
         // get the lock
         std::lock_guard<std::mutex> lock(m_mutex);
-        assert(m_isHandlePending == 0);
 
         // add channel event in pending_queue
         this->addChannelToPendingQueue(fd, channel, type);
@@ -132,8 +126,6 @@ int EventLoop::doChannelEvent(int fd, Channel::ptr channel, int type)
 
     if (m_ownerThreadId != std::this_thread::get_id())
     {
-        // LogDebug("Wake up the corresponding slave thread by writing");
-        //  Wake up the corresponding slave thread by writing
         this->wakeup();
     }
     else
@@ -142,6 +134,7 @@ int EventLoop::doChannelEvent(int fd, Channel::ptr channel, int type)
     }
     return 0;
 }
+
 int EventLoop::addChannelEvent(int fd, Channel::ptr channel)
 {
     return this->doChannelEvent(fd, channel, 1);
@@ -178,18 +171,13 @@ int EventLoop::handlePendingAdd(int fd, Channel::ptr channel)
 
 int EventLoop::handlePendingRemove(int fd, Channel::ptr channel)
 {
-    assert(fd == channel->m_fd);
     LogTrace("remove channel fd == " << fd);
 
     if (fd < 0)
         return 0;
 
     auto pos = m_channlMap.find(fd);
-    if (pos == m_channlMap.end())
-    {
-        LogError("fd not in channelMap");
-        return (-1);
-    }
+    assert(pos != m_channlMap.end());
 
     auto chan2 = pos->second;
 
@@ -208,12 +196,7 @@ int EventLoop::handlePendingUpdate(int fd, Channel::ptr channel)
 {
     LogTrace("update channel fd ==" << fd);
 
-    if (fd < 0)
-        return 0;
-
-    auto pos = m_channlMap.find(fd);
-    if (pos == m_channlMap.end())
-        return (-1);
+    assert(m_channlMap.find(fd) != m_channlMap.end());
 
     // update channel
     m_dispatcher->epollUpdate(channel);
@@ -222,21 +205,18 @@ int EventLoop::handlePendingUpdate(int fd, Channel::ptr channel)
 
 int EventLoop::activateChannelEvent(int fd, int revents)
 {
+    assert(isInThreadLoop());
 
     auto pos = m_channlMap.find(fd);
-    if (pos == m_channlMap.end())
-    {
-        LogError("fd not in channlMap");
-        return (-1);
-    }
+
+    assert(pos != m_channlMap.end());
 
     auto channel = pos->second;
-    assert(fd == channel->m_fd);
     if (revents & (EVENT_ERROR))
     {
-        LogDebug("channel->m_readCallback in ......" << KV(fd));
-        if (channel->m_closeCallback)
-            channel->m_closeCallback();
+        LogDebug("channel->m_errorCallback in ......" << KV(fd));
+        if (channel->m_errorCallback)
+            channel->m_errorCallback();
     }
 
     if (revents & (EVENT_READ))

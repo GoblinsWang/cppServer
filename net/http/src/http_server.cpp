@@ -26,13 +26,13 @@ void HttpServer::start()
     m_tcpServer->start();
 }
 
-void HttpServer::onConnection(TcpConnection *conn)
+void HttpServer::onConnection(const TcpConnectionPtr &conn)
 {
     // initialize httpRequest for conn
     conn->m_httpRequest = std::make_shared<HttpRequest>();
 }
 
-void HttpServer::onMessage(TcpConnection *conn)
+void HttpServer::onMessage(const TcpConnectionPtr &conn)
 {
     LogDebug("get message from tcp connection" << conn->m_name);
 

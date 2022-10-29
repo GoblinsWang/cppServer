@@ -23,10 +23,10 @@ namespace cppServer
         void start();
 
         // callback for created connection
-        void onConnection(TcpConnection *conn);
+        void onConnection(const TcpConnectionPtr &conn);
 
         // callback for message process
-        void onMessage(TcpConnection *conn);
+        void onMessage(const TcpConnectionPtr &conn);
 
         int parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr httpRequest);
 

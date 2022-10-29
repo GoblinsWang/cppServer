@@ -18,12 +18,6 @@ namespace cppServer
         // start this tcp_server
         void start();
 
-        // handle new connection
-        void handleNewConnection();
-
-        // handle close connection
-        void handleCloseConnection(TcpConnection *conn);
-
         // Set connection callback.Not thread safe.
         void setConnectionCallback(const ConnectionCallback &cb)
         {
@@ -41,6 +35,13 @@ namespace cppServer
         {
             m_writeCompleteCallback = cb;
         }
+        // handle new connection
+        inline void handleNewConnection();
+
+        // handle close connection
+        inline void handleCloseConnection(const TcpConnection::ptr &conn);
+
+        inline void HandleCloseInLoop(const TcpConnection::ptr &conn);
 
     public:
         int m_port;

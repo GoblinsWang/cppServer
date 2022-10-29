@@ -27,7 +27,7 @@ void TcpServer::start()
     m_eventloop->run();
 }
 
-void TcpServer::handleNewConnection()
+inline void TcpServer::handleNewConnection()
 {
     LogWarn(" enter handleNewConnection ......");
     struct sockaddr_in client_addr;
@@ -56,12 +56,16 @@ void TcpServer::handleNewConnection()
     // it must be set.
     tcp_connection->setCloseCallback(std::bind(&TcpServer::handleCloseConnection, this, _1));
 
-    tcp_connection->m_connectionCallback(tcp_connection.get());
+    tcp_connection->m_connectionCallback(tcp_connection);
 }
 
-void TcpServer::handleCloseConnection(TcpConnection *conn)
+inline void TcpServer::handleCloseConnection(const TcpConnection::ptr &conn)
 {
-    m_mapMutex->lock();
-    m_connectionMap.erase(conn->m_fd);
-    m_mapMutex->unlock();
+    if (m_connectionMap.find(conn->m_fd) != m_connectionMap.end())
+        m_connectionMap.erase(conn->m_fd);
+}
+
+inline void TcpServer::HandleCloseInLoop(const TcpConnection::ptr &conn)
+{
+    //
 }
