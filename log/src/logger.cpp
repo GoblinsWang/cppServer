@@ -6,11 +6,7 @@
 
 using namespace cpplog;
 
-Logger *Logger::singleObject = nullptr;
-mutex *Logger::mutex_log = new (mutex);
-mutex *Logger::mutex_file = new (mutex);
-mutex *Logger::mutex_queue = new (mutex);
-mutex *Logger::mutex_terminal = new (mutex);
+mutex Logger::mutex_terminal;
 
 Logger::Logger()
 {
@@ -23,13 +19,8 @@ Logger::~Logger()
 
 Logger *Logger::getInstance()
 {
-    mutex_log->lock();
-    if (singleObject == nullptr)
-    {
-        singleObject = new Logger();
-    }
-    mutex_log->unlock();
-    return singleObject;
+    static Logger instance;
+    return &instance;
 }
 
 void Logger::initLogConfig()
@@ -207,17 +198,17 @@ void Logger::ConfInfoPrint()
 
 std::string Logger::getCoutType(coutType coutType)
 {
-    return singleObject->coutTypeMap[coutType];
+    return this->coutTypeMap[coutType];
 }
 
 bool Logger::getFileType(fileType fileCoutBool)
 {
-    return singleObject->fileCoutMap[fileCoutBool];
+    return this->fileCoutMap[fileCoutBool];
 }
 
 bool Logger::getTerminalType(terminalType terminalCoutTyle)
 {
-    return singleObject->terminalCoutMap[terminalCoutTyle];
+    return this->terminalCoutMap[terminalCoutTyle];
 }
 
 string Logger::getLogCoutTime()
@@ -321,12 +312,11 @@ bool Logger::logFileWrite(string messages, string message, string line_effd)
     }
     if (settings.logFileQueueSwitch == SWITCH_OFF)
     {
-        mutex_file->lock();
+        std::lock_guard<std::mutex> lock(mutex_file);
         ofstream file;
         file.open(filePathAndName, ::ios::app | ios::out);
         file << messages << message << line_effd;
         file.close();
-        mutex_file->unlock();
     }
     else
     {
@@ -337,22 +327,27 @@ bool Logger::logFileWrite(string messages, string message, string line_effd)
 
 bool Logger::insertQueue(string messages, string filePathAndName)
 {
-    mutex_queue->lock();
-    messageQueue.push(messages);
-    if (messageQueue.size() >= 5000)
     {
-        mutex_file->lock();
-        ofstream file;
-        file.open(filePathAndName, ::ios::app | ios::out);
+        std::lock_guard<std::mutex> lock(mutex_queue);
+        messageQueue.push(messages);
+        if (messageQueue.size() < 5000)
+        {
+            return true;
+        }
+    }
+
+    std::lock_guard<std::mutex> lock(mutex_file);
+    ofstream file;
+    file.open(filePathAndName, ::ios::app | ios::out);
+    {
+        std::lock_guard<std::mutex> queueLock(mutex_queue);
         while (!messageQueue.empty())
         {
             file << messageQueue.front();
             messageQueue.pop();
         }
-        file.close();
-        mutex_file->unlock();
     }
-    mutex_queue->unlock();
+    file.close();
     return true;
 }
 

@@ -3,7 +3,6 @@
 using namespace cppServer;
 
 TcpServer::TcpServer(Acceptor::ptr acceptor, int threadNum)
-    : m_mapMutex(new mutex)
 {
 
     m_eventloop = std::make_shared<EventLoop>("");
@@ -43,6 +42,16 @@ inline void TcpServer::handleNewConnection()
     LogDebug("new connection socket == " << connected_fd << KV(eventloop->m_threadName));
 
     auto tcp_connection = std::make_shared<TcpConnection>(connected_fd, eventloop);
+
+    // Initialize weak_self first (must be done after shared_ptr is fully constructed)
+    tcp_connection->initWeakSelf();
+
+    // Set channel callbacks using the weak_ptr
+    tcp_connection->setChannelCallbacks();
+
+    // Now enable the channel (add to epoll) - callbacks are already set
+    tcp_connection->enableChannel();
+
     LogDebug(KV(m_connectionMap.size()));
     m_connectionMap[connected_fd] = tcp_connection;
 
@@ -61,8 +70,11 @@ inline void TcpServer::handleNewConnection()
 
 inline void TcpServer::handleCloseConnection(const TcpConnection::ptr &conn)
 {
+    std::lock_guard<std::mutex> lock(m_mutex);
     if (m_connectionMap.find(conn->m_fd) != m_connectionMap.end())
+    {
         m_connectionMap.erase(conn->m_fd);
+    }
 }
 
 inline void TcpServer::HandleCloseInLoop(const TcpConnection::ptr &conn)

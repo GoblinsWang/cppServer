@@ -28,3 +28,7 @@ target_link_libraries(test pthread)
 
 
 
+
+# Benchmark server
+add_executable(benchmark_server benchmark_server.cpp ${SRC1} ${SRC2} ${SRC3})
+target_link_libraries(benchmark_server pthread)

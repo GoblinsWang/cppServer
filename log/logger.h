@@ -100,22 +100,22 @@ namespace cpplog
         char sourceFilePath[128];
         Settings settings;
         FileManagement filemanagement;
-        static Logger *singleObject;
-        static std::mutex *mutex_log;
-        static std::mutex *mutex_file;
-        static std::mutex *mutex_queue;
         std::map<coutType, std::string> coutTypeMap;
         std::map<fileType, bool> fileCoutMap;
         std::map<terminalType, bool> terminalCoutMap;
         std::map<std::string, std::string> coutColor;
         std::queue<std::string> messageQueue;
+        std::mutex mutex_file;
+        std::mutex mutex_queue;
 
     private:
         Logger();
         ~Logger();
+        Logger(const Logger&) = delete;
+        Logger& operator=(const Logger&) = delete;
 
     public:
-        static std::mutex *mutex_terminal;
+        static std::mutex mutex_terminal;
 
         void initLogConfig();
 
@@ -188,10 +188,10 @@ namespace cpplog
         std::string color = Logger::getInstance()->getCoutTypeColor(coutTypeInfo);                                                   \
         std::string logFormatCout = __LOGTIME__ + color + coutTypeInfo + DEFA + __USERNAME__ + __LOGTID__ + SQUARE_BRACKETS_LEFT +   \
                                     __LOGFILE__ + COLON + std::to_string(__LOGLINE__) + SPACE + __LOGFUNC__ + SQUARE_BRACKETS_RIGHT; \
-        Logger::mutex_terminal->lock();                                                                                              \
+        Logger::mutex_terminal.lock();                                                                                               \
         std::cout << logFormatCout << message << LINE_FEED;                                                                          \
         fflush(stdout);                                                                                                              \
-        Logger::mutex_terminal->unlock();                                                                                            \
+        Logger::mutex_terminal.unlock();                                                                                             \
     } while (0);
 #elif _WIN32
 #define COMBINATION_INFO_TERMINAL(coutTypeInfo, message)                                                                             \
@@ -199,10 +199,10 @@ namespace cpplog
     {                                                                                                                                \
         std::string logFormatCout = __LOGTIME__ + coutTypeInfo + __USERNAME__ + __LOGTID__ + SQUARE_BRACKETS_LEFT +                  \
                                     __LOGFILE__ + SPACE + __LOGFUNC__ + COLON + std::to_string(__LOGLINE__) + SQUARE_BRACKETS_RIGHT; \
-        Logger::mutex_terminal->lock();                                                                                              \
+        Logger::mutex_terminal.lock();                                                                                               \
         std::cout << logFormatCout << message << LINE_FEED;                                                                          \
         fflush(stdout);                                                                                                              \
-        Logger::mutex_terminal->unlock();                                                                                            \
+        Logger::mutex_terminal.unlock();                                                                                             \
     } while (0);
 #endif
 

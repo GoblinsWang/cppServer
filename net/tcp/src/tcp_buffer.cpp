@@ -58,6 +58,9 @@ int TcpBuffer::readFromSocket(int sockfd)
     }
     else
     {
+        // First, update write index for data written directly to buffer
+        recycleWrite(max_writable);
+        // Then, append remaining data from additional_buffer
         writeToBuffer(additional_buffer, result - max_writable);
     }
     return result;

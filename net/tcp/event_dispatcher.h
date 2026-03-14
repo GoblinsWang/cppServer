@@ -14,6 +14,14 @@ namespace cppServer
 
         EventDispatcher(EventLoop *eventloop);
 
+        ~EventDispatcher()
+        {
+            if (m_epollFd >= 0)
+            {
+                close(m_epollFd);
+            }
+        }
+
         int epollAdd(Channel::ptr channel); // Add event into epoll
 
         int epollDel(Channel::ptr channel); // delete event in epoll

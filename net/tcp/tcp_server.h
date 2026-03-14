@@ -46,7 +46,7 @@ namespace cppServer
     public:
         int m_port;
         int m_threadNum;
-        mutex *m_mapMutex;
+        std::mutex m_mutex;  // 添加互斥锁保护连接Map
 
         Acceptor::ptr m_acceptor;
         EventLoop::ptr m_eventloop;

@@ -25,27 +25,59 @@ TcpConnection::TcpConnection(int connected_fd, EventLoop::ptr eventloop)
       m_messageCallback(defaultMessageCallback),
       m_writeCompleteCallback(defaultWriteCompleteCallback)
 {
-
-    int size = 1024;
+    int size = 4096;  // Increased from 1024 to handle larger HTTP requests
     m_writeBuffer = std::make_shared<TcpBuffer>(size);
     m_readBuffer = std::make_shared<TcpBuffer>(size);
 
     m_name = "connection-" + std::to_string(connected_fd);
 
-    // add event read for the new connection
+    // Create channel but DO NOT add to epoll yet - will be added after callbacks are set
     m_channel = std::make_shared<Channel>(connected_fd, EVENT_READ, eventloop.get());
-    // set callback functions
-    m_channel->setReadCallback(
-        std::bind(&TcpConnection::handleRead, this));
-    m_channel->setWriteCallback(
-        std::bind(&TcpConnection::handleWrite, this));
-    m_channel->setCloseCallback(
-        std::bind(&TcpConnection::handleClose, this));
-    m_channel->setErrorCallback(
-        std::bind(&TcpConnection::handleError, this));
+    // Note: Channel will be added to epoll via enableChannel() after callbacks are set
+}
 
-    // connectionCompletedCallBack callback
-    m_eventloop->addChannelEvent(connected_fd, m_channel);
+void TcpConnection::initWeakSelf()
+{
+    m_weakSelf = shared_from_this();
+    LogDebug("initWeakSelf() called, fd=" << m_fd);
+}
+
+void TcpConnection::setChannelCallbacks()
+{
+    LogDebug("setChannelCallbacks() called, fd=" << m_fd);
+
+    // Use the stored weak_ptr instead of calling shared_from_this() here
+    auto weak_self = m_weakSelf;
+
+    m_channel->setReadCallback([weak_self]() {
+        if (auto self = weak_self.lock()) {
+            self->handleRead();
+        }
+    });
+    m_channel->setWriteCallback([weak_self]() {
+        if (auto self = weak_self.lock()) {
+            self->handleWrite();
+        }
+    });
+    m_channel->setCloseCallback([weak_self]() {
+        if (auto self = weak_self.lock()) {
+            self->handleClose();
+        }
+    });
+    m_channel->setErrorCallback([weak_self]() {
+        if (auto self = weak_self.lock()) {
+            self->handleError();
+        }
+    });
+
+    LogDebug("setChannelCallbacks() completed, fd=" << m_fd);
+}
+
+void TcpConnection::enableChannel()
+{
+    // Now add the channel to epoll - callbacks are already set
+    LogDebug("enableChannel() called, adding channel to epoll, fd=" << m_fd);
+    m_eventloop->addChannelEvent(m_fd, m_channel);
 }
 
 TcpConnection::~TcpConnection()
@@ -103,6 +135,14 @@ int TcpConnection::sendBuffer()
 
 void TcpConnection::handleRead()
 {
+    LogDebug("handleRead() called, fd=" << m_fd);
+
+    // Get shared_ptr from stored weak_ptr to keep object alive during this function
+    auto self = m_weakSelf.lock();
+    if (!self) {
+        LogError("handleRead() failed to lock weak_self, object already destroyed, fd=" << m_fd);
+        return;
+    }
 
     // reads the data in the buffer, and you can process data in this callback function.
     int rt = m_readBuffer->readFromSocket(m_channel->m_fd);
@@ -110,7 +150,7 @@ void TcpConnection::handleRead()
     {
         LogDebug("TcpConnection->m_messageCallback in ......");
         LogDebug(KV(this->m_fd));
-        m_messageCallback(shared_from_this());
+        m_messageCallback(self);
     }
     else
     {
@@ -123,6 +163,13 @@ void TcpConnection::handleRead()
 // Write out the data in the sending buffer
 void TcpConnection::handleWrite()
 {
+    // Get shared_ptr from stored weak_ptr to keep object alive during this function
+    auto self = m_weakSelf.lock();
+    if (!self) {
+        LogError("handleWrite() failed to lock weak_self, object already destroyed, fd=" << m_fd);
+        return;
+    }
+
     // assertInSameThread(eventLoop);
     if (m_eventloop->m_ownerThreadId != std::this_thread::get_id())
     {
@@ -136,14 +183,14 @@ void TcpConnection::handleWrite()
         size_t nwrited = write(m_channel->m_fd, &(m_writeBuffer->m_buffer[read_index]), total_size);
         if (nwrited > 0)
         {
-            // nwrited bytes had read
-            m_writeBuffer->recycleWrite(nwrited);
+            // nwrited bytes had been written, recycle read buffer
+            m_writeBuffer->recycleRead(nwrited);  // Fixed: was recycleWrite, causing buffer corruption
 
             // If the data is completely sent out, there is no need to continue
             if (m_writeBuffer->readAble() == 0)
             {
                 m_channel->disableWriteEvent();
-                m_writeCompleteCallback(shared_from_this());
+                m_writeCompleteCallback(self);
                 if (m_state == kConnecting)
                 {
                     shutdownWrite();
@@ -163,10 +210,24 @@ void TcpConnection::handleClose()
     LogTrace("in handlecolse .... fd = " << m_fd << ", state = " << stateToString());
     assert(m_state == kConnected || m_state == kDisconnecting);
 
+    // Get shared_ptr from stored weak_ptr to keep object alive during this function
+    auto self = m_weakSelf.lock();
+    if (!self) {
+        LogError("handleClose() failed to lock weak_self, object already destroyed, fd=" << m_fd);
+        return;
+    }
+
+    setState(kDisconnected);  // Fixed: set state before removing channel
+
+    // Clear channel callbacks to break potential circular references
+    m_channel->setReadCallback(nullptr);
+    m_channel->setWriteCallback(nullptr);
+    m_channel->setCloseCallback(nullptr);
+    m_channel->setErrorCallback(nullptr);
+
     m_eventloop->removeChannelEvent(m_channel->m_fd, m_channel);
-    m_closeCallback(shared_from_this());
+    m_closeCallback(self);
     LogDebug("after m_closeCallback ...");
-    // LogDebug("shared_from_this().use_count: " << shared_from_this().use_count());
 }
 
 void TcpConnection::handleError()

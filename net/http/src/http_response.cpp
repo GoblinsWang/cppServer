@@ -2,6 +2,11 @@
 
 using namespace cppServer;
 
+void HttpResponse::setHead(const std::string &key, const std::string &value)
+{
+    m_headMap[key] = value;
+}
+
 void HttpResponse::appendToBuffer(TcpBuffer::ptr buffer)
 {
     std::stringstream ss;

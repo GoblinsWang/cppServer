@@ -12,6 +12,7 @@ namespace cppServer
         MovedPermanently = 301,
         BadRequest = 400,
         NotFound = 404,
+        MethodNotAllowed = 405,
     };
 
     class HttpResponse
@@ -24,7 +25,7 @@ namespace cppServer
         ~HttpResponse() = default;
 
         // add header to HttpResponse.
-        void setHead(std::string &key, std::string &value);
+        void setHead(const std::string &key, const std::string &value);
 
         void appendToBuffer(TcpBuffer::ptr buffer);
 

@@ -58,6 +58,15 @@ namespace cppServer
             m_closeCallback = cb;
         }
 
+        // Set channel callbacks using weak_ptr for safe lifetime management
+        void setChannelCallbacks();
+
+        // Initialize the weak_self pointer (must be called after shared_ptr is created)
+        void initWeakSelf();
+
+        // Enable channel (add to epoll) - must be called after setChannelCallbacks()
+        void enableChannel();
+
         void setState(StateE s) { m_state = s; }
 
         const char *stateToString() const;
@@ -82,6 +91,9 @@ namespace cppServer
         MessageCallback m_messageCallback;
         WriteCompleteCallback m_writeCompleteCallback;
         CloseCallback m_closeCallback;
+
+        // weak_ptr to self for safe callback capture
+        std::weak_ptr<TcpConnection> m_weakSelf;
 
         // for http
         HttpRequest::ptr m_httpRequest;

@@ -1,4 +1,5 @@
 #include "../http_server.h"
+#include <set>
 using namespace cppServer;
 
 void HttpServer::listen(std::string ip, int port, int threadNum)
@@ -38,11 +39,18 @@ void HttpServer::onMessage(const TcpConnectionPtr &conn)
 
     if (parseHttpRequest(conn->m_readBuffer, conn->m_httpRequest) == 0)
     {
-        LogError("parseHttpRequest failed");
-        std::string error_response = "HTTP/1.1 400 Bad Request\r\n\r\n";
-        conn->m_writeBuffer->writeToBuffer(error_response.c_str(), error_response.size());
-        conn->sendBuffer();
-        conn->shutdown();
+        // Only treat as error if parsing actually failed (still in initial state)
+        // If data is incomplete, we just wait for more data
+        if (conn->m_httpRequest->getCurrentState() == REQUEST_STATUS)
+        {
+            LogError("parseHttpRequest failed");
+            std::string error_response = "HTTP/1.1 400 Bad Request\r\n\r\n";
+            conn->m_writeBuffer->writeToBuffer(error_response.c_str(), error_response.size());
+            conn->sendBuffer();
+            conn->shutdown();
+        }
+        // Otherwise, data is incomplete, wait for more data
+        return;
     }
 
     // after processing all the request data, then code and send.
@@ -82,6 +90,13 @@ void HttpServer::handleResources(HttpRequest::ptr req, HttpResponse::ptr res)
             {
                 req->m_pathMatch = move(sm_res);
                 res_it->second[req->m_method](req, res);
+                return;
+            }
+            else
+            {
+                // URL matched but method not allowed
+                res->m_statusCode = MethodNotAllowed;
+                res->m_statusMessage = "Method Not Allowed";
                 return;
             }
         }
@@ -138,8 +153,48 @@ int HttpServer::parseHttpRequest(TcpBuffer::ptr input_buffer, HttpRequest::ptr h
         }
         else if (httpRequest->m_currentState == REQUEST_BODY)
         {
-            // TODO: parse content
+            // Parse request body based on Content-Length
             LogTrace("---------- REQUEST_BODY -----------");
+
+            // Get Content-Length header
+            std::string contentLengthStr = httpRequest->getHead("Content-Length");
+            if (contentLengthStr.empty())
+            {
+                // No Content-Length, assume no body
+                httpRequest->m_currentState = REQUEST_DONE;
+                continue;
+            }
+
+            int contentLength = 0;
+            try
+            {
+                contentLength = std::stoi(contentLengthStr);
+                if (contentLength < 0)
+                {
+                    LogError("Invalid Content-Length (negative): " << contentLengthStr);
+                    return 0;
+                }
+            }
+            catch (const std::exception &e)
+            {
+                LogError("Invalid Content-Length: " << contentLengthStr);
+                return 0;
+            }
+
+            int readableBytes = input_buffer->readAble();
+
+            if (readableBytes < contentLength)
+            {
+                // Not enough data, wait for more
+                ok = 0;
+                continue;
+            }
+
+            // Read body data
+            std::string bodyData = input_buffer->getBufferString().substr(0, contentLength);
+            httpRequest->m_body = bodyData;
+            input_buffer->recycleRead(contentLength);
+
             httpRequest->m_currentState = REQUEST_DONE;
         }
     }
@@ -153,7 +208,18 @@ int HttpServer::processStatusLine(std::string &statusLine, HttpRequest::ptr req)
 
     if (std::regex_match(statusLine, sub_match, e))
     {
-        req->m_method = sub_match[1];
+        std::string method = sub_match[1];
+        // Validate HTTP method
+        static const std::set<std::string> validMethods = {
+            "GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH", "TRACE", "CONNECT"
+        };
+
+        if (validMethods.find(method) == validMethods.end())
+        {
+            return 0; // Invalid method
+        }
+
+        req->m_method = method;
         req->m_url = sub_match[2];
         req->m_version = sub_match[3];
 
